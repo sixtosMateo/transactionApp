@@ -12,6 +12,5 @@ urlpatterns = [
     url(r'^newItem$', views.newItem, name='newItem'),
     url(r'^damageItem$', views.damageItem, name='damageItem'),
     url(r'^outgoingTransaction$', views.outgoingTransaction, name='outgoingTransaction'),
-    url(r'^incomingTransaction$', views.incomingTransaction, name='incomingTransaction'),
-    url(r'^saveEmployee$', views.saveEmployee, name='saveEmployee')
+    url(r'^incomingTransaction$', views.incomingTransaction, name='incomingTransaction')
 ]
