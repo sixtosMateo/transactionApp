@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 from .forms import NewEmployeeForm, LoginAttemptForm
 
 @csrf_exempt
@@ -15,25 +16,34 @@ def authenticateCredentials(request):
 
 
 @csrf_exempt
-def newEmployee(request, template_name="createEmployee.html"):
-
-    return render(request, template_name)
+def newEmployee(request, template_name = "createEmployee.html"):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('mainMenu')
+    else:
+        print("form")
+        # the django default form is displayed
+        form = UserCreationForm()
+        return render(request, template_name, {'form':form} )
 
 # need to save the storeId therefore find a way to append another variable to User object
-@csrf_exempt
-def saveEmployee(request):
-    from django.contrib.auth.models import User
-
-    if request.method == 'POST':
-        form = NewEmployeeForm(request.POST)
-        print(form.fields)
-        if form.is_valid():
-            new_employee = form.save()
-
-            return redirect('mainMenu')
-        else:
-            print('form is not validated')
-            return render(request, 'createEmployee.html', {'form': form})
+# @csrf_exempt
+# def saveEmployee(request):
+#     from django.contrib.auth.models import User
+#
+#     if request.method == 'POST':
+#         form = NewEmployeeForm(request.POST)
+#         print(form.fields)
+#         if form.is_valid():
+#             new_employee = form.save()
+#
+#             return redirect('mainMenu')
+#         else:
+#             print('form is not validated')
+#             return render(request, 'createEmployee.html', {'form': form})
 
 # this function determine wether the credential is true or not
 
