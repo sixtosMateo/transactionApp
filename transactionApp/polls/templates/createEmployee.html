@@ -1,0 +1,85 @@
+<!-- DOCTYPE -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <title>Create Employee</title>
+
+  <meta charset="utf-8">
+  <meta name="author" content="Sam Norton">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  </head>
+
+<body>
+
+  <div class="wrapper" id="wrapper">
+
+    <header>
+
+    </header>
+
+      <div class="container">
+        <!-- this id needs to start from a four digit number -->
+        <form action="saveEmployee" method="post" id="newEmployee-form">
+          <fieldset class="form-group">
+            <label for="username"> Username: </label>
+            <input  class="form-control" id="username" name="username" type="text" >
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="password">Password: </label>
+            <input class="form-control" type="password" id="password" name="password">
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label for="confirmPassword">Confirm Password: </label>
+            <input class="form-control" type="password" id="confirmPassword" name="confirmPassword"  >
+          </fieldset>
+
+        <fieldset class="form-group">
+          <label for="first_name"> First Name: </label>
+          <input class="form-control" id="first_name" name="first_name" type="text" >
+        </fieldset>
+
+        <!-- this has to be change into password type for the form -->
+        <fieldset class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input class="form-control" id="last_name" name="last_name" type="text" >
+        </fieldset>
+        <!-- if i can i make this id be base on location -->
+        <fieldset class="form-group">
+          <label for="storeId">Store ID:</label>
+          <input class="form-control" id="storeId" name="storeId" type="number" >
+        </fieldset>
+
+        <fieldset class="form-group">
+          <label for="email">Email:</label>
+          <input class="form-control" id="email" name="email" type="email" >
+        </fieldset>
+
+        <fieldset class="form-group">
+          <label for="is_active">Active</label><br>
+            <input type="radio" name="is_active" id="is_active" value=True checked> Yes<br>
+            <input type="radio" name="is_active" id="is_active" value=False> No<br>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="is_staff">Staff</label><br>
+            <input type="radio" name="is_staff" id="is_staff" value=True> Yes<br>
+            <input type="radio" name="is_staff" id="is_staff" value=False checked> No<br>
+        </fieldset>
+
+        <!-- has to be inside form tags. other fields needs to be creat on this form -->
+        <button id="create_button" type="submit">Create</button>
+        <a href="{% url 'mainMenu'%}"><input id="mainMenu_button" type="button" value="Cancel"/></a>
+      </form>
+
+      </div>
+
+  </div>
+
+
+</body>
+
+</html>

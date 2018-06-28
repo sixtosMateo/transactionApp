@@ -1,0 +1,43 @@
+<!-- DOCTYPE -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <title>login</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  </head>
+
+<body>
+
+  <div id="wrapper">
+
+    <header>
+
+    </header>
+
+      <div class="container">
+
+        <form method="POST" id="credentials-form">
+          <!-- *cross site request forgery token* make sure that data is secure  -->
+          {%csrf_token%}
+
+          <!-- form comes from default login view that django provides -->
+          {{form.as_p}}
+
+        <button id="login_button" type="submit">Login</button>
+      </form>
+
+      <a role ="button" href="{% url 'newEmployee' %}"> Create Employee </a>
+
+      </div>
+
+  </div>
+
+
+</body>
+
+</html>
