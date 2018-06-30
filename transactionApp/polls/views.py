@@ -3,9 +3,8 @@ from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import UserChangeForm
-from .forms import NewEmployeeForm, LoginAttemptForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .forms import NewEmployeeForm, EditProfileForm
 
 def newEmployee(request, template_name = "createEmployee.html"):
     if request.method == 'POST':
@@ -29,13 +28,13 @@ def employeeProfile(request, template = "employeeProfile.html"):
 
 def editProfile(request, template = "editProfile.html"):
     if request.method == 'POST':
-        form = UserChangeForm(request.POST, instance=request.user)
+        form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             print("form valid")
             form.save()
             return redirect('employeeProfile')
     else:
-        form = UserChangeForm(instance=request.user)
+        form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, template, args)
 

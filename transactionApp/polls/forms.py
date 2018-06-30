@@ -1,10 +1,10 @@
 from django import forms
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
-# we are going to inherit from django User model
+# we are going to inherit from django UserCreationForm's fields from User
 class NewEmployeeForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -32,8 +32,14 @@ class NewEmployeeForm(UserCreationForm):
             user.save()
         return user
 
-class LoginAttemptForm(forms.ModelForm):
+
+class EditProfileForm(UserChangeForm):
+
     class Meta:
         model = User
-        fields=('username', 'password')
-        db_table = 'auth_user'
+        fields = (
+        'email',
+        'first_name',
+        'last_name',
+        'password'
+        )
