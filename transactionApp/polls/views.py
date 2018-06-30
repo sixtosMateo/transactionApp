@@ -6,46 +6,20 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .forms import NewEmployeeForm, LoginAttemptForm
 
-@csrf_exempt
-def authenticateCredentials(request):
-    from django.contrib.auth.models import User
-
-    if request.method == 'POST':
-        form = LoginAttemptForm(request.POST)
-        print(form['username'])
-
-
-@csrf_exempt
 def newEmployee(request, template_name = "createEmployee.html"):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = NewEmployeeForm(request.POST)
         if form.is_valid():
             print("form valid")
             form.save()
             return redirect('mainMenu')
     else:
-        print("form")
         # the django default form is displayed
-        form = UserCreationForm()
-        return render(request, template_name, {'form':form} )
+        form = NewEmployeeForm()
 
-# need to save the storeId therefore find a way to append another variable to User object
-# @csrf_exempt
-# def saveEmployee(request):
-#     from django.contrib.auth.models import User
-#
-#     if request.method == 'POST':
-#         form = NewEmployeeForm(request.POST)
-#         print(form.fields)
-#         if form.is_valid():
-#             new_employee = form.save()
-#
-#             return redirect('mainMenu')
-#         else:
-#             print('form is not validated')
-#             return render(request, 'createEmployee.html', {'form': form})
+        args={'form':form}
+        return render(request, template_name, args )
 
-# this function determine wether the credential is true or not
 
 def mainMenu(request, template_name="mainMenu.html"):
 
