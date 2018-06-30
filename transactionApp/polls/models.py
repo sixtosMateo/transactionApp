@@ -9,23 +9,23 @@ from django.utils import timezone
 # need to add age, partTime/fullTime, .... when added it has to be added to the views
 class Employee(models.Model):
     #user is coming from Django default User
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key= True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key= True, default=None)
     employeeId = models.CharField(max_length = 30, default=None)
     firstName = models.CharField(max_length = 30, default=None)
     lastName = models.CharField(max_length = 30, default=None)
     storeId = models.IntegerField(default = 0, blank=True)
     createdAt = models.DateTimeField(default=timezone.now)
 
-    class Meta:
-        db_table = 'employee'
-
-    def save(self, *args, **kwargs):
-        print('save() is called.')
-        super(Employee, self).save(using='store_master')
-
-    def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5}".format(
-            self.user, self.employeeId, self.firstName, self.lastName, self.storeId, self.createdAt)
+    # class Meta:
+    #     db_table = 'employee'
+    #
+    # def save(self, *args, **kwargs):
+    #     print('save() is called.')
+    #     super(Employee, self).save(using='store_master')
+    #
+    # def __unicode__(self):
+    #     return "{0} {1} {2} {3} {4} {5}".format(
+    #         self.user, self.employeeId, self.firstName, self.lastName, self.storeId, self.createdAt)
 
 def create_employee(sender,**kwargs):
     if kwargs['created']:
