@@ -1,10 +1,11 @@
 from django.conf.urls import url, include
 from . import views
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 
 urlpatterns = [
     # login view comes from default django
     url(r'^login$', login, {'template_name':'index.html'}),
+    url(r'^logout$', logout, {'template_name':'logout.html'}),
     url(r'^employeeProfile$', views.employeeProfile, name='employeeProfile'),
     url(r'^editProfile$', views.editProfile, name='editProfile'),
     url(r'^newEmployee$', views.newEmployee, name='newEmployee'),
