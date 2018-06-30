@@ -27,7 +27,17 @@ def employeeProfile(request, template = "employeeProfile.html"):
     args = {'user': request.user}
     return render(request, template, args)
 
-
+def editProfile(request, template = "editProfile.html"):
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('employeeProfile')
+    else:
+        form = UserChangeForm(instance=request.user)
+        args = {'form': form}
+        return render(request, template, args)
 
 
 def mainMenu(request, template_name="mainMenu.html"):
