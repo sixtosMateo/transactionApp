@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^employeeProfile$', views.employeeProfile, name='employeeProfile'),
     url(r'^editProfile$', views.editProfile, name='editProfile'),
     url(r'^newEmployee$', views.newEmployee, name='newEmployee'),
+    url(r'^changePassword$', views.changePassword, name='changePassword'),
     url(r'^mainMenu$', views.mainMenu, name='mainMenu'),
     url(r'^item$', views.item, name='item'),
     url(r'^newItem$', views.newItem, name='newItem'),

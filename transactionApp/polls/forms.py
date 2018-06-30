@@ -34,7 +34,7 @@ class NewEmployeeForm(UserCreationForm):
 
 
 class EditProfileForm(UserChangeForm):
-
+# the fields(or exclude) element allows to customize what fields can be edited
     class Meta:
         model = User
         fields = (
