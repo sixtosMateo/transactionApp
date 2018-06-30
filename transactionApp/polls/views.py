@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserChangeForm
 from .forms import NewEmployeeForm, LoginAttemptForm
 
 def newEmployee(request, template_name = "createEmployee.html"):
@@ -17,8 +18,16 @@ def newEmployee(request, template_name = "createEmployee.html"):
         # the django default form is displayed
         form = NewEmployeeForm()
 
-        args={'form':form}
+        args = {'form':form}
         return render(request, template_name, args )
+
+# two scenarios some GET request for the page
+# another would POST the form to edit profile
+def employeeProfile(request, template = "employeeProfile.html"):
+    args = {'user': request.user}
+    return render(request, template, args)
+
+
 
 
 def mainMenu(request, template_name="mainMenu.html"):
