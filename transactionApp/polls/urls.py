@@ -5,7 +5,7 @@ from django.contrib.auth.views import login
 urlpatterns = [
     # login view comes from default django
     url(r'^login$', login, {'template_name':'index.html'}),
-    url(r'^authenticateCredentials$', views.authenticateCredentials, name='authenticateCredentials'),
+    # url(r'^authenticateCredentials$', views.authenticateCredentials, name='authenticateCredentials'),
     url(r'^newEmployee$', views.newEmployee, name='newEmployee'),
     url(r'^mainMenu$', views.mainMenu, name='mainMenu'),
     url(r'^item$', views.item, name='item'),
