@@ -22,8 +22,8 @@
 
       <div class="container">
         <!-- this id needs to start from a four digit number -->
-        <form method="POST" id="newEmployee-form">
-          {%csrf_token%}
+        <form method="post">
+          {% csrf_token %}
 
           {{form.as_p}}
 
