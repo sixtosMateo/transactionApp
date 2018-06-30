@@ -132,3 +132,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/polls/mainMenu'
+
+# write this line in new terminal(root) to view the content of email being sent 
+# python3 -m smtpd -n -c DebuggingServer localhost:1025
+
+# these are for testing purposes
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
