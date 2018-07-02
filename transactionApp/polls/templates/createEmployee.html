@@ -1,43 +1,22 @@
-<!-- DOCTYPE -->
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
+{% block head %}
+<title>Login</title>
+{% endblock %}
 
-  <title>Create Employee</title>
+{% block body %}
+<div class="container">
+  <!-- this id needs to start from a four digit number -->
+  <form method="post">
+    {% csrf_token %}
 
-  <meta charset="utf-8">
-  <meta name="author" content="Sam Norton">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  </head>
-
-<body>
-
-  <div class="wrapper" id="wrapper">
-
-    <header>
-
-    </header>
-
-      <div class="container">
-        <!-- this id needs to start from a four digit number -->
-        <form method="post">
-          {% csrf_token %}
-
-          {{form.as_p}}
+    {{form.as_p}}
 
 
-        <!-- has to be inside form tags. other fields needs to be creat on this form -->
-        <button type="submit">Create </button>
-        <a href="{% url 'mainMenu'%}"><input id="mainMenu_button" type="button" value="Cancel"/></a>
-      </form>
+    <!-- has to be inside form tags. other fields needs to be creat on this form -->
+    <button type="submit">Create </button>
+    <a href="{% url 'mainMenu'%}"><input id="mainMenu_button" type="button" value="Cancel"/></a>
+  </form>
 
-      </div>
-
-  </div>
-
-
-</body>
-
-</html>
+</div>
+{% endblock %}

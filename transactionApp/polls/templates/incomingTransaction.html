@@ -1,25 +1,11 @@
-<!-- DOCTYPE -->
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
+{% block head %}
+<title>IncomingTransaction</title>
+{% endblock %}
 
-  <title>Incoming Transaction</title>
 
-  <meta charset="utf-8">
-  <meta name="author" content="Sam Norton">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  </head>
-
-<body>
-
-  <div class="wrapper" id="wrapper">
-
-    <header>
-
-    </header>
-
+{% block body %}
       <div class="container">
         <fieldset class="form-group">
           <label for="id">Barcode:</label>
@@ -28,9 +14,4 @@
 
       </div>
 
-  </div>
-
-
-</body>
-
-</html>
+{% endblock %}

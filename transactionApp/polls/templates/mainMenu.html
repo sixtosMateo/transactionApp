@@ -1,40 +1,28 @@
-<!-- DOCTYPE -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'base.html' %}
 
-  <title>Main Menu</title>
-  <meta charset="utf-8">
-  <style>
-    #home-space{
-      height: 100%;
+{% block head %}
+<title>Main Menu</title>
 
-      float:left;
-    }
-    #logout-space{
-      height: 100%;
-      float: right;
-    }
-    #header-wrapper{
-      height:50px;
-    }
+<style>
+  #home-space{
+    height: 100%;
+
+    float:left;
+  }
+  #logout-space{
+    height: 100%;
+    float: right;
+  }
+  #header-wrapper{
+    height:50px;
+  }
 
 
-  </style>
-</head>
-
-<body>
-
-  <header id = "header-wrapper">
-      <div id="home-space">
-        <a href="{% url 'mainMenu'%}"><input id="mainMenu_button" type="button" value="Main Menu"/></a>
-    </div>
-    
-  </header>
-
-  <div id="wrapper">
+</style>
+{% endblock %}
 
 
+{% block body %}
 
       <div class="container">
         <a href="{% url 'outgoingTransaction'%}"><input id="outgoingTransaction_button" type="button" value="Outgoing Transaction"/></a>
@@ -46,7 +34,4 @@
         <button id="reports_button" type="">Reports</button>
 
       </div>
-  </div>
-</body>
-
-</html>
+{% endblock %}

@@ -1,26 +1,13 @@
-<!-- DOCTYPE -->
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
+{% block head %}
+<title>Login</title>
+{% endblock %}
 
-  <title>Edit Employee</title>
 
-  <meta charset="utf-8">
-  <meta name="author" content="Sam Norton">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  </head>
-
-<body>
-
-  <div class="wrapper" id="wrapper">
-
-    <header>
-
-    </header>
-
-      <div class="container">
+{% block body %}
+<div class="container">
+  <h1>Edit Profile</h1>
 
         <form method="post">
           {% csrf_token %}
@@ -30,11 +17,6 @@
         <a href="{% url 'employeeProfile'%}"><input id="employeeProfile" type="button" value="Cancel"/></a>
       </form>
 
-      </div>
+</div>
 
-  </div>
-
-
-</body>
-
-</html>
+{% endblock %}
