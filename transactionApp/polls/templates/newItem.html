@@ -1,76 +1,59 @@
-<!-- DOCTYPE -->
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
+{% block head %}
+<title>New Item</title>
+{% endblock %}
 
-  <title>New Item</title>
-
-  <meta charset="utf-8">
-  <meta name="author" content="Sam Norton">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  </head>
-
-<body>
-
-  <div class="wrapper" id="wrapper">
-
-    <header>
-
-    </header>
+{% block body %}
       <!-- some of this fields need to interger and floats -->
       <!-- this has to have the form tag to save data-->
 
       <div class="container">
-        <fieldset class="form-group">
-          <label for="id">Barcode:</label>
-          <input  class="form-control" id="id" name="id" type="text" >
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="name">Name:</label>
-          <input  class="form-control" id="name" name="name" type="text" >
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="inStockQty">Qty:</label>
-          <input  class="form-control" id="inStockQty" name="inStockQty" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="picture">Picture:</label>
-          <input  class="form-control" id="picture" name="picture" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="ageRequirement">Age Requirement:</label>
-          <input  class="form-control" id="ageRequirement" name="ageRequirement" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="purchasedPrice">Purchased Price:</label>
-          <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="salePrice">Sale Price:</label>
-          <input  class="form-control" id="salePrice" name="salePrice" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="department">Department:</label>
-          <input  class="form-control" id="department" name="department" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="vendorId">Vendor ID:</label>
-          <input  class="form-control" id="vendorId" name="vendorId" type="text">
-        </fieldset>
-        <fieldset class="form-group">
-          <label for="locationId">Location ID:</label>
-          <input  class="form-control" id="locationId" name="locationId" type="text">
-        </fieldset>
+        <form method="post">
+          <fieldset class="form-group">
+            <label for="id">Barcode:</label>
+            <input  class="form-control" id="id" name="id" type="text" >
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="name">Name:</label>
+            <input  class="form-control" id="name" name="name" type="text" >
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="inStockQty">Qty:</label>
+            <input  class="form-control" id="inStockQty" name="inStockQty" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="picture">Picture:</label>
+            <input  class="form-control" id="picture" name="picture" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="ageRequirement">Age Requirement:</label>
+            <input  class="form-control" id="ageRequirement" name="ageRequirement" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="purchasedPrice">Purchased Price:</label>
+            <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="salePrice">Sale Price:</label>
+            <input  class="form-control" id="salePrice" name="salePrice" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="department">Department:</label>
+            <input  class="form-control" id="department" name="department" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="vendorId">Vendor ID:</label>
+            <input  class="form-control" id="vendorId" name="vendorId" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="locationId">Location ID:</label>
+            <input  class="form-control" id="locationId" name="locationId" type="text">
+          </fieldset>
+      </form>
+        <button type="submit">Submit</button>
+        <button type="submit">Cancel</button>
+
       </div>
       <!-- the cancel button needs to  -->
-      <button type="submit">Submit</button>
-      <button type="submit">Cancel</button>
-
-  </div>
-
-
-</body>
-
-</html>
+{% endblock %}
