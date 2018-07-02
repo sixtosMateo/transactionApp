@@ -23,15 +23,48 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
+                {% if user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'mainMenu' %}">Transaction app</a>
+                {% else %}
                 <a class="navbar-brand" href="../polls/login">Transaction app</a>
+                {% endif %}
               </div>
               <div id="navbar" class="navbar-collapse collapse">
+                <!-- this is for staff only -->
+                <!-- Inventory will have another set of menu where item damageItem will be place circlecount etc -->
+                <!-- staff will be able to see the list of employees and there profile -->
+                <!-- vendor will have another sub menu where we can view all vendor prices and history etc -->
+                <!-- reports will have graphs reports, paper reports, of profit, investments employment history etc -->
+
+                {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'mainMenu' %}">Home</a></li>
+                    <li><a href="{% url 'mainMenu' %}">Main Menu</a></li>
+                    <li><a href="{% url 'outgoingTransaction' %}">Outgoing Transaction</a></li>
+                    <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li>
+                    <li><a href="">All Employees</a></li>
+                    <li><a href="{% url 'item' %}">Inventory</a></li>
+                    <li><a href="">Vendors</a></li>
+                    <li><a href="">Reports</a></li>
+                    <li><a href="">logout</a></li>
+
                 </ul>
+
+                {% else %}
+                <!-- this is for employee only -->
+                <!-- <ul class="nav navbar-nav"> -->
+                    <!-- <li><a href="{% url 'mainMenu' %}">Main Menu</a></li> -->
+                    <!-- <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li> -->
+                    <!-- <li><a href="{% url 'item' %}">Item</a></li> -->
+                    <!-- <li><a href="">Inventory</a></li> -->
+                <!-- </ul> -->
+                <!-- this is for login user -->
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="{% url 'newEmployee' %}">Register</a></li>
                 </ul>
+
+                {% endif %}
+
+
               </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
           </nav>
