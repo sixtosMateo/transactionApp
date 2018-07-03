@@ -131,9 +131,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/polls/mainMenu'
+LOGIN_REDIRECT_URL = '/polls/mainMenu/'
 
-# write this line in new terminal(root) to view the content of email being sent 
+# write this line in new terminal(root) to view the content of email being sent
 # python3 -m smtpd -n -c DebuggingServer localhost:1025
 
 # these are for testing purposes

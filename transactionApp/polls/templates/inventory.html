@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Inventory</title>
+
+<style>
+  #home-space{
+    height: 100%;
+
+    float:left;
+  }
+  #logout-space{
+    height: 100%;
+    float: right;
+  }
+  #header-wrapper{
+    height:50px;
+  }
+
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+      <div class="container">
+        <h1>Inventory</h1>
+        <a href="{% url 'item' %}"><input id="item" type="button" value="Item"/></a>
+        <a href="{% url 'editItem' %}"><input id="editItem" type="button" value="Edit Item"/></a>
+        <a href="{% url 'countCycle' %}"><input id="countCycle" type="button" value="Count Cycle"/></a>
+        <a href="{% url 'damageItem' %}"><input id="damageItem" type="button" value="Damage Item"/></a>
+
+
+      </div>
+{% endblock %}

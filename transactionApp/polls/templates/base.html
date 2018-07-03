@@ -42,10 +42,11 @@
                     <li><a href="{% url 'outgoingTransaction' %}">Outgoing Transaction</a></li>
                     <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li>
                     <li><a href="">All Employees</a></li>
-                    <li><a href="{% url 'item' %}">Inventory</a></li>
+                    <li><a href="{% url 'inventory' %}">Inventory</a></li>
                     <li><a href="">Vendors</a></li>
                     <li><a href="">Reports</a></li>
-                    <li><a href="">logout</a></li>
+                    <!--Bug: this need to change dynamically without url -->
+                    <li><a href="logout">logout</a></li>
 
                 </ul>
 
@@ -59,7 +60,7 @@
                 <!-- </ul> -->
                 <!-- this is for login user -->
                 <ul class="nav navbar-nav navbar-right">
-                  <li><a href="{% url 'newEmployee' %}">Register</a></li>
+                  <li><a href="">Register</a></li>
                 </ul>
 
                 {% endif %}

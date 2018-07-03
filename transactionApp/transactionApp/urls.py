@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import include, url
+from transactionApp import views 
 
 urlpatterns = [
+    url(r'^$', views.login_redirect, name="loginRedirect"),
     url('admin/', admin.site.urls),
     url('polls/', include('polls.urls'))
 ]
