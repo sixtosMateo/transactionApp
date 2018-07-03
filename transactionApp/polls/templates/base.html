@@ -37,27 +37,29 @@
                 <!-- reports will have graphs reports, paper reports, of profit, investments employment history etc -->
 
                 {% if user.is_authenticated %}
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'mainMenu' %}">Main Menu</a></li>
-                    <li><a href="{% url 'outgoingTransaction' %}">Outgoing Transaction</a></li>
-                    <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li>
-                    <li><a href="{% url 'employees' %}">All Employees</a></li>
-                    <li><a href="{% url 'inventory' %}">Inventory</a></li>
-                    <li><a href="">Vendors</a></li>
-                    <li><a href="">Reports</a></li>
-                    <!--Bug: this need to change dynamically without url -->
-                    <li><a href="logout">logout</a></li>
+                  {% if user.is_staff %}
+                  <ul class="nav navbar-nav">
+                      <li><a href="{% url 'mainMenu' %}">Main Menu</a></li>
+                      <li><a href="{% url 'outgoingTransaction' %}">Outgoing Transaction</a></li>
+                      <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li>
+                      <li><a href="{% url 'employees' %}">All Employees</a></li>
+                      <li><a href="{% url 'inventory' %}">Inventory</a></li>
+                      <li><a href="">Vendors</a></li>
+                      <li><a href="">Reports</a></li>
+                      <!--Bug: this need to change dynamically without url -->
+                      <li><a href="logout">logout</a></li>
 
-                </ul>
-
+                  </ul>
+                  {% else %}
+                    <!-- this is for employee only -->
+                    <ul class="nav navbar-nav">
+                      <li><a href="{% url 'mainMenu' %}">Main Menu</a></li>
+                      <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li>
+                      <li><a href="{% url 'item' %}">Item</a></li>
+                      <li><a href="">Inventory</a></li>
+                    </ul>
+                  {% endif %}
                 {% else %}
-                <!-- this is for employee only -->
-                <!-- <ul class="nav navbar-nav"> -->
-                    <!-- <li><a href="{% url 'mainMenu' %}">Main Menu</a></li> -->
-                    <!-- <li><a href="{% url 'incomingTransaction' %}">Incoming Transaction</a></li> -->
-                    <!-- <li><a href="{% url 'item' %}">Item</a></li> -->
-                    <!-- <li><a href="">Inventory</a></li> -->
-                <!-- </ul> -->
                 <!-- this is for login user -->
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="">Register</a></li>

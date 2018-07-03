@@ -27,7 +27,12 @@
                 <th>{{user.username }}</th>
                 <th>{{user.first_name }}</th>
                 <th>{{user.last_name }}</th>
-                <th>{{user.email }}</th>
+                <th>{{user.email }} </th>
+                <td>
+                  <!-- this button must pass the user object that get click on -->
+                  <a role ="button" href=""> Edit </a>
+                  <button type="button"   data-url =""> Delete</button>
+                </td>
               </tr>
             {% endfor %}
 
