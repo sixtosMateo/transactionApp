@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 #helps web app make sure that user is still logged in after change password
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from .forms import NewEmployeeForm, EditProfileForm
 from django.contrib.auth.forms import (
     UserCreationForm,
@@ -68,6 +69,12 @@ def changePassword(request, template = "changePassword.html"):
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, template, args)
+
+@login_required
+def employees(request, template_name="employees.html"):
+    users = User.objects.all()
+
+    return render(request, template_name, {'users':users})
 
 
 

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Employees</title>
+{% endblock %}
+
+
+{% block body %}
+
+      <div class="container">
+        <h1>Employees</h1>
+
+        <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th> User ID: </th>
+                <th> FirstName: </th>
+                <th> LastName: </th>
+                <th> Email: </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+              <tr>
+                <th></th>
+                <th>{{user.username }}</th>
+                <th>{{user.first_name }}</th>
+                <th>{{user.last_name }}</th>
+                <th>{{user.email }}</th>
+              </tr>
+            {% endfor %}
+
+
+          </tbody>
+          </table>
+      </div>
+{% endblock %}
