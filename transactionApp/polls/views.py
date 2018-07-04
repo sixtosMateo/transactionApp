@@ -1,9 +1,17 @@
 from __future__ import unicode_literals
+from django.template.defaultfilters import slugify
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 #helps web app make sure that user is still logged in after change password
 from django.contrib.auth import update_session_auth_hash
+from django.http import JsonResponse
+from django.template import loader
+from django.template.loader import render_to_string
+from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .forms import NewEmployeeForm, EditProfileForm
@@ -33,9 +41,10 @@ def newEmployee(request, template_name = "createEmployee.html"):
 # two scenarios some GET request for the page
 # another would POST the form to edit profile
 @login_required
-def employeeProfile(request, template = "employeeProfile.html"):
-    args = {'user': request.user}
-    return render(request, template, args)
+def employeeProfile(request, pk, template = "employeeProfile.html"):
+    selectUser = get_object_or_404(User, pk=pk)
+    # args = {'user': request.user}
+    return render(request, template, {'selectUser':selectUser})
 
 @login_required
 def editProfile(request, template = "editProfile.html"):
@@ -49,6 +58,21 @@ def editProfile(request, template = "editProfile.html"):
         form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, template, args)
+
+@login_required
+def deleteProfile(request, pk):
+    selectUser = get_object_or_404(User, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        selectUser.delete()
+        return redirect('employees')
+    else:
+        context = {'selectUser': selectUser}
+        data['html_form'] = render_to_string('deleteProfile.html',
+										   context,
+										   request=request,
+										   )
+    return JsonResponse(data)
 
 @login_required
 def changePassword(request, template = "changePassword.html"):

@@ -10,7 +10,7 @@
       <div class="container">
         <h1>Employees</h1>
 
-        <table>
+        <table id="employees-table">
             <thead>
               <tr>
                 <th></th>
@@ -30,14 +30,30 @@
                 <th>{{user.email }} </th>
                 <td>
                   <!-- this button must pass the user object that get click on -->
-                  <a role ="button" href=""> Edit </a>
-                  <button type="button"   data-url =""> Delete</button>
+                  <a role ="button" href="{% url 'employeeProfile' user.id %}"> Edit </a>
+                  <button type="button" class="js-delete-employee" data-url ="{% url 'deleteProfile' user.id %}"> Delete </button>
                 </td>
               </tr>
             {% endfor %}
-
-
           </tbody>
           </table>
       </div>
+
+      <div class="modal fade" id="modal-employees">
+            <div class="modal-dialog">
+              <div class="modal-content">
+              </div>
+            </div>
+      </div>
+      
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      {% block javascript %}
+
+        <script src="{% static 'employeeProfile.js' %}"></script>
+        <script src="{% static 'custom.js' %}"></script>
+      {% endblock %}
+
 {% endblock %}
