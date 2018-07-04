@@ -15,6 +15,6 @@ $(function () {
  };
 
 $("#employees-table").on("click", ".js-delete-employee", loadForm);
-// $("#modal-employees").on("submit", ".js-employees-delete-form");
+
 
 });

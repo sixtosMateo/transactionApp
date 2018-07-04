@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^logout/$', logout, {'template_name':'logout.html'}),
     url(r'^employees/$', views.employees, name='employees'),
     url(r'^employeeProfile/(?P<pk>\d+)$', views.employeeProfile, name='employeeProfile'),
-    url(r'^editProfile/$', views.editProfile, name='editProfile'),
+    url(r'^editProfile/(?P<pk>\d+)$', views.editProfile, name='editProfile'),
     url(r'^deleteProfile/(?P<pk>\d+)$', views.deleteProfile, name='deleteProfile'),
     url(r'^newEmployee/$', views.newEmployee, name='newEmployee'),
     url(r'^changePassword/$', views.changePassword, name='changePassword'),

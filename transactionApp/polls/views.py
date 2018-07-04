@@ -44,20 +44,21 @@ def newEmployee(request, template_name = "createEmployee.html"):
 def employeeProfile(request, pk, template = "employeeProfile.html"):
     selectUser = get_object_or_404(User, pk=pk)
     # args = {'user': request.user}
-    return render(request, template, {'selectUser':selectUser})
+    return render(request, template, {'selectUser': selectUser})
 
 @login_required
-def editProfile(request, template = "editProfile.html"):
+def editProfile(request, pk, template = "editProfile.html"):
+    selectUser = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
+        form = EditProfileForm(request.POST, instance = selectUser)
         if form.is_valid():
             print("form valid")
             form.save()
-            return redirect('employeeProfile')
+            return redirect('employees')
     else:
-        form = EditProfileForm(instance=request.user)
-        args = {'form': form}
-        return render(request, template, args)
+        form = EditProfileForm(instance=selectUser)
+        # args = {'form': form}
+        return render(request, template, {'selectUser': selectUser, 'form': form})
 
 @login_required
 def deleteProfile(request, pk):

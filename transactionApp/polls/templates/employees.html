@@ -30,7 +30,8 @@
                 <th>{{user.email }} </th>
                 <td>
                   <!-- this button must pass the user object that get click on -->
-                  <a role ="button" href="{% url 'employeeProfile' user.id %}"> Edit </a>
+                  <a role ="button" href="{% url 'employeeProfile' user.id %}">View</a>
+                  <a role ="button" href="{% url 'editProfile' user.id %}">Edit</a>
                   <button type="button" class="js-delete-employee" data-url ="{% url 'deleteProfile' user.id %}"> Delete </button>
                 </td>
               </tr>
@@ -45,7 +46,7 @@
               </div>
             </div>
       </div>
-      
+
       {% load static %}
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -53,7 +54,7 @@
       {% block javascript %}
 
         <script src="{% static 'employeeProfile.js' %}"></script>
-        <script src="{% static 'custom.js' %}"></script>
+
       {% endblock %}
 
 {% endblock %}
