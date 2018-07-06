@@ -39,7 +39,9 @@ urlpatterns = [
     url(r'^countCycle/$', views.countCycle, name='countCycle'),
     url(r'^damageItem/$', views.damageItem, name='damageItem'),
     url(r'^outgoingTransaction/$', views.outgoingTransaction, name='outgoingTransaction'),
-    url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction')
+    url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
+    url(r'^incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactions'),
+    url(r'^vendor/$', views.vendor, name='vendor')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

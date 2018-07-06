@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Vendors</title>
+{% endblock %}
+
+
+{% block body %}
+      <div class="container">
+
+        {% for vendor in vendors %}
+          <h1>{{vendor.name}} </h1>
+        {% endfor %}
+
+      </div>
+{% endblock %}

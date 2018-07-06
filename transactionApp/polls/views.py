@@ -14,8 +14,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item, Vendor
-from .serializers import ItemSerializer
+from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem
+from .serializers import ItemSerializer, IncomingTransactionSerializer,IncomingTransactionItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .forms import NewEmployeeForm, EditProfileForm
@@ -148,8 +148,26 @@ def incomingTransaction(request, template_name="incomingTransaction.html"):
     #there might be a switch with user and employee *needs attention*
     return render(request, template_name,{'vendors':vendors, 'user':request.user})
 
+
+@login_required
+def vendor(request, template_name="vendor.html"):
+    vendors= Vendor.objects.all()
+    return render(request, template_name, {'vendors':vendors})
+
+
 class ItemList(APIView):
     def get(self, request):
         items = Item.objects.all()
         serializers = ItemSerializer(items, many=True)
         return Response(serializers.data)
+
+class incomingTransactionList(APIView):
+    def get(self,request):
+        incomingTransactions = IncomingTransaction.objects.all()
+        serializers = IncomingTransactionSerializer(incomingTransactions, many=True)
+        return Response(serializers.data)
+
+
+class incomingTransactionItemLists(APIView):
+    def get(self):
+        pass
