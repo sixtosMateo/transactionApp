@@ -2,6 +2,7 @@ from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import Vendor
 
 
 # we are going to inherit from django UserCreationForm's fields from User
@@ -31,6 +32,17 @@ class NewEmployeeForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class VendorForm(forms.ModelForm):
+    # define the metadata that relates to this class
+    class Meta:
+        model = Vendor
+        fields = (
+        'address',
+        'phoneNumber',
+        'name',
+        'hoursOpen'
+        )
 
 
 class EditProfileForm(UserChangeForm):

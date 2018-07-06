@@ -10,16 +10,32 @@
         <h1>List of Vendor</h1>
 
         {% for vendor in vendors %}
+
             <dl>
               <dt>{{vendor.name}}</dt>
               <a role ="button" class="btn btn-success btn-sm glyphicon glyphicon-pencil" href="{% url 'editVendor'  vendor.vendorId %}"> Edit </a>
-              <button type="button" class="" data-url ="{% url 'deleteVendor' vendor.vendorId %}"> Delete </button>
+              <button type="button" class="js-delete-vendors" data-url ="{% url 'deleteVendor' vendor.vendorId %}"> Delete </button>
               <dt>{{vendor.address}}</dt>
               <dt>{{vendor.phoneNumber}}</dt>
               <dt>{{vendor.hoursOpen}}</dt>
             </dl>
-
         {% endfor %}
 
       </div>
+
+      <div class="modal fade" id="modal-vendors">
+            <div class="modal-dialog">
+              <div class="modal-content">
+              </div>
+            </div>
+      </div>
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      {% block javascript %}
+
+        <script src="{% static 'vendor.js' %}"></script>
+
+      {% endblock %}
 {% endblock %}

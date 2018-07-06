@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Vendors</title>
+{% endblock %}
+
+
+{% block body %}
+      <div class="container">
+        <form method="post">
+          {% csrf_token %}
+          Vendor Name: <input id="name" name="name" type="text" value={{vendor.name}}><br>
+          Vendor Phone: <input id="phoneNumber" name="phoneNumber" type="text" value={{vendor.phoneNumber}}><br>
+          Vendor Address: <input id="address" name="address" type="text" value={{vendor.address}}><br>
+          Vendor Open Hours: <input id="hoursOpen" name="hoursOpen" type="text" value={{vendor.hoursOpen}}><br>
+        </br>
+        <button type="submit">Edit</button>
+        <a href="{% url 'vendor'%}"><input type="button" value="Cancel"/></a>
+      </form>
+
+      </div>
+{% endblock %}

@@ -18,7 +18,7 @@ from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem
 from .serializers import ItemSerializer, IncomingTransactionSerializer,IncomingTransactionItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from .forms import NewEmployeeForm, EditProfileForm
+from .forms import NewEmployeeForm, EditProfileForm, VendorForm
 from django.contrib.auth.forms import (
     UserCreationForm,
     UserChangeForm,
@@ -158,22 +158,31 @@ def vendor(request, template_name="vendor.html"):
 def editVendor(request, pk, template_name="editVendor.html"):
     vendor = get_object_or_404(Vendor, pk=pk)
     if request.method == 'POST':
-        form = EditVendorForm(request.POST, instance = vendor)
+        form = VendorForm(request.POST, instance = vendor)
         if form.is_valid():
             print("form valid")
             form.save()
             return redirect('vendor')
     else:
-        form = EditVendorForm(instance=vendor)
+        form = VendorForm(instance=vendor)
         # args = {'form': form}
-        return render(request, template, {'vendor':vendor, 'form': form})
-
-
+        return render(request, template_name, {'vendor':vendor, 'form': form})
 
 @login_required
-def deleteVendor(request, pk, template_name="deleteVendor.html"):
+def deleteVendor(request, pk):
     vendor = get_object_or_404(Vendor, pk=pk)
-    return render(request, template_name, {'vendor':vendor})
+    data = dict()
+    if request.method == 'POST':
+        vendor.delete()
+        return redirect('vendor')
+    else:
+        context = {'vendor': vendor}
+        data['html_form'] = render_to_string('deleteVendor.html',
+                                       context,
+                                       request=request,
+                                       )
+    return JsonResponse(data)
+
 
 
 class ItemList(APIView):
