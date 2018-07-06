@@ -38,17 +38,17 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = (
+        'barcode',
         'name',
+        'inStockQty',
         'picture',
         'color',
         'ageRequirement',
         'purchasedPrice',
         'salePrice',
-        'inStockQty',
         'department',
         'vendorId',
-        'locationId',
-        'barcode'
+        'locationId'
         )
         db_table = 'item'
 

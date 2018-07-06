@@ -90,6 +90,14 @@ DATABASES = {
         'PASSWORD': 'Carentan1.',
         'HOST': '127.0.0.1',
         'PORT': '3306',
+    },
+    'karis_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'karis_db',
+        'USER': 'root',
+        'PASSWORD': 'Carentan1.',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 

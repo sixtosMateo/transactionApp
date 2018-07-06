@@ -89,8 +89,8 @@ class Item(models.Model):
     picture = models.CharField(max_length = 30, default=None)
     color = models.CharField(max_length = 30, default=None)
     ageRequirement = models.CharField(max_length = 30, default=None)
-    purchasedPrice = models.FloatField(null=True, blank=True, default=None)
-    salePrice = models.FloatField(null=True, blank=True, default=None)
+    purchasedPrice = models.FloatField(default = 0.0, blank=True)
+    salePrice = models.FloatField(default = 0.0, blank=True)
     department = models.CharField(max_length = 30, default=None)
     vendorId = models.IntegerField(default = 0, blank=True)
     locationId = models.IntegerField(default = 0, blank=True)
@@ -101,7 +101,7 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         print('save() is called.')
-        super(Item, self).save(using='store_master')
+        super(Item, self).save(using='karis_db')
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}".format(
