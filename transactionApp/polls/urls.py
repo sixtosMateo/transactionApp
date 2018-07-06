@@ -41,7 +41,9 @@ urlpatterns = [
     url(r'^outgoingTransaction/$', views.outgoingTransaction, name='outgoingTransaction'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
     url(r'^incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactions'),
-    url(r'^vendor/$', views.vendor, name='vendor')
+    url(r'^vendor/$', views.vendor, name='vendor'),
+    url(r'^editVendor/(?P<pk>\d+)$', views.editVendor, name='editVendor'),
+    url(r'^deleteVendor/(?P<pk>\d+)$', views.deleteVendor, name='deleteVendor')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -7,9 +7,18 @@
 
 {% block body %}
       <div class="container">
+        <h1>List of Vendor</h1>
 
         {% for vendor in vendors %}
-          <h1>{{vendor.name}} </h1>
+            <dl>
+              <dt>{{vendor.name}}</dt>
+              <a role ="button" class="btn btn-success btn-sm glyphicon glyphicon-pencil" href="{% url 'editVendor'  vendor.vendorId %}"> Edit </a>
+              <button type="button" class="" data-url ="{% url 'deleteVendor' vendor.vendorId %}"> Delete </button>
+              <dt>{{vendor.address}}</dt>
+              <dt>{{vendor.phoneNumber}}</dt>
+              <dt>{{vendor.hoursOpen}}</dt>
+            </dl>
+
         {% endfor %}
 
       </div>

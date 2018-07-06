@@ -154,6 +154,27 @@ def vendor(request, template_name="vendor.html"):
     vendors= Vendor.objects.all()
     return render(request, template_name, {'vendors':vendors})
 
+@login_required
+def editVendor(request, pk, template_name="editVendor.html"):
+    vendor = get_object_or_404(Vendor, pk=pk)
+    if request.method == 'POST':
+        form = EditVendorForm(request.POST, instance = vendor)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('vendor')
+    else:
+        form = EditVendorForm(instance=vendor)
+        # args = {'form': form}
+        return render(request, template, {'vendor':vendor, 'form': form})
+
+
+
+@login_required
+def deleteVendor(request, pk, template_name="deleteVendor.html"):
+    vendor = get_object_or_404(Vendor, pk=pk)
+    return render(request, template_name, {'vendor':vendor})
+
 
 class ItemList(APIView):
     def get(self, request):
