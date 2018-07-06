@@ -101,7 +101,7 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         print('save() is called.')
-        super(Item, self).save(using="store_master")
+        super(Item, self).save(using='store_master')
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}".format(

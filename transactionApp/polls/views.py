@@ -112,7 +112,6 @@ def mainMenu(request, template_name="mainMenu.html"):
 
 @login_required
 def inventory(request, template_name="inventory.html"):
-
     return render(request, template_name)
 
 @login_required
@@ -120,13 +119,23 @@ def item(request, template_name="item.html"):
     return render(request, template_name)
 
 @login_required
-def editItem(request, template_name="editItem.html"):
-    return render(request, template_name)
+def editItem(request, pk, template_name="editItem.html"):
+    item = get_object_or_404(Item, pk=pk)
+    if request.method == 'POST':
+        form = ItemForm(request.POST, instance = item)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('item')
+    else:
+        form =ItemForm(instance=item)
+        # args = {'form': form}
+        return render(request, template_name, {'item': item, 'form': form})
 
 @login_required
 def newItem(request,template_name="newItem.html"):
-    if request.method == "post":
-        print("hello")
+    if request.method == 'POST':
+        print("inside the post")
         form = ItemForm(request.POST)
         if form.is_valid():
             print("form valid")
@@ -134,10 +143,23 @@ def newItem(request,template_name="newItem.html"):
             return redirect('item')
         else:
             print('form is not validated')
-            return render(request, template_name, {'form': form})
     else:
         form = ItemForm()
-        return render(request, template_name, {'form':form})
+        return render(request, template_name,{'form':form})
+
+# def newEmployee(request, template_name = "createEmployee.html"):
+#     if request.method == 'POST':
+#         form = NewEmployeeForm(request.POST)
+#         if form.is_valid():
+#             print("form valid")
+#             form.save()
+#             return redirect('mainMenu')
+#     else:
+#         # the django default form is displayed
+#         form = NewEmployeeForm()
+#
+#         args = {'form':form}
+#         return render(request, template_name, args )
 
 @login_required
 def countCycle(request, template_name="countCycle.html"):
