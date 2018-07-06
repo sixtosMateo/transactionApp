@@ -14,7 +14,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item
+from .models import Item, Vendor
 from .serializers import ItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -144,7 +144,9 @@ def outgoingTransaction(request, template_name="outgoingTransaction.html"):
 
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):
-    return render(request, template_name)
+    vendors = Vendor.objects.all()
+    #there might be a switch with user and employee *needs attention*
+    return render(request, template_name,{'vendors':vendors, 'user':request.user})
 
 class ItemList(APIView):
     def get(self, request):

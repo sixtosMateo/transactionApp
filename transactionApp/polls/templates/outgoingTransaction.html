@@ -7,10 +7,19 @@
 
 {% block body %}
       <div class="container">
-        <fieldset class="form-group">
-          <label for="id">Barcode:</label>
-          <input  class="form-control" id="id" name="id" type="text" >
-        </fieldset>
+        <form method="post">
+          {% csrf_token %}
+          <select id="vendorName" name="vendorName">
+            <option value="">Volvo</option>
+          </select>
+
+          <fieldset class="form-group">
+            <label for="id">Barcode:</label>
+            <input  class="form-control" id="id" name="id" type="text" >
+          </fieldset>
+
+          <button type="submit">Edit</button>
+        </form>
 
       </div>
 

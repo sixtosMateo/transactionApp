@@ -7,10 +7,35 @@
 
 {% block body %}
       <div class="container">
+        <form method="post">
+          {% csrf_token %}
+
+        <fieldset class="form-group">
+          <label for="vendorName">Vendor Name:</label>
+          <select id="vendorName" name="vendorName">
+            {% for vendor in vendors %}
+            <option value={{employee.vendorId}}>{{vendor.name}}</option>
+            {% endfor %}
+          </select>
+        </fieldset>
+        <!-- add another link to add a vendor  -->
+
+        <fieldset class="form-group">
+          <label for="employeeName">Employee:</label>
+          <select id="employeeName" name="employeeName">
+            <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
+
+          </select>
+
+        </fieldset>
+
         <fieldset class="form-group">
           <label for="id">Barcode:</label>
           <input  class="form-control" id="id" name="id" type="text" >
         </fieldset>
+
+        <button type="submit">Edit</button>
+      </form>
 
       </div>
 
