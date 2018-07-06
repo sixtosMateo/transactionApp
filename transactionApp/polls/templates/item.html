@@ -10,8 +10,27 @@
       <div class="container">
         <fieldset class="form-group">
           <label for="id">Barcode:</label>
-          <input  class="form-control" id="id" name="id" type="text" >
+          <!-- for value that is currently inside -->
+          <!-- onchange event set it to function -->
+          <input  class="form-control" id="id" name="id" type="text"  value="">
         </fieldset>
+        <div id="Item Details">
+          <h1 id="itemName"></h1>
+          <h3 id="itemQty"></h3>
+          <h3 id="price"></h3>
+        </div>
+
 
       </div>
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      {% block javascript %}
+
+      <script src="{% static 'item.js' %}"></script>
+
+      {% endblock %}
+
+
 {% endblock %}

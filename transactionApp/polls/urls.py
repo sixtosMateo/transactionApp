@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from . import views
+from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth.views import (
     login,
     logout,
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^resetPassword/complete/$', password_reset_complete, name='password_reset_complete'),
     url(r'^mainMenu/$', views.mainMenu, name='mainMenu'),
     url(r'^item/$', views.item, name='item'),
+    url(r'^items/$', views.ItemList.as_view(), name='items'),
     url(r'^editItem/$', views.editItem, name='editItem'),
     url(r'^inventory/$', views.inventory, name='inventory'),
     url(r'^newItem/$', views.newItem, name='newItem'),
@@ -39,3 +41,5 @@ urlpatterns = [
     url(r'^outgoingTransaction/$', views.outgoingTransaction, name='outgoingTransaction'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction')
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

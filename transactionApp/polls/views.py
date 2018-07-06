@@ -12,6 +12,10 @@ from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import serializers
+from rest_framework.views import APIView
+from rest_framework import status
+from .models import Item
+from .serializers import ItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .forms import NewEmployeeForm, EditProfileForm
@@ -115,7 +119,8 @@ def inventory(request, template_name="inventory.html"):
 
 @login_required
 def item(request, template_name="item.html"):
-    return render(request, template_name)
+    return render(request, template_name )
+
 
 @login_required
 def editItem(request, template_name="editItem.html"):
@@ -140,3 +145,9 @@ def outgoingTransaction(request, template_name="outgoingTransaction.html"):
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):
     return render(request, template_name)
+
+class ItemList(APIView):
+    def get(self, request):
+        items = Item.objects.all()
+        serializers = ItemSerializer(items, many=True)
+        return Response(serializers.data)
