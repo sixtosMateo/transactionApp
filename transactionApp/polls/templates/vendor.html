@@ -12,12 +12,12 @@
         {% for vendor in vendors %}
 
             <dl>
-              <dt>{{vendor.name}}</dt>
+              <dt>Vendor Name: {{vendor.name}}</dt>
+              <dt>Address: {{vendor.address}}</dt>
+              <dt>Phone Number: {{vendor.phoneNumber}}</dt>
+              <dt>Hours Open: {{vendor.hoursOpen}}</dt>
               <a role ="button" class="btn btn-success btn-sm glyphicon glyphicon-pencil" href="{% url 'editVendor'  vendor.vendorId %}"> Edit </a>
               <button type="button" class="js-delete-vendors" data-url ="{% url 'deleteVendor' vendor.vendorId %}"> Delete </button>
-              <dt>{{vendor.address}}</dt>
-              <dt>{{vendor.phoneNumber}}</dt>
-              <dt>{{vendor.hoursOpen}}</dt>
             </dl>
         {% endfor %}
 

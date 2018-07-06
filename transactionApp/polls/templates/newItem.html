@@ -10,9 +10,10 @@
 
       <div class="container">
         <form method="post">
+          {% csrf_token %}
           <fieldset class="form-group">
             <label for="id">Barcode:</label>
-            <input  class="form-control" id="id" name="id" type="text" >
+            <input  class="form-control" id="barcode" name="barcode" type="text" >
           </fieldset>
           <fieldset class="form-group">
             <label for="name">Name:</label>
@@ -20,11 +21,15 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="inStockQty">Qty:</label>
-            <input  class="form-control" id="inStockQty" name="inStockQty" type="text">
+            <input  class="form-control" id="inStockQty" name="inStockQty" type="number">
           </fieldset>
           <fieldset class="form-group">
             <label for="picture">Picture:</label>
             <input  class="form-control" id="picture" name="picture" type="text">
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="color">Color:</label>
+            <input  class="form-control" id="color" name="color" type="text">
           </fieldset>
           <fieldset class="form-group">
             <label for="ageRequirement">Age Requirement:</label>
@@ -32,11 +37,11 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="purchasedPrice">Purchased Price:</label>
-            <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="text">
+            <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="number">
           </fieldset>
           <fieldset class="form-group">
             <label for="salePrice">Sale Price:</label>
-            <input  class="form-control" id="salePrice" name="salePrice" type="text">
+            <input  class="form-control" id="salePrice" name="salePrice" type="number">
           </fieldset>
           <fieldset class="form-group">
             <label for="department">Department:</label>
@@ -44,15 +49,15 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="vendorId">Vendor ID:</label>
-            <input  class="form-control" id="vendorId" name="vendorId" type="text">
+            <input  class="form-control" id="vendorId" name="vendorId" type="number">
           </fieldset>
           <fieldset class="form-group">
             <label for="locationId">Location ID:</label>
-            <input  class="form-control" id="locationId" name="locationId" type="text">
+            <input  class="form-control" id="locationId" name="locationId" type="number">
           </fieldset>
+          <button type="submit">Submit</button>
+
       </form>
-        <button type="submit">Submit</button>
-        <button type="submit">Cancel</button>
 
       </div>
       <!-- the cancel button needs to  -->

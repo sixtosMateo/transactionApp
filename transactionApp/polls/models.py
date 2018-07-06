@@ -16,16 +16,6 @@ class Employee(models.Model):
     storeId = models.IntegerField(default = 0, blank=True)
     createdAt = models.DateTimeField(default=timezone.now)
 
-    # class Meta:
-    #     db_table = 'employee'
-    #
-    # def save(self, *args, **kwargs):
-    #     print('save() is called.')
-    #     super(Employee, self).save(using='store_master')
-    #
-    # def __unicode__(self):
-    #     return "{0} {1} {2} {3} {4} {5}".format(
-    #         self.user, self.employeeId, self.firstName, self.lastName, self.storeId, self.createdAt)
 
 def create_employee(sender,**kwargs):
     if kwargs['created']:
@@ -93,6 +83,7 @@ class OutgoingTransactionItem(models.Model):
 
 class Item(models.Model):
     itemId = models.AutoField(primary_key=True)
+    barcode = models.CharField(unique=True, max_length=30, default=None)
     name = models.CharField(max_length = 30, default=None)
     inStockQty = models.IntegerField(default = 0, blank=True)
     picture = models.CharField(max_length = 30, default=None)
@@ -113,9 +104,9 @@ class Item(models.Model):
         super(Item, self).save(using="store_master")
 
     def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}".format(
-            self.pk, self.name, self.inStockQty, self.picture, self.color, self.ageRequirement, self.purchasedPrice,
-            self.salePrice, self.department, self.vendorId, self.locationId, self.createdAt)
+        return "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}".format(
+            self.itemId, self.name, self.inStockQty, self.picture, self.color, self.ageRequirement, self.purchasedPrice,
+            self.salePrice, self.department, self.vendorId, self.barcode, self.locationId, self.createdAt)
 
 class Vendor(models.Model):
     vendorId = models.AutoField(primary_key=True)

@@ -10,34 +10,25 @@
       <div class="container">
         <h1>Employees</h1>
 
-        <table id="employees-table">
-            <thead>
-              <tr>
-                <th></th>
-                <th> User ID: </th>
-                <th> FirstName: </th>
-                <th> LastName: </th>
-                <th> Email: </th>
-                </tr>
-            </thead>
-            <tbody>
+
+
             {% for user in users %}
-              <tr>
-                <th></th>
-                <th>{{user.username }}</th>
-                <th>{{user.first_name }}</th>
-                <th>{{user.last_name }}</th>
-                <th>{{user.email }} </th>
+              <dl>
+                <dt></th>
+                <dt>Username: {{user.username }}</th>
+                <dt>First Name: {{user.first_name }}</th>
+                <dt>Last Name: {{user.last_name }}</th>
+                <dt>Email: {{user.email }} </th></br>
                 <td>
                   <!-- this button must pass the user object that get click on -->
                   <a role ="button" href="{% url 'employeeProfile' user.id %}">View</a>
                   <a role ="button" href="{% url 'editProfile' user.id %}">Edit</a>
                   <button type="button" class="js-delete-employee" data-url ="{% url 'deleteProfile' user.id %}"> Delete </button>
                 </td>
-              </tr>
+              </dl>
             {% endfor %}
-          </tbody>
-          </table>
+
+
       </div>
 
       <div class="modal fade" id="modal-employees">

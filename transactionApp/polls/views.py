@@ -18,7 +18,7 @@ from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem
 from .serializers import ItemSerializer, IncomingTransactionSerializer,IncomingTransactionItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from .forms import NewEmployeeForm, EditProfileForm, VendorForm
+from .forms import NewEmployeeForm, EditProfileForm, VendorForm, ItemForm
 from django.contrib.auth.forms import (
     UserCreationForm,
     UserChangeForm,
@@ -105,8 +105,6 @@ def employees(request, template_name="employees.html"):
 
     return render(request, template_name, {'users':users})
 
-
-
 @login_required
 def mainMenu(request, template_name="mainMenu.html"):
 
@@ -119,16 +117,27 @@ def inventory(request, template_name="inventory.html"):
 
 @login_required
 def item(request, template_name="item.html"):
-    return render(request, template_name )
-
+    return render(request, template_name)
 
 @login_required
 def editItem(request, template_name="editItem.html"):
     return render(request, template_name)
 
 @login_required
-def newItem(request, template_name="newItem.html"):
-    return render(request, template_name)
+def newItem(request,template_name="newItem.html"):
+    if request.method == "post":
+        print("hello")
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('item')
+        else:
+            print('form is not validated')
+            return render(request, template_name, {'form': form})
+    else:
+        form = ItemForm()
+        return render(request, template_name, {'form':form})
 
 @login_required
 def countCycle(request, template_name="countCycle.html"):
@@ -147,7 +156,6 @@ def incomingTransaction(request, template_name="incomingTransaction.html"):
     vendors = Vendor.objects.all()
     #there might be a switch with user and employee *needs attention*
     return render(request, template_name,{'vendors':vendors, 'user':request.user})
-
 
 @login_required
 def vendor(request, template_name="vendor.html"):
