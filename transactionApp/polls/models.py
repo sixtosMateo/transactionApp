@@ -48,20 +48,20 @@ class OutgoingTransaction(models.Model):
     transactionId = models.AutoField(primary_key=True)
     createdAt = models.DateTimeField(auto_now=True)
     storeId = models.IntegerField(default = 0, blank=True)
-    employeeId = models.CharField(max_length = 30, default=None)
-    tax = models.FloatField(null=True, blank=True, default=None)
-    subtotal = models.FloatField(blank=True, default=None)
-    total = models.FloatField(blank=True, default=None)
+    employeeId = models.CharField(null=True, max_length = 30, default=None)
+    tax = models.FloatField(null=True, blank=True, default=0.0925)
+    subtotal = models.FloatField(null=True, blank=True, default=None)
+    total = models.FloatField(null=True, blank=True, default=None)
 
     class Meta:
         db_table = 'outgoing_transaction'
 
     def save(self, *args, **kwargs):
         print('save() is called.')
-        super(OutgoingTransaction, self).save(using='store_master')
+        super(OutgoingTransaction, self).save(using='karis_db')
 
     def __unicode__(self):
-        return "{0} {1} {2} {3} {4}".format(
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
             self.pk, self.createdAt, self.storeId, self.employeeId, self.tax, self.total, self.subtotal)
 
 

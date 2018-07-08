@@ -11,8 +11,8 @@
           {% csrf_token %}
 
         <fieldset class="form-group">
-          <label for="vendorName">Vendor Name:</label>
-          <select id="vendorName" name="vendorName">
+          <label for="vendorId">Vendor Name:</label>
+          <select id="vendorId" name="vendorId">
             {% for vendor in vendors %}
             <option value={{vendor.vendorId}}>{{vendor.name}}</option>
             {% endfor %}
@@ -21,11 +21,10 @@
         <!-- add another link to add a vendor  -->
 
         <fieldset class="form-group">
-          <label for="employeeName">Employee:</label>
-          <select id="employeeName" name="employeeName">
+          <label for="employeeId">Employee:</label>
+          <select id="employeeId" name="employeeId">
             <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
           </select>
-
         </fieldset>
 
         <fieldset class="form-group">

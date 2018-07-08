@@ -14,7 +14,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem, Store
+from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem, Store, Employee, OutgoingTransaction
 from .serializers import ItemSerializer, IncomingTransactionSerializer,IncomingTransactionItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -161,7 +161,10 @@ def damageItem(request, template_name="damageItem.html"):
 
 @login_required
 def outgoingTransaction(request, template_name="outgoingTransaction.html"):
-    return render(request, template_name)
+    outgoingTransaction = OutgoingTransaction.objects.create()
+    stores = Store.objects.all()
+    employee = Employee.objects.all()
+    return render(request, template_name, {"employee":employee, "stores":stores,'outgoingTransaction': outgoingTransaction ,'user':request.user})
 
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):

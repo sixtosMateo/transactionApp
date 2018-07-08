@@ -8,15 +8,44 @@
 {% block body %}
       <div class="container">
         <form method="post">
+          <h3>Transaction: {{outgoingTransaction.transactionId}}</h3>
+          <fieldset class="form-group">
+            <label for="storeId">Store Name:</label>
+            <select id="storeId" name="storeId">
+              {% for store in stores %}
+              <option value={{store.storeId}}>{{store.name}}</option>
+              {% endfor %}
+            </select>
+          </fieldset>
+          <!-- add another link to add a vendor  -->
 
+          <fieldset class="form-group">
+            <label for="employeeName">Employee:</label>
+            <select id="employeeId" name="employeeName">
+              <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
+            </select>
+          </fieldset>
           <fieldset class="form-group">
             <label for="id">Barcode:</label>
             <input  class="form-control" id="id" name="id" type="text" >
           </fieldset>
 
+          <dl id="itemsList">
+            <dt id="transactionItem"></dt>
+          </dl>
+
           <button type="submit">Edit</button>
         </form>
 
       </div>
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      {% block javascript %}
+
+      <script src="{% static 'outgoingTransaction.js' %}"></script>
+
+      {% endblock %}
 
 {% endblock %}
