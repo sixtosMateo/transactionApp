@@ -1,6 +1,7 @@
 $("#id").change(function(){
 
   $(function(){
+    var $itemNotFound = $('#itemNotFound');
     var $itemName = $('#itemName');
     var $itemDetails = $('#itemDetails');
     var $itemQty= $('#itemQty');
@@ -15,6 +16,8 @@ $("#id").change(function(){
       success:function(items){
         $.each(items, function(i,item){
           if(item.itemId == $input){
+            $itemDetails.show();
+            $itemNotFound.hide();
             $itemName.html("Item Name: " + item.name +"</br>");
             $itemQty.html("Item Qty: "+ item.inStockQty +"</br>");
             $price.html("Item Price:" + item.salePrice +"</br>");
@@ -25,10 +28,8 @@ $("#id").change(function(){
         }
         });
         if($count==0){
-          $itemDetails.html("Item Not Found");
-          $itemName.html();
-          $itemQty.html();
-          $price.html();
+          $itemDetails.hide();
+          $itemNotFound.show();
         }
       }
     });
