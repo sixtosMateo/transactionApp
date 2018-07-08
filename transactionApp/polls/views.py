@@ -14,7 +14,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem
+from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem, Store
 from .serializers import ItemSerializer, IncomingTransactionSerializer,IncomingTransactionItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -116,7 +116,8 @@ def inventory(request, template_name="inventory.html"):
 
 @login_required
 def item(request, template_name="item.html"):
-    return render(request, template_name)
+    vendor = Vendor.objects.all()
+    return render(request, template_name, {"vendor":vendor})
 
 @login_required
 def editItem(request, pk, template_name="editItem.html"):
@@ -132,34 +133,23 @@ def editItem(request, pk, template_name="editItem.html"):
         # args = {'form': form}
         return render(request, template_name, {'item': item, 'form': form})
 
+# maybe add another field that keeps track of who created this item
 @login_required
 def newItem(request,template_name="newItem.html"):
+    vendors = Vendor.objects.all()
+    stores = Store.objects.all()
     if request.method == 'POST':
         print("inside the post")
         form = ItemForm(request.POST)
         if form.is_valid():
             print("form valid")
             form.save()
-            return redirect('item')
+            return redirect('inventory')
         else:
             print('form is not validated')
     else:
         form = ItemForm()
-        return render(request, template_name,{'form':form})
-
-# def newEmployee(request, template_name = "createEmployee.html"):
-#     if request.method == 'POST':
-#         form = NewEmployeeForm(request.POST)
-#         if form.is_valid():
-#             print("form valid")
-#             form.save()
-#             return redirect('mainMenu')
-#     else:
-#         # the django default form is displayed
-#         form = NewEmployeeForm()
-#
-#         args = {'form':form}
-#         return render(request, template_name, args )
+        return render(request, template_name, {'form':form, 'vendors':vendors, 'stores':stores })
 
 @login_required
 def countCycle(request, template_name="countCycle.html"):

@@ -47,13 +47,23 @@
             <label for="department">Department:</label>
             <input  class="form-control" id="department" name="department" type="text">
           </fieldset>
+
           <fieldset class="form-group">
-            <label for="vendorId">Vendor ID:</label>
-            <input  class="form-control" id="vendorId" name="vendorId" type="number">
+            <label for="vendorId">Vendor Name:</label>
+            <select id="vendorId" name="vendorId">
+            {% for vendor in vendors %}
+            <option value={{vendor.vendorId}}>{{vendor.name}}</option>
+            {% endfor %}
+            </select>
           </fieldset>
+
           <fieldset class="form-group">
-            <label for="locationId">Location ID:</label>
-            <input  class="form-control" id="locationId" name="locationId" type="number">
+            <label for="locationId">Store Name:</label>
+            <select id="locationId" name="locationId">
+            {% for store in stores %}
+            <option value={{store.storeId}}>{{store.name}}</option>
+            {% endfor %}
+            </select>
           </fieldset>
           <button type="submit">Submit</button>
 

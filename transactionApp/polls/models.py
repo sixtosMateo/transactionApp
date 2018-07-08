@@ -50,6 +50,8 @@ class OutgoingTransaction(models.Model):
     storeId = models.IntegerField(default = 0, blank=True)
     employeeId = models.CharField(max_length = 30, default=None)
     tax = models.FloatField(null=True, blank=True, default=None)
+    subtotal = models.FloatField(blank=True, default=None)
+    total = models.FloatField(blank=True, default=None)
 
     class Meta:
         db_table = 'outgoing_transaction'
@@ -60,7 +62,7 @@ class OutgoingTransaction(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4}".format(
-            self.pk, self.createdAt, self.storeId, self.employeeId, self.tax)
+            self.pk, self.createdAt, self.storeId, self.employeeId, self.tax, self.total, self.subtotal)
 
 
 class OutgoingTransactionItem(models.Model):
@@ -69,6 +71,7 @@ class OutgoingTransactionItem(models.Model):
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
     createdAt = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         db_table = "outgoing_transaction_item"
@@ -134,6 +137,8 @@ class IncomingTransaction(models.Model):
     createdAt = models.DateTimeField(auto_now=True)
     vendorId = models.IntegerField(default = 0, blank=True)
     employeeId = models.CharField(max_length = 30, default=None)
+    total = models.FloatField(blank=True, default=None)
+    subtotal = models.FloatField(blank=True, default=None)
     tax = models.FloatField(null=True, blank=True, default=None)
 
     class Meta:
@@ -144,8 +149,8 @@ class IncomingTransaction(models.Model):
         super(IncomingTransaction, self).save(using="store_master")
 
     def __unicode__(self):
-        return "{0} {1} {2} {3} {4}".format(
-            self.transactionId, self.createdAt, self.vendorId, self.employeeId, self.tax)
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
+            self.transactionId, self.createdAt, self.vendorId, self.employeeId, self.tax, self.total, self.subtotal)
 
 
 class IncomingTransactionItem(models.Model):

@@ -2,6 +2,7 @@ $("#id").change(function(){
 
   $(function(){
     var $itemName = $('#itemName');
+    var $itemDetails = $('#itemDetails');
     var $itemQty= $('#itemQty');
     var $price = $('#price');
     var $editButton = $('#edit');
@@ -24,7 +25,10 @@ $("#id").change(function(){
         }
         });
         if($count==0){
-          $itemName.html("Item Not Found");
+          $itemDetails.html("Item Not Found");
+          $itemName.html();
+          $itemQty.html();
+          $price.html();
         }
       }
     });
