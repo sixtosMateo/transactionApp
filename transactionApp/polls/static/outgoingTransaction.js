@@ -1,6 +1,7 @@
 $("#id").change(function(){
 
   $(function(){
+    $('#itemNotFound').html("Item Not Found");
     var $editButton = $('#edit');
     var $deleteButton = $('#delete');
     var $input = $("#id").val();
@@ -11,15 +12,14 @@ $("#id").change(function(){
       success:function(items){
         $.each(items, function(i,item){
           if(item.itemId == $input){
-
-            $("dt").append("Barcode: "+item.barcode+" Name: "+item.name+" Price: "+ item.salePrice + "</br>");
+            $('#itemNotFound').hide();
+            $("#itemsList").append("<dt> Barcode: "+item.barcode+" Name: "+item.name+" Price: "+ item.salePrice + "</dt></br>");
             $count++;
-            return;
+            return item;
         }
         });
         if($count==0){
-          $transactionItem.html("Item Not Found");
-
+          $('#itemNotFound').show();
       }
     }
     });
