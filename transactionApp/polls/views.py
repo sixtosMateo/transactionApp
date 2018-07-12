@@ -186,6 +186,20 @@ def vendor(request, template_name="vendor.html"):
     return render(request, template_name, {'vendors':vendors})
 
 @login_required
+def newVendor(request, template_name='newVendor.html'):
+    if request.method == 'POST':
+        form = VendorForm(request.POST)
+        if form.is_valid():
+            print("Form is valid")
+            form.save()
+            return redirect('vendor')
+    else:
+        form = VendorForm()
+        args = {'form':form}
+        return render(request, template_name, args)
+
+
+@login_required
 def editVendor(request, pk, template_name="editVendor.html"):
     vendor = get_object_or_404(Vendor, pk=pk)
     if request.method == 'POST':

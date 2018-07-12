@@ -70,6 +70,7 @@ class OutgoingTransactionItem(models.Model):
     transactionId = models.IntegerField(default = 0, blank=True)
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
+    tax = models.FloatField(null=True, blank=True, default=0.0925)
     createdAt = models.DateTimeField(auto_now=True)
 
 
@@ -123,7 +124,7 @@ class Vendor(models.Model):
 
     def save(self, *args, **kwargs):
         print('save() is called.')
-        super(Vendor,self).save(using="store_master")
+        super(Vendor,self).save(using="karis_db")
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4}".format(

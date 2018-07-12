@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
     # url(r'^incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactions'),
     url(r'^vendor/$', views.vendor, name='vendor'),
+    url(r'^newVendor/$', views.newVendor, name='newVendor'),
     url(r'^editVendor/(?P<pk>\d+)$', views.editVendor, name='editVendor'),
     url(r'^deleteVendor/(?P<pk>\d+)$', views.deleteVendor, name='deleteVendor')
 ]

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>New Vendor</title>
+{% endblock %}
+
+
+{% block body %}
+
+        <div class="container">
+          <form method="post">
+            {% csrf_token %}
+            Vendor Name: <input id="name" name="name" type="text" ><br>
+            Vendor Phone: <input id="phoneNumber" name="phoneNumber" type="text" ><br>
+            Vendor Address: <input id="address" name="address" type="text"><br>
+            Vendor Open Hours: <input id="hoursOpen" name="hoursOpen" type="text"><br>
+          </br>
+          <button type="submit">Submit</button>
+          <a href="{% url 'vendor'%}"><input type="button" value="Cancel"/></a>
+        </form>
+      </div>
+
+
+
+{% endblock %}
