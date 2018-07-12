@@ -34,7 +34,7 @@ def newEmployee(request, template_name = "createEmployee.html"):
         if form.is_valid():
             print("form valid")
             form.save()
-            return redirect('mainMenu')
+            return redirect('employee')
     else:
         # the django default form is displayed
         form = NewEmployeeForm()
