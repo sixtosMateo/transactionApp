@@ -8,8 +8,8 @@
 {% block body %}
       <div class="container">
 
-        <p>User FirstName: {{ selectUser.first_name }}</p>
-        <p>User LastName: {{ selectUser.last_name }}</p>
+        <p>Employee First Name: {{ selectUser.first_name }}</p>
+        <p>Employee Last Name: {{ selectUser.last_name }}</p>
 
         <table style="width:75%">
               <thead>
@@ -28,7 +28,7 @@
                   <th>{{outTransaction.transactionId}}</th>
                   <th>{{outTransaction.storeId}}</th>
                   <th>{{outTransaction.total}}</th>
-
+                  <td><a role ="button" class="btn btn-success btn-sm glyphicon" href="{% url 'viewOutgoingTransactionItems' outTransaction.transactionId %}"> View </a></td>
                 </tr>
                 {% endfor %}
               </tbody>

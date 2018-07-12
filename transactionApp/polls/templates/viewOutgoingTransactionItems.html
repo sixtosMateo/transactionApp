@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Employee Profile</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+
+  <table style="width:75%">
+        <thead>
+          <tr>
+            <th>Item Id:</th>
+            <th>Quantity Sold:</th>
+            <th>Price:</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for outTransactionItem in outTransactionItems %}
+          <tr>
+
+
+            <th>{{outTransactionItem.itemId}}</th>
+            <th>{{outTransactionItem.quantitySold}}</th>
+            <th>{{outTransactionItem.price}}</th>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock %}

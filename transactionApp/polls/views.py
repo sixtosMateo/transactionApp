@@ -14,7 +14,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem, Store, Employee, OutgoingTransaction
+from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem, Store, Employee, OutgoingTransaction, OutgoingTransactionItem
 from .serializers import ItemSerializer, IncomingTransactionSerializer, IncomingTransactionItemSerializer, OutgoingTransactionSerializer, OutgoingTransactionItemSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -48,6 +48,7 @@ def newEmployee(request, template_name = "createEmployee.html"):
 def employeeProfile(request, pk, template = "employeeProfile.html"):
     selectUser = get_object_or_404(User, pk=pk)
     outTransactions = OutgoingTransaction.objects.all().filter(employeeId=selectUser.id)
+
     # args = {'user': request.user}
     return render(request, template, {'selectUser': selectUser, 'outTransactions':outTransactions})
 
@@ -117,8 +118,8 @@ def inventory(request, template_name="inventory.html"):
 
 @login_required
 def item(request, template_name="item.html"):
-    vendor = Vendor.objects.all()
-    return render(request, template_name, {"vendor":vendor})
+
+    return render(request, template_name)
 
 @login_required
 def editItem(request, pk, template_name="editItem.html"):
@@ -166,6 +167,12 @@ def outgoingTransaction(request, template_name="outgoingTransaction.html"):
     stores = Store.objects.all()
     employee = Employee.objects.all()
     return render(request, template_name, {"employee":employee, "stores":stores ,'user':request.user, 'outgoingTransaction':newOTransaction})
+
+@login_required
+def viewOutgoingTransactionItems(request, pk, template_name="viewOutgoingTransactionItems.html"):
+    outTransactionItems = OutgoingTransactionItem.objects.all().filter(transactionId=pk)
+
+    return render(request, template_name, {'outTransactionItems':outTransactionItems})
 
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):
