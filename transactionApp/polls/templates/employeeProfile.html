@@ -9,6 +9,31 @@
       <div class="container">
 
         <p>User FirstName: {{ selectUser.first_name }}</p>
+        <p>User LastName: {{ selectUser.last_name }}</p>
+
+        <table style="width:75%">
+              <thead>
+                <tr>
+                  <th>Date:</th>
+                  <th>Trasaction ID:</th>
+                  <th>Store ID:</th>
+                  <th>Total Sold:</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for outTransaction in outTransactions %}
+                <tr>
+                  <th>{{outTransaction.createdAt}}</th>
+                  <th>{{outTransaction.transactionId}}</th>
+                  <th>{{outTransaction.storeId}}</th>
+                  <th>{{outTransaction.total}}</th>
+
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
 
       </div>
 {% endblock %}
