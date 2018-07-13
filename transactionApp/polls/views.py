@@ -163,10 +163,9 @@ def damageItem(request, template_name="damageItem.html"):
 
 @login_required
 def outgoingTransaction(request, template_name="outgoingTransaction.html"):
-    newOTransaction = OutgoingTransaction.objects.create()
     stores = Store.objects.all()
     employee = Employee.objects.all()
-    return render(request, template_name, {"employee":employee, "stores":stores ,'user':request.user, 'outgoingTransaction':newOTransaction})
+    return render(request, template_name, {"employee":employee, "stores":stores ,'user':request.user})
 
 @login_required
 def viewOutgoingTransactionItems(request, pk, template_name="viewOutgoingTransactionItems.html"):
