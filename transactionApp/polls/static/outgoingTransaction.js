@@ -1,5 +1,4 @@
 $("#id").change(function(){
-
   $(function(){
     var $input = $("#id").val();
 
@@ -20,17 +19,17 @@ $("#id").change(function(){
               var itemQty = 1;
               $itemContainer.push(itemId, itemName, itemSalePrice, itemQty);
               localStorage.setItem(itemId, JSON.stringify($itemContainer));
-              $itemDetails.show();
-              $itemNotFound.hide();
+              // $itemDetails.show();
+              // $itemNotFound.hide();
               $count++;
               return;
           }
           });
-          if($count==0 ){
-            $itemDetails.hide();
-            $itemNotFound.show();
-
-          }
+          // if($count==0 ){
+          //   $itemDetails.hide();
+          //   $itemNotFound.show();
+          //
+          // }
         }
       });
 
@@ -41,4 +40,12 @@ $("#id").change(function(){
 
   });
 
+});
+
+
+
+$( "#cancel" ).click(function() {
+
+  localStorage.clear();
+  window.alert( "localStorage was clear" );
 });
