@@ -1,4 +1,5 @@
 $("#id").change(function(){
+
   $(function(){
     var $input = $("#id").val();
     var $itemId = $('#itemId');
@@ -40,30 +41,28 @@ $("#id").change(function(){
       });
 
     }
-    else{
-        var x = JSON.parse(localStorage.getItem($input));
-        // if(x[0].itemQty !== 1){
-        x[0].itemQty= x[0].itemQty +1;
-        // }
-        window.alert(x[0].itemQty);
+    var x = JSON.parse(localStorage.getItem($input));
+    displayItemScanned(x);
 
-        x.forEach(function(key){
-          $itemDetails.append("<dt> Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty +"</dt>");
-        });
-
-
-
-
-    }
 
   });
-
 });
 
 
+function displayItemScanned(object){
+  var $itemDetails = $('#itemsList');
+  if(object){
+
+    object.forEach(function(key){
+      $itemDetails.append("<dt> Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty +"</dt>");
+    });
+  }
+
+
+}
 
 $( "#cancel" ).click(function() {
-
   localStorage.clear();
   window.alert( "localStorage was clear" );
+  location.reload();
 });
