@@ -1,4 +1,5 @@
-$('#itemNotFound').hide()
+$('#itemNotFound').hide();
+
 $( "#cancel" ).click(function() {
   localStorage.clear();
   window.alert( "localStorage was clear" );
@@ -18,6 +19,7 @@ $("#id").change(function(){
 
     // if the input id doesnt exist in local storage
     if(localStorage.getItem($input) == null){
+
       var $itemContainer = [];
 
       // make ajax get request to look for item
@@ -43,7 +45,14 @@ $("#id").change(function(){
         }
       });
 
+
     }
+    else{
+      var updateItem = JSON.parse(localStorage.getItem($input));
+      updateItem[0].itemQty++;
+      localStorage.setItem(updateItem[0].itemId, JSON.stringify(updateItem));
+    }
+
     // parse the json object from localStorage based on the input
     var x = JSON.parse(localStorage.getItem($input));
     displayItemScanned(x);
@@ -60,7 +69,6 @@ function displayItemScanned(object){
     object.forEach(function(key){
       $itemDetails.append("<dt> Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty +"</dt>");
     });
-    window.alert(object[0].itemName);
   }
   else{
     $('#itemNotFound').show();
