@@ -11,7 +11,7 @@
           {% csrf_token %}
 
         <fieldset class="form-group">
-          <label for="vendorId">Vendor Name:</label> <a role ="button" class="btn btn-success btn-sm" href="{% url 'newVendor' %}"> Create Vendor</a></br>
+          <label for="vendorId">Vendor Name:</label> <a role ="button" href="{% url 'newVendor' %}"> Create Vendor</a></br>
           <select id="vendorId" name="vendorId">
             {% for vendor in vendors %}
             <option value={{vendor.vendorId}}>{{vendor.name}}</option>

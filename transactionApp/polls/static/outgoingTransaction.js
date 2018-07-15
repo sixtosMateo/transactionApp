@@ -1,13 +1,13 @@
 // things to change on this page:
 // make function that set and get items from local storage
-// changen: initializing trasanction item not found messages appear for a second
+// change: initializing trasanction item not found messages appear for a second
+// content need to appear even after page refresh unless user cancel Transaction
 
 
 $('#itemNotFound').hide();
 
 $( "#cancel" ).click(function() {
   localStorage.clear();
-  window.alert( "localStorage was clear" );
   location.reload();
 });
 
@@ -40,7 +40,9 @@ $("#id").change(function(){
               var itemQty = 1;
 
               // push all items as json object into $itemContainer array
-              $itemContainer.push({"itemId": itemId, "itemName": itemName, "itemSalePrice": itemSalePrice, "itemQty": itemQty});
+              $itemContainer.push({"itemId": itemId, "itemName": itemName,
+              "itemSalePrice": itemSalePrice, "itemQty": itemQty});
+
               // set the item into localStorage as json object
               localStorage.setItem(itemId, JSON.stringify($itemContainer));
               displayItemScanned(JSON.parse(localStorage.getItem(itemId)));
@@ -58,10 +60,11 @@ $("#id").change(function(){
     // parse the json object from localStorage based on the input
     var x = JSON.parse(localStorage.getItem($input));
     displayItemScanned(x);
+    $("#id").val("");
   });
 });
 
-// function displays the item into
+// function displays the item info
 function displayItemScanned(object){
   var $itemDetails = $('#itemsList');
   $('#itemNotFound').hide();
@@ -69,9 +72,12 @@ function displayItemScanned(object){
   if(object){
     object.forEach(function(key){
       if(key.itemQty==1){
-        $itemDetails.append("<dt id=" + key.itemId+"> Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty +"</dt>");
+        $itemDetails.append("<dt id=" + key.itemId + "> Item Id: " + key.itemId +
+        " Item Name: " + key.itemName+ " Price: " + key.itemSalePrice+" Qty: " +
+        key.itemQty + "</dt>");
       }else{
-        $("#"+key.itemId).text("Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty);
+        $("#"+key.itemId).text("Item Id: "+ key.itemId + " Item Name: " +
+        key.itemName + " Price: " + key.itemSalePrice+" Qty: " + key.itemQty);
       }
     });
   }else{
