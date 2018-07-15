@@ -2,7 +2,7 @@
 // make function that set and get items from local storage
 // change: initializing trasanction item not found messages appear for a second
 // content need to appear even after page refresh unless user cancel Transaction
-
+// parserInt should be in double since its money
 
 $('#itemNotFound').hide();
 
@@ -46,6 +46,7 @@ $("#id").change(function(){
               // set the item into localStorage as json object
               localStorage.setItem(itemId, JSON.stringify($itemContainer));
               displayItemScanned(JSON.parse(localStorage.getItem(itemId)));
+              subtotal(itemSalePrice);
               return;
           }});
         }});
@@ -55,6 +56,7 @@ $("#id").change(function(){
       var updateItem = JSON.parse(localStorage.getItem($input));
       updateItem[0].itemQty++;
       localStorage.setItem(updateItem[0].itemId, JSON.stringify(updateItem));
+      subtotal(updateItem[0].itemSalePrice);
     }
 
     // parse the json object from localStorage based on the input
@@ -83,4 +85,14 @@ function displayItemScanned(object){
   }else{
     $('#itemNotFound').show();
   }
+}
+
+localStorage.setItem('subtotal',0);
+
+function subtotal(price){
+  var $subtotal = $('#subtotal');
+  var increment = parseInt(localStorage.getItem('subtotal'));
+  increment += parseInt(price);
+  localStorage.setItem('subtotal', increment);
+  $subtotal.text("Subtotal: " + localStorage.getItem('subtotal'));
 }
