@@ -3,6 +3,7 @@
 // change: initializing trasanction item not found messages appear for a second
 // content need to appear even after page refresh unless user cancel Transaction
 // parserInt should be in double since its money
+// dont make ajax eveytime something gets scan do it once and store it locally
 
 $('#itemNotFound').hide();
 
@@ -87,12 +88,17 @@ function displayItemScanned(object){
   }
 }
 
-localStorage.setItem('subtotal',0);
+
+localStorage.setItem('subtotal', 0);
+localStorage.setItem('total', 0);
 
 function subtotal(price){
   var $subtotal = $('#subtotal');
-  var increment = parseInt(localStorage.getItem('subtotal'));
-  increment += parseInt(price);
+  var $total = $('#total');
+  var increment = parseFloat(localStorage.getItem('subtotal'));
+  increment += parseFloat(price);
   localStorage.setItem('subtotal', increment);
+  localStorage.setItem('total', increment + (increment * .0975));
   $subtotal.text("Subtotal: " + localStorage.getItem('subtotal'));
+  $total.text("Total: " + localStorage.getItem('total'));
 }
