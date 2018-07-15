@@ -1,3 +1,8 @@
+// things to change on this page:
+// make function that set and get items from local storage
+// changen: initializing trasanction item not found messages appear for a second
+
+
 $('#itemNotFound').hide();
 
 $( "#cancel" ).click(function() {
@@ -5,11 +10,10 @@ $( "#cancel" ).click(function() {
   window.alert( "localStorage was clear" );
   location.reload();
 });
-//make function that set and get items from local storage
+
 
 
 $("#id").change(function(){
-
   $(function(){
     var $input = $("#id").val();
     var $itemId = $('#itemId');
@@ -54,15 +58,13 @@ $("#id").change(function(){
     // parse the json object from localStorage based on the input
     var x = JSON.parse(localStorage.getItem($input));
     displayItemScanned(x);
-
-
   });
 });
 
 // function displays the item into
 function displayItemScanned(object){
   var $itemDetails = $('#itemsList');
-  $('#itemNotFound').hide()
+  $('#itemNotFound').hide();
 
   if(object){
     object.forEach(function(key){
@@ -72,5 +74,7 @@ function displayItemScanned(object){
         $("#"+key.itemId).text("Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty);
       }
     });
+  }else{
+    $('#itemNotFound').show();
   }
 }
