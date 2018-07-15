@@ -5,6 +5,7 @@ $( "#cancel" ).click(function() {
   window.alert( "localStorage was clear" );
   location.reload();
 });
+//make function that set and get items from local storage
 
 
 $("#id").change(function(){
@@ -13,7 +14,6 @@ $("#id").change(function(){
     var $input = $("#id").val();
     var $itemId = $('#itemId');
     var $itemName = $('#itemName');
-    // var $itemDetails = $('#itemsList');
     var $itemQty= $('#itemQty');
     var $price = $('#price');
 
@@ -27,7 +27,6 @@ $("#id").change(function(){
         type: 'GET',
         url:'/polls/items/',
         success:function(items){
-
           $.each(items, function(i,item){
             // if the id from the item is the same as the input
             if(item.itemId == $input){
@@ -35,19 +34,18 @@ $("#id").change(function(){
               var itemName = item.name;
               var itemSalePrice = item.salePrice;
               var itemQty = 1;
+
               // push all items as json object into $itemContainer array
               $itemContainer.push({"itemId": itemId, "itemName": itemName, "itemSalePrice": itemSalePrice, "itemQty": itemQty});
               // set the item into localStorage as json object
               localStorage.setItem(itemId, JSON.stringify($itemContainer));
+              displayItemScanned(JSON.parse(localStorage.getItem(itemId)));
               return;
-          }
-          });
-        }
-      });
-
-
+          }});
+        }});
     }
     else{
+      // if $input has been stored in local storage update the qty
       var updateItem = JSON.parse(localStorage.getItem($input));
       updateItem[0].itemQty++;
       localStorage.setItem(updateItem[0].itemId, JSON.stringify(updateItem));
@@ -65,14 +63,14 @@ $("#id").change(function(){
 function displayItemScanned(object){
   var $itemDetails = $('#itemsList');
   $('#itemNotFound').hide()
+
   if(object){
     object.forEach(function(key){
-      $itemDetails.append("<dt> Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty +"</dt>");
+      if(key.itemQty==1){
+        $itemDetails.append("<dt id=" + key.itemId+"> Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty +"</dt>");
+      }else{
+        $("#"+key.itemId).text("Item Id: "+key.itemId+ " Item Name: "+key.itemName+ " Sale Price " +key.itemSalePrice+" Qty: "+key.itemQty);
+      }
     });
   }
-  else{
-    $('#itemNotFound').show();
-  }
-
-
 }
