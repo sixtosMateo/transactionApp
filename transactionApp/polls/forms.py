@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Vendor, Item
+from .models import Vendor, Item, OutgoingTransaction
 
 
 # we are going to inherit from django UserCreationForm's fields from User
@@ -64,8 +64,6 @@ class VendorForm(forms.ModelForm):
         )
         db_table = 'vendor'
 
-
-
 class EditProfileForm(UserChangeForm):
 # the fields(or exclude) element allows to customize what fields can be edited
     class Meta:
@@ -75,4 +73,15 @@ class EditProfileForm(UserChangeForm):
         'first_name',
         'last_name',
         'password'
+        )
+
+class OutgoingTransactionForm(forms.ModelForm):
+    class Meta:
+        model = OutgoingTransaction
+        fields = (
+        'storeId',
+        'employeeId',
+        'tax',
+        'subtotal',
+        'total'
         )

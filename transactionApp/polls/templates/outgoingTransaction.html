@@ -7,8 +7,13 @@
 
 {% block body %}
       <div class="container">
-        <form method="post">
+        <fieldset class="form-group">
+          <label for="idBarcode">Barcode:</label>
+          <input  class="form-control" id="idBarcode" name="idBarcode" type="text" >
+        </fieldset>
 
+        <form method="post">
+          {% csrf_token %}
           <fieldset class="form-group">
             <label for="storeId">Store Name:</label>
             <select id="storeId" name="storeId">
@@ -20,22 +25,20 @@
           <!-- add another link to add a vendor  -->
 
           <fieldset class="form-group">
-            <label for="employeeName">Employee:</label>
-            <select id="employeeId" name="employeeName">
+            <label for="employeeId">Employee:</label>
+            <select id="employeeId" name="employeeId">
               <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
             </select>
           </fieldset>
-          <fieldset class="form-group">
-            <label for="id">Barcode:</label>
-            <input  class="form-control" id="id" name="id" type="text" >
-          </fieldset>
+
           <h1 id="itemNotFound">Item Not Found</h1>
           <dl id="itemsList">
 
             <dt></dt>
           </dl>
-          <h1 id="subtotal"></h1>
-          <h1 id="total"></h1>
+          <h1 id="subtotal" value=1></h1>
+          <h1 id="tax" value=1></h1>
+          <h1 id="total" value=1></h1>
 
           <button type="submit">Submit</button>
           <a role ="button" id="cancel">Cancel</a>

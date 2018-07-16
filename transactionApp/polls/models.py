@@ -62,7 +62,8 @@ class OutgoingTransaction(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6}".format(
-            self.pk, self.createdAt, self.storeId, self.employeeId, self.tax, self.total, self.subtotal)
+            self.pk, self.createdAt, self.storeId, self.employeeId,
+            self.tax, self.total, self.subtotal)
 
 
 class OutgoingTransactionItem(models.Model):
@@ -109,8 +110,10 @@ class Item(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}".format(
-            self.itemId, self.name, self.inStockQty, self.picture, self.color, self.ageRequirement, self.purchasedPrice,
-            self.salePrice, self.department, self.vendorId, self.barcode, self.locationId, self.createdAt)
+            self.itemId, self.name, self.inStockQty, self.picture, self.color,
+            self.ageRequirement, self.purchasedPrice, self.salePrice,
+            self.department, self.vendorId, self.barcode, self.locationId,
+            self.createdAt)
 
 class Vendor(models.Model):
     vendorId = models.AutoField(primary_key=True)

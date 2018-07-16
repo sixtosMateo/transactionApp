@@ -4,7 +4,7 @@
 // content need to appear even after page refresh unless user cancel Transaction
 // float number should only be display to the tenth decimal
 // dont make ajax eveytime something gets scan do it once and store it locally
-
+// total and subtotal doesnt contain the value
 
 $('#itemNotFound').hide();
 
@@ -13,11 +13,9 @@ $( "#cancel" ).click(function() {
   location.reload();
 });
 
-
-
-$("#id").change(function(){
+$("#idBarcode").change(function(){
   $(function(){
-    var $input = $("#id").val();
+    var $input = $("#idBarcode").val();
     var $itemId = $('#itemId');
     var $itemName = $('#itemName');
     var $itemQty= $('#itemQty');
@@ -64,7 +62,7 @@ $("#id").change(function(){
     // parse the json object from localStorage based on the input
     var x = JSON.parse(localStorage.getItem($input));
     displayItemScanned(x);
-    $("#id").val("");
+    $("#idBarcode").val("");
   });
 });
 

@@ -14,11 +14,20 @@ from rest_framework.parsers import JSONParser
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
-from .models import Item, Vendor, IncomingTransaction, IncomingTransactionItem, Store, Employee, OutgoingTransaction, OutgoingTransactionItem
-from .serializers import ItemSerializer, IncomingTransactionSerializer, IncomingTransactionItemSerializer, OutgoingTransactionSerializer, OutgoingTransactionItemSerializer
+from .models import (
+    Item, Vendor, IncomingTransaction, IncomingTransactionItem,
+    Store, Employee, OutgoingTransaction, OutgoingTransactionItem)
+from .serializers import (
+    ItemSerializer, IncomingTransactionSerializer,
+    IncomingTransactionItemSerializer, OutgoingTransactionSerializer,
+    OutgoingTransactionItemSerializer
+    )
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from .forms import NewEmployeeForm, EditProfileForm, VendorForm, ItemForm
+from .forms import (
+    NewEmployeeForm, EditProfileForm, VendorForm,
+    ItemForm, OutgoingTransactionForm
+    )
 from django.contrib.auth.forms import (
     UserCreationForm,
     UserChangeForm,
@@ -165,7 +174,17 @@ def damageItem(request, template_name="damageItem.html"):
 def outgoingTransaction(request, template_name="outgoingTransaction.html"):
     stores = Store.objects.all()
     employee = Employee.objects.all()
-    return render(request, template_name, {"employee":employee, "stores":stores ,'user':request.user})
+    if request.method == 'POST':
+        form = OutgoingTransactionForm(request.POST)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('mainMenu')
+    else:
+        form = OutgoingTransactionForm()
+        args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
+        return render(request, template_name, args)
+
 
 @login_required
 def viewOutgoingTransactionItems(request, pk, template_name="viewOutgoingTransactionItems.html"):
