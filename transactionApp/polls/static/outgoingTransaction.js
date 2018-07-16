@@ -2,8 +2,9 @@
 // make function that set and get items from local storage
 // change: initializing trasanction item not found messages appear for a second
 // content need to appear even after page refresh unless user cancel Transaction
-// parserInt should be in double since its money
+// float number should only be display to the tenth decimal
 // dont make ajax eveytime something gets scan do it once and store it locally
+
 
 $('#itemNotFound').hide();
 
