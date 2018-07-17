@@ -58,9 +58,9 @@ def employeeProfile(request, pk, template = "employeeProfile.html"):
     selectUser = get_object_or_404(User, pk=pk)
     outTransactions = OutgoingTransaction.objects.all().filter(
                                                     employeeId=selectUser.id)
-
     # args = {'user': request.user}
-    return render(request, template, {'selectUser': selectUser, 'outTransactions':outTransactions})
+    return render(request, template, {'selectUser': selectUser,
+                    'outTransactions':outTransactions})
 
 @login_required
 def editProfile(request, pk, template = "editProfile.html"):
@@ -74,7 +74,8 @@ def editProfile(request, pk, template = "editProfile.html"):
     else:
         form = EditProfileForm(instance=selectUser)
         # args = {'form': form}
-        return render(request, template, {'selectUser': selectUser, 'form': form})
+        return render(request, template, {'selectUser': selectUser,
+                                            'form': form})
 
 @login_required
 def deleteProfile(request, pk):
@@ -179,12 +180,13 @@ def outgoingTransaction(request, template_name="outgoingTransaction.html"):
     args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
     return render(request, template_name, args)
 
-
 @login_required
-def viewOutgoingTransactionItems(request, pk, template_name="viewOutgoingTransactionItems.html"):
-    outTransactionItems = OutgoingTransactionItem.objects.all().filter(transactionId=pk)
-
-    return render(request, template_name, {'outTransactionItems':outTransactionItems})
+def viewOutgoingTransactionItems(request, pk,
+                            template_name="viewOutgoingTransactionItems.html"):
+    outTransactionItems = OutgoingTransactionItem.objects.all().filter(
+                                                            transactionId=pk)
+    return render(
+            request, template_name, {'outTransactionItems':outTransactionItems})
 
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):

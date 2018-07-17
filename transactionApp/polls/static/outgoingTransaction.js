@@ -67,17 +67,51 @@ $("#idBarcode").change(function(){
   });
 });
 
+
+function completeTransaction(){
+  // access value of total and subtotal from local localStorage
+  var $subtotal = parseFloat(localStorage.getItem('subtotal'));
+  var $total = parseFloat(localStorage.getItem('total'));
+
+  // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+  //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+  $.ajaxSetup({
+      type: 'POST',
+      url:'/polls/outgoingTransactions/',
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken",
+              jQuery("[name=csrfmiddlewaretoken]").val());
+          }
+      }
+  });
+  // sets up the data into json format
+  $.ajax({
+      data:{
+      'storeId': $('#storeId').val(),
+      'employeeId': $('#employeeId').val(),
+      'tax': .0975,
+      'subtotal': $subtotal,
+      'total': $total
+      },
+      dataType: 'application/json',
+      success:function(data){
+      }
+  });
+}
+
 // function displays the item info
 function displayItemScanned(object){
   var $itemDetails = $('#itemsList');
   $('#itemNotFound').hide();
 
   if(object){
+    // iterating data fields from localStorage object that was pass in
     object.forEach(function(key){
       if(key.itemQty==1){
-        $itemDetails.append("<dt id=" + key.itemId + "> Item Id: " + key.itemId +
-        " Item Name: " + key.itemName+ " Price: " + key.itemSalePrice+" Qty: " +
-        key.itemQty + "</dt>");
+        $itemDetails.append("<dt id=" + key.itemId + "> Item Id: " + key.itemId
+        + " Item Name: " + key.itemName+ " Price: " + key.itemSalePrice+
+        " Qty: " + key.itemQty + "</dt>");
       }else{
         $("#"+key.itemId).text("Item Id: "+ key.itemId + " Item Name: " +
         key.itemName + " Price: " + key.itemSalePrice+" Qty: " + key.itemQty);
@@ -92,6 +126,7 @@ function displayItemScanned(object){
 localStorage.setItem('subtotal', 0);
 localStorage.setItem('total', 0);
 
+// funtion updates the value of subtotal and total base on user input
 function subtotal(price){
   var increment = parseFloat(localStorage.getItem('subtotal'));
   increment += parseFloat(price);
@@ -99,34 +134,6 @@ function subtotal(price){
   localStorage.setItem('total', increment + (increment * .0975));
   $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
   $('#total').text("Total: " + localStorage.getItem('total'));
-}
-
-function completeTransaction(){
-  var $subtotal = parseFloat(localStorage.getItem('subtotal'));
-  var $total = parseFloat(localStorage.getItem('total'));
-
-    $.ajaxSetup({
-        type: 'POST',
-        url:'/polls/outgoingTransactions/',
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", jQuery("[name=csrfmiddlewaretoken]").val());
-            }
-        }
-    });
-    $.ajax({
-        data:{
-        'storeId': $('#storeId').val(),
-        'employeeId': $('#employeeId').val(),
-        'tax': .0975,
-        'subtotal': $subtotal,
-        'total': $total
-        },
-        dataType: 'application/json',
-        success:function(data){
-          window.alert("success");
-    }
-  });
 }
 
 function csrfSafeMethod(method) {
