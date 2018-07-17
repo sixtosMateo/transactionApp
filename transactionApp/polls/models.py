@@ -153,7 +153,7 @@ class IncomingTransaction(models.Model):
 
     def save(self, *args, **kwargs):
         print('save() is called.')
-        super(IncomingTransaction, self).save(using="store_master")
+        super(IncomingTransaction, self).save(using="karis_db")
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6}".format(

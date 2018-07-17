@@ -99,33 +99,6 @@ function completeTransaction(){
         success:function(data){
         }
     });
-
-
-  // $(function(){
-  //   $.ajaxSetup({
-  //       type: 'POST',
-  //       url:'/polls/',
-  //       beforeSend: function(xhr, settings) {
-  //           if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-  //               xhr.setRequestHeader("X-CSRFToken",
-  //               jQuery("[name=csrfmiddlewaretoken]").val());
-  //           }
-  //       }
-  //   });
-  //   // sets up the data into json format
-  //   $.ajax({
-  //       data:{
-  //       'storeId': ,
-  //       'employeeId': ,
-  //       'tax': .0975,
-  //       'subtotal': ,
-  //       'total':
-  //       },
-  //       dataType: 'application/json',
-  //       success:function(data){
-  //       }
-  //   });
-  // });
 }
 
 // function displays the item info

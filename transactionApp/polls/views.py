@@ -26,7 +26,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .forms import (
     NewEmployeeForm, EditProfileForm, VendorForm,
-    ItemForm, OutgoingTransactionForm
+    ItemForm, OutgoingTransactionForm, IncomingTransactionForm
     )
 from django.contrib.auth.forms import (
     UserCreationForm,
@@ -191,8 +191,9 @@ def viewOutgoingTransactionItems(request, pk,
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):
     vendors = Vendor.objects.all()
+    form = IncomingTransactionForm()
     #there might be a switch with user and employee *needs attention*
-    return render(request, template_name,{'vendors':vendors, 'user':request.user})
+    return render(request, template_name,{'form':form, 'vendors':vendors, 'user':request.user})
 
 @login_required
 def vendor(request, template_name="vendor.html"):
@@ -250,16 +251,14 @@ class ItemList(APIView):
         serializers = ItemSerializer(items, many=True)
         return Response(serializers.data)
 
-# class incomingTransactionList(APIView):
-#     def get(self,request):
-#         incomingTransactions = IncomingTransaction.objects.all()
-#         serializers = IncomingTransactionSerializer(incomingTransactions, many=True)
-#         return Response(serializers.data)
+class incomingTransactionList(APIView):
+    def post(self, request):
+        serializers = IncomingTransactionSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
-
-# class incomingTransactionItemLists(APIView):
-#     def get(self):
-#         pass
 
 class outgoingTransactionList(APIView):
     # def get(self,request):
