@@ -69,35 +69,63 @@ $("#idBarcode").change(function(){
 
 
 function completeTransaction(){
-  // access value of total and subtotal from local localStorage
-  var $subtotal = parseFloat(localStorage.getItem('subtotal'));
-  var $total = parseFloat(localStorage.getItem('total'));
 
-  // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-  //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-  $.ajaxSetup({
-      type: 'POST',
-      url:'/polls/outgoingTransactions/',
-      beforeSend: function(xhr, settings) {
-          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-              xhr.setRequestHeader("X-CSRFToken",
-              jQuery("[name=csrfmiddlewaretoken]").val());
-          }
-      }
-  });
-  // sets up the data into json format
-  $.ajax({
-      data:{
-      'storeId': $('#storeId').val(),
-      'employeeId': $('#employeeId').val(),
-      'tax': .0975,
-      'subtotal': $subtotal,
-      'total': $total
-      },
-      dataType: 'application/json',
-      success:function(data){
-      }
-  });
+    // access value of total and subtotal from local localStorage
+    var $subtotal = parseFloat(localStorage.getItem('subtotal'));
+    var $total = parseFloat(localStorage.getItem('total'));
+
+    // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+    //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+    $.ajaxSetup({
+        type: 'POST',
+        url:'/polls/outgoingTransactions/',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken",
+                jQuery("[name=csrfmiddlewaretoken]").val());
+            }
+        }
+    });
+    // sets up the data into json format
+    $.ajax({
+        data:{
+        'storeId': $('#storeId').val(),
+        'employeeId': $('#employeeId').val(),
+        'tax': .0975,
+        'subtotal': $subtotal,
+        'total': $total
+        },
+        dataType: 'application/json',
+        success:function(data){
+        }
+    });
+
+
+  // $(function(){
+  //   $.ajaxSetup({
+  //       type: 'POST',
+  //       url:'/polls/',
+  //       beforeSend: function(xhr, settings) {
+  //           if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+  //               xhr.setRequestHeader("X-CSRFToken",
+  //               jQuery("[name=csrfmiddlewaretoken]").val());
+  //           }
+  //       }
+  //   });
+  //   // sets up the data into json format
+  //   $.ajax({
+  //       data:{
+  //       'storeId': ,
+  //       'employeeId': ,
+  //       'tax': .0975,
+  //       'subtotal': ,
+  //       'total':
+  //       },
+  //       dataType: 'application/json',
+  //       success:function(data){
+  //       }
+  //   });
+  // });
 }
 
 // function displays the item info

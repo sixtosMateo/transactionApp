@@ -67,7 +67,8 @@ class OutgoingTransaction(models.Model):
 
 
 class OutgoingTransactionItem(models.Model):
-    itemId = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
+    itemId = models.IntegerField(null=False,default=None)
     transactionId = models.IntegerField(default = 0, blank=True)
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
@@ -82,9 +83,9 @@ class OutgoingTransactionItem(models.Model):
         super(OutgoingTransactionItem, self).save(using='karis_db')
 
     def __unicode__(self):
-        return "{0} {1} {2} {3} {4}".format(
-            self.pk, self.transactionId, self.quantitySold, self.price,
-            self.createdAt)
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
+            self.pk, self.transactionId, self.quantitySold, self.price, self.tax,
+            self.createdAt, self.itemId)
 
 
 class Item(models.Model):
