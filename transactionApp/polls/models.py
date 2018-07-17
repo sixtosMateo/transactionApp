@@ -83,7 +83,8 @@ class OutgoingTransactionItem(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4}".format(
-            self.pk, self.transactionId, self.quantitySold, self.price, self.createdAt)
+            self.pk, self.transactionId, self.quantitySold, self.price,
+            self.createdAt)
 
 
 class Item(models.Model):
@@ -131,7 +132,8 @@ class Vendor(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4}".format(
-            self.vendorId, self.address, self.phoneNumber, self.name, self.hoursOpen)
+            self.vendorId, self.address, self.phoneNumber, self.name,
+            self.hoursOpen)
 
 
 
@@ -154,7 +156,8 @@ class IncomingTransaction(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6}".format(
-            self.transactionId, self.createdAt, self.vendorId, self.employeeId, self.tax, self.total, self.subtotal)
+            self.transactionId, self.createdAt, self.vendorId, self.employeeId,
+            self.tax, self.total, self.subtotal)
 
 
 class IncomingTransactionItem(models.Model):
@@ -174,7 +177,8 @@ class IncomingTransactionItem(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5}".format(
-            self.itemId, self.transactionId, self.quantityBought, self.storeId, self.purchasedPrice, self.createdAt)
+            self.itemId, self.transactionId, self.quantityBought, self.storeId,
+            self.purchasedPrice, self.createdAt)
 
 class Location(models.Model):
     locationId = models.AutoField(primary_key=True)
@@ -227,4 +231,5 @@ class DamageItem(models.Model):
 
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5}".format(
-            self.itemId, self.qtyDamage, self.createdAt, self.employeeId, self.storeId, self.locationId)
+            self.itemId, self.qtyDamage, self.createdAt, self.employeeId,
+            self.storeId, self.locationId)

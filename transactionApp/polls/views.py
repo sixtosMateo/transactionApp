@@ -56,7 +56,8 @@ def newEmployee(request, template_name = "createEmployee.html"):
 @login_required
 def employeeProfile(request, pk, template = "employeeProfile.html"):
     selectUser = get_object_or_404(User, pk=pk)
-    outTransactions = OutgoingTransaction.objects.all().filter(employeeId=selectUser.id)
+    outTransactions = OutgoingTransaction.objects.all().filter(
+                                                    employeeId=selectUser.id)
 
     # args = {'user': request.user}
     return render(request, template, {'selectUser': selectUser, 'outTransactions':outTransactions})
@@ -174,16 +175,9 @@ def damageItem(request, template_name="damageItem.html"):
 def outgoingTransaction(request, template_name="outgoingTransaction.html"):
     stores = Store.objects.all()
     employee = Employee.objects.all()
-    if request.method == 'POST':
-        form = OutgoingTransactionForm(request.POST)
-        if form.is_valid():
-            print("form valid")
-            form.save()
-            return redirect('mainMenu')
-    else:
-        form = OutgoingTransactionForm()
-        args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
-        return render(request, template_name, args)
+    form = OutgoingTransactionForm()
+    args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
+    return render(request, template_name, args)
 
 
 @login_required
@@ -266,7 +260,14 @@ class ItemList(APIView):
 #         pass
 
 class outgoingTransactionList(APIView):
-    def get(self,request):
-        outgoingTransactions = OutgoingTransaction.objects.all()
-        serializers = OutgoingTransactionSerializer(outgoingTransactions, many=True)
-        return Response(serializers.data)
+    # def get(self,request):
+    #     outgoingTransactions = OutgoingTransaction.objects.all()
+    #     serializers = OutgoingTransactionSerializer(outgoingTransactions, many=True)
+    #     return Response(serializers.data)
+
+    def post(self, request):
+        serializers = OutgoingTransactionSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)

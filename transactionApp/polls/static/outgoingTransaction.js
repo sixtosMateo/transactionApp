@@ -5,6 +5,7 @@
 // float number should only be display to the tenth decimal
 // dont make ajax eveytime something gets scan do it once and store it locally
 // total and subtotal doesnt contain the value
+// jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
 
 $('#itemNotFound').hide();
 
@@ -92,12 +93,43 @@ localStorage.setItem('subtotal', 0);
 localStorage.setItem('total', 0);
 
 function subtotal(price){
-  var $subtotal = $('#subtotal');
-  var $total = $('#total');
   var increment = parseFloat(localStorage.getItem('subtotal'));
   increment += parseFloat(price);
   localStorage.setItem('subtotal', increment);
   localStorage.setItem('total', increment + (increment * .0975));
-  $subtotal.text("Subtotal: " + localStorage.getItem('subtotal'));
-  $total.text("Total: " + localStorage.getItem('total'));
+  $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
+  $('#total').text("Total: " + localStorage.getItem('total'));
+}
+
+function completeTransaction(){
+  var $subtotal = parseFloat(localStorage.getItem('subtotal'));
+  var $total = parseFloat(localStorage.getItem('total'));
+
+    $.ajaxSetup({
+        type: 'POST',
+        url:'/polls/outgoingTransactions/',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", jQuery("[name=csrfmiddlewaretoken]").val());
+            }
+        }
+    });
+    $.ajax({
+        data:{
+        'storeId': $('#storeId').val(),
+        'employeeId': $('#employeeId').val(),
+        'tax': .0975,
+        'subtotal': $subtotal,
+        'total': $total
+        },
+        dataType: 'application/json',
+        success:function(data){
+          window.alert("success");
+    }
+  });
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
