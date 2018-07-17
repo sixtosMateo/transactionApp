@@ -68,8 +68,8 @@ class OutgoingTransaction(models.Model):
 
 class OutgoingTransactionItem(models.Model):
     id = models.AutoField(primary_key=True)
-    itemId = models.IntegerField(null=False,default=None)
-    transactionId = models.IntegerField(default = 0, blank=True)
+    itemId = models.IntegerField(null=True,default=None)
+    transactionId = models.IntegerField(default = 0, null=True)
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
     tax = models.FloatField(null=True, blank=True, default=0.0925)
