@@ -6,6 +6,7 @@
 // dont make ajax eveytime something gets scan do it once and store it locally
 // total and subtotal doesnt contain the value
 // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
+// create a function that makes ajax function with arguments
 
 $('#itemNotFound').hide();
 
@@ -39,10 +40,11 @@ $("#idBarcode").change(function(){
               var itemName = item.name;
               var itemSalePrice = item.salePrice;
               var itemQty = 1;
+              var tax = .0975;
 
               // push all items as json object into $itemContainer array
               $itemContainer.push({"itemId": itemId, "itemName": itemName,
-              "itemSalePrice": itemSalePrice, "itemQty": itemQty});
+              "itemSalePrice": itemSalePrice, "itemQty": itemQty, "tax": tax});
 
               // set the item into localStorage as json object
               localStorage.setItem(itemId, JSON.stringify($itemContainer));
@@ -71,6 +73,7 @@ $("#idBarcode").change(function(){
 function completeTransaction(){
 
     // access value of total and subtotal from local localStorage
+
     var $subtotal = parseFloat(localStorage.getItem('subtotal'));
     var $total = parseFloat(localStorage.getItem('total'));
 
@@ -97,9 +100,12 @@ function completeTransaction(){
         },
         dataType: 'application/json',
         success:function(data){
+
         }
     });
+
 }
+
 
 // function displays the item info
 function displayItemScanned(object){

@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^damageItem/$', views.damageItem, name='damageItem'),
     url(r'^outgoingTransaction/$', views.outgoingTransaction, name='outgoingTransaction'),
     url(r'^outgoingTransactions/$', views.outgoingTransactionList.as_view(), name='outgoingTransactionsList'),
+    url(r'^outgoingTransactionItems/$', views.outgoingTransactionItemList.as_view(), name='outgoingTransactionItemList'),
     url(r'^viewOutgoingTransactionItems/(?P<pk>\d+)$', views.viewOutgoingTransactionItems, name='viewOutgoingTransactionItems'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
     url(r'^incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactionList'),

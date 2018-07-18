@@ -1,3 +1,9 @@
+$( "#idBarcode" ).change(function() {
+  
+});
+
+
+
 $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
@@ -5,7 +11,6 @@ $( "#cancel" ).click(function() {
 });
 
 function completeTransaction(){
-
     // access value of total and subtotal from local localStorage
     // var $subtotal = parseFloat(localStorage.getItem('subtotal'));
     // var $total = parseFloat(localStorage.getItem('total'));
