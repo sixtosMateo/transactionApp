@@ -31,7 +31,7 @@ $("#idBarcode").change(function(){
       // make ajax get request to look for item
       $.ajax({
         type: 'GET',
-        url:'/polls/items/',
+        url:'/polls/api/items/',
         success:function(items){
           $.each(items, function(i,item){
             // if the id from the item is the same as the input
@@ -71,7 +71,6 @@ $("#idBarcode").change(function(){
 
 
 function completeTransaction(){
-
     // access value of total and subtotal from local localStorage
 
     var $subtotal = parseFloat(localStorage.getItem('subtotal'));
@@ -81,7 +80,7 @@ function completeTransaction(){
     //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
     $.ajaxSetup({
         type: 'POST',
-        url:'/polls/outgoingTransactions/',
+        url:'/polls/api/outgoingTransactions/',
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken",
@@ -100,7 +99,6 @@ function completeTransaction(){
         },
         dataType: 'application/json',
         success:function(data){
-
         }
     });
 

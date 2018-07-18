@@ -1,5 +1,5 @@
 $( "#idBarcode" ).change(function() {
-  
+
 });
 
 
@@ -19,7 +19,7 @@ function completeTransaction(){
     //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
     $.ajaxSetup({
         type: 'POST',
-        url:'/polls/incomingTransactions/',
+        url:'/polls/api/incomingTransactions/',
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken",
