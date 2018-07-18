@@ -69,7 +69,7 @@ class OutgoingTransaction(models.Model):
 class OutgoingTransactionItem(models.Model):
     id = models.AutoField(primary_key=True)
     itemId = models.IntegerField(null=True,default=None)
-    transactionId = models.IntegerField(default = 0, null=True)
+    transactionId = models.ForeignKey(OutgoingTransaction, on_delete=models.CASCADE)
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
     tax = models.FloatField(null=True, blank=True, default=0.0925)
@@ -163,7 +163,7 @@ class IncomingTransaction(models.Model):
 
 class IncomingTransactionItem(models.Model):
     itemId = models.AutoField(primary_key=True)
-    transactionId = models.IntegerField(default = 0, blank=True)
+    transactionId = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
     quantityBought = models.IntegerField(default = 0, blank=True)
     storeId = models.IntegerField(default = 0, blank=True)
     purchasedPrice = models.FloatField(null=True, blank=True, default=None)
