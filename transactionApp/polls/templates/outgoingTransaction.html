@@ -12,7 +12,7 @@
           <input  class="form-control" id="idBarcode" name="idBarcode" type="text" >
         </fieldset>
         {% csrf_token %}
-        <form>
+        <form onsubmit="oTransaction.postObject()">
           <!-- onsubmit="completeTransaction()" -->
           <fieldset class="form-group">
             <label for="storeId">Store Name:</label>
@@ -40,7 +40,7 @@
           <h1 id="tax"></h1>
           <h1 id="total"></h1>
 
-          <button type="submit">Submit</button>
+          <a role ="button" id="submit">Submit</a>
           <a role ="button" id="cancel">Cancel</a>
         </form>
 

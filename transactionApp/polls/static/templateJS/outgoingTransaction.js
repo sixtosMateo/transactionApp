@@ -41,11 +41,17 @@ class OutgoingTransaction {
 class OutgoingTransactionItem{
   constructor(data) {
     // this.scannedItem = $("#idBarcode");
-    this.item = a;
-    this.name = b;
-    this.qty = c;
-    this.price = d;
-    this.tax = e;
+    this.item = data.itemId;
+    this.name = data.name;
+    this.qty = 1;
+    this.price = data.salePrice;
+    this.tax = .0975;
+  }
+  getQty(){
+    return this.qty;
+  }
+  incrementQty(){
+    this.qty++;
   }
   displayItem(){
     var $itemDetails = $('#itemsList');
@@ -60,7 +66,6 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-//
 function retriveItemData(callback){
   var $input = $("#idBarcode").val();
   var itemContainer = [];
@@ -80,16 +85,30 @@ function retriveItemData(callback){
 
 // this can set in function
 $("#idBarcode").change(function(){
-  retriveItemData(function(data){
-    window.alert(data.itemId);
-  });
+  $input = $("#idBarcode").val();
 
-
-
-  // oTransaction.postObject();
-  // window.alert("hello");
+    retriveItemData(function(data){
+      if(localStorage.getItem($input) == null){
+        var item = new OutgoingTransactionItem(data);
+        localStorage.setItem(data.itemId, JSON.stringify(item));
+        item.displayItem();
+      }
+      else{
+        var repeatedItem = JSON.parse(localStorage.getItem($input));
+        repeatedItem.qty++;
+        localStorage.setItem($input, JSON.stringify(repeatedItem));
+        window.alert(repeatedItem.qty);
+      }
+    });
+  $("#idBarcode").val("");
 });
 
+
+$( "#submit" ).click(function() {
+  var newTransaction =  new OutgoingTransaction();
+  newTransaction.postObject();
+
+});
 
 $( "#cancel" ).click(function() {
   localStorage.clear();
