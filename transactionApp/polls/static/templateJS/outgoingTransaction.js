@@ -38,20 +38,63 @@ class OutgoingTransaction {
   }
 }
 
-class 
+class OutgoingTransactionItem{
+  constructor(data) {
+    // this.scannedItem = $("#idBarcode");
+    this.item = a;
+    this.name = b;
+    this.qty = c;
+    this.price = d;
+    this.tax = e;
+  }
+  displayItem(){
+    var $itemDetails = $('#itemsList');
+    $itemDetails.append("<dt id=" + this.item + "> Item Id: " + this.item
+            + " Item Name: " + this.name+ " Price: " + this.price +
+            " Qty: " + this.qty+ "</dt>");
+  }
+}
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+//
+function retriveItemData(callback){
+  var $input = $("#idBarcode").val();
+  var itemContainer = [];
+  return $.ajax({
+         type: 'GET',
+         url:'/polls/api/items/',
+         success:function(items){
+           $.each(items, function(i,item){
+             // if the id from the item is the same as the input
+             if(item.itemId == $input){
+               // window.alert(item.itemId);
+               callback(item);
+           }});
+         }});
+}
+
+
 // this can set in function
 $("#idBarcode").change(function(){
-  var oTransaction =  new OutgoingTransaction();
-  oTransaction.postObject();
-  window.alert("hello");
+  retriveItemData(function(data){
+    window.alert(data.itemId);
+  });
+
+
+
+  // oTransaction.postObject();
+  // window.alert("hello");
 });
 
+
+$( "#cancel" ).click(function() {
+  localStorage.clear();
+  location.reload();
+});
 
 
 // // things to change on this page:
@@ -67,10 +110,7 @@ $("#idBarcode").change(function(){
 //
 // $('#itemNotFound').hide();
 //
-// $( "#cancel" ).click(function() {
-//   localStorage.clear();
-//   location.reload();
-// });
+
 //
 // $("#idBarcode").change(function(){
 //   $(function(){
