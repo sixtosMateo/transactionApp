@@ -53,6 +53,9 @@ class OutgoingTransactionItem{
   incrementQty(){
     this.qty++;
   }
+  displayItem(){
+
+  }
 }
 
 function csrfSafeMethod(method) {
@@ -77,20 +80,7 @@ function retriveItemData(callback){
        });
 }
 
-function displayItem(data){
-  var $itemDetails = $('#itemsList');
-  if(data.qty == 1){
-    $itemDetails.append("<dt id=" + data.item + "> Item Id: " + data.item
-            + " Item Name: " + data.name+ " Price: " + data.price +
-            " Qty: " + data.qty+ "</dt>");
-    }
 
-  else{
-    $("#" + data.item).text("Item Id: " + data.item
-            + " Item Name: " + data.name+ " Price: " + data.price +
-            " Qty: " + data.qty);
-    }
-}
 
 $('#itemNotFound').hide();
 // this can set in function
@@ -100,13 +90,15 @@ $("#idBarcode").change(function(){
       if(localStorage.getItem($input) == null){
         var item = new OutgoingTransactionItem(data);
         localStorage.setItem(data.itemId, JSON.stringify(item));
-        displayItem(item);
+        window.alert(item.);
+
       }
       else{
         var repeatedItem = JSON.parse(localStorage.getItem($input));
         repeatedItem.qty++;
         localStorage.setItem($input, JSON.stringify(repeatedItem));
-        displayItem(repeatedItem);
+        window.alert(repeatedItem.qty);
+
 
       }
     });
