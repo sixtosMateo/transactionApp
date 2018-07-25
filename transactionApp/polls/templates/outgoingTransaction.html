@@ -2,6 +2,11 @@
 
 {% block head %}
 <title>Outgoing Transaction</title>
+<style>
+  #noBorderText{
+    border-style: none;
+  }
+</style>
 {% endblock %}
 
 
@@ -26,9 +31,10 @@
 
           <fieldset class="form-group">
             <label for="employeeId">Employee:</label>
-            <select id="employeeId" name="employeeId">
+            <input type="text" name="employeeId" value={{user.id}} readonly id="noBorderText"><br>
+            <!-- <select id="employeeId" name="employeeId">
               <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
-            </select>
+            </select> -->
           </fieldset>
 
           <h1 id="itemNotFound">Item Not Found</h1>
