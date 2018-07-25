@@ -1,122 +1,124 @@
-class OutgoingTransaction {
-  //initialize object parameters for each OutgoingTransaction
-  constructor() {
-    // this.scannedItem = $("#idBarcode");
-    this.store = $("#storeId").val();
-    this.employeeId = $("#employeeId").val();
-    this.subtotal = 0;
-    this.tax = 0;
-    this.total = this.subtotal + this.tax;
-  }
+// class OutgoingTransaction {
+//   //initialize object parameters for each OutgoingTransaction
+//   constructor() {
+//     // this.scannedItem = $("#idBarcode");
+//     this.store = $("#storeId").val();
+//     this.employeeId = $("#employeeId").val();
+//     this.subtotal = 0;
+//     this.tax = 0;
+//     this.total = this.subtotal + this.tax;
+//   }
+//
+//   postObject(){
+//         // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+//         //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+//         $.ajaxSetup({
+//             type: 'POST',
+//             url:'/polls/api/outgoingTransactions/',
+//             beforeSend: function(xhr, settings) {
+//                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+//                     xhr.setRequestHeader("X-CSRFToken",
+//                     jQuery("[name=csrfmiddlewaretoken]").val());
+//                 }
+//             }
+//         });
+//         // sets up the data into json format
+//         $.ajax({
+//             data:{
+//             'storeId': this.store,
+//             'employeeId': this.employeeId,
+//             'tax': this.tax,
+//             'subtotal': this.subtotal,
+//             'total': this.total
+//             },
+//             dataType: 'application/json',
+//             success:function(data){
+//             }
+//         });
+//   }
+// }
+//
+// class OutgoingTransactionItem{
+//   constructor(data) {
+//     // this.scannedItem = $("#idBarcode");
+//     this.item = data.itemId;
+//     this.name = data.name;
+//     this.qty = 1;
+//     this.price = data.salePrice;
+//     this.tax = .0975;
+//   }
+//   getQty(){
+//     return this.qty;
+//   }
+//   incrementQty(){
+//     this.qty++;
+//   }
+//   displayItem(){
+//
+//   }
+// }
+//
+// function csrfSafeMethod(method) {
+//     // these HTTP methods do not require CSRF protection
+//     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+// }
+//
+// function retriveItemData(callback){
+//   var $input = $("#idBarcode").val();
+//   var itemContainer = [];
+//   return $.ajax({
+//          type: 'GET',
+//          url:'/polls/api/items/',
+//          success:function(items){
+//            $.each(items, function(i,item){
+//              // if the id from the item is the same as the input
+//              if(item.itemId == $input){
+//                // window.alert(item.itemId);
+//                callback(item);
+//            }});
+//          },
+//        });
+// }
+//
+//
+//
+// $('#itemNotFound').hide();
+// // this can set in function
+// $("#idBarcode").change(function(){
+//   $input = $("#idBarcode").val();
+//     retriveItemData(function(data){
+//       if(localStorage.getItem($input) == null){
+//         var item = new OutgoingTransactionItem(data);
+//         localStorage.setItem(data.itemId, JSON.stringify(item));
+//         $( "#itemsList" ).append( "<dt id="+ item.item+" >Test<dt>" );
+//
+//       }
+//       else{
+//         var repeatedItem = JSON.parse(localStorage.getItem($input));
+//         repeatedItem.qty++;
+//         localStorage.setItem($input, JSON.stringify(repeatedItem));
+//         window.alert(repeatedItem.qty);
+//
+//
+//       }
+//     });
+//   $("#idBarcode").val("");
+// });
+//
+//
+// $( "#submit" ).click(function() {
+//   var newTransaction =  new OutgoingTransaction();
+//   newTransaction.postObject();
+//
+// });
+//
+// $( "#cancel" ).click(function() {
+//   localStorage.clear();
+//   location.reload();
+// });
 
-  postObject(){
-        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-        $.ajaxSetup({
-            type: 'POST',
-            url:'/polls/api/outgoingTransactions/',
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken",
-                    jQuery("[name=csrfmiddlewaretoken]").val());
-                }
-            }
-        });
-        // sets up the data into json format
-        $.ajax({
-            data:{
-            'storeId': this.store,
-            'employeeId': this.employeeId,
-            'tax': this.tax,
-            'subtotal': this.subtotal,
-            'total': this.total
-            },
-            dataType: 'application/json',
-            success:function(data){
-            }
-        });
-  }
-}
 
-class OutgoingTransactionItem{
-  constructor(data) {
-    // this.scannedItem = $("#idBarcode");
-    this.item = data.itemId;
-    this.name = data.name;
-    this.qty = 1;
-    this.price = data.salePrice;
-    this.tax = .0975;
-  }
-  getQty(){
-    return this.qty;
-  }
-  incrementQty(){
-    this.qty++;
-  }
-  displayItem(){
-
-  }
-}
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-
-function retriveItemData(callback){
-  var $input = $("#idBarcode").val();
-  var itemContainer = [];
-  return $.ajax({
-         type: 'GET',
-         url:'/polls/api/items/',
-         success:function(items){
-           $.each(items, function(i,item){
-             // if the id from the item is the same as the input
-             if(item.itemId == $input){
-               // window.alert(item.itemId);
-               callback(item);
-           }});
-         },
-       });
-}
-
-
-
-$('#itemNotFound').hide();
-// this can set in function
-$("#idBarcode").change(function(){
-  $input = $("#idBarcode").val();
-    retriveItemData(function(data){
-      if(localStorage.getItem($input) == null){
-        var item = new OutgoingTransactionItem(data);
-        localStorage.setItem(data.itemId, JSON.stringify(item));
-        window.alert(item.);
-
-      }
-      else{
-        var repeatedItem = JSON.parse(localStorage.getItem($input));
-        repeatedItem.qty++;
-        localStorage.setItem($input, JSON.stringify(repeatedItem));
-        window.alert(repeatedItem.qty);
-
-
-      }
-    });
-  $("#idBarcode").val("");
-});
-
-
-$( "#submit" ).click(function() {
-  var newTransaction =  new OutgoingTransaction();
-  newTransaction.postObject();
-
-});
-
-$( "#cancel" ).click(function() {
-  localStorage.clear();
-  location.reload();
-});
-
+//=============================================================================
 
 // // things to change on this page:
 // // make function that set and get items from local storage
