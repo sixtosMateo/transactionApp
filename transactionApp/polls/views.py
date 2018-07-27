@@ -176,11 +176,9 @@ def damageItem(request, template_name="damageItem.html"):
 def outgoingTransaction(request, template_name="outgoingTransaction.html"):
     stores = Store.objects.all()
     employee = Employee.objects.all()
-    
-    newTransaction = OutgoingTransaction.objects.create()
-    newTransactionItem = OutgoingTransactionItem.objects.create(itemId= 1, transactionId = newTransaction)
 
-
+    # newTransaction = OutgoingTransaction.objects.create()
+    # newTransactionItem = OutgoingTransactionItem.objects.create(itemId= 1, transactionId = newTransaction)
     form = OutgoingTransactionForm()
     args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
     return render(request, template_name, args)

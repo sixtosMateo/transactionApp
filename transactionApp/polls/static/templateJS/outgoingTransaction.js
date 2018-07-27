@@ -1,121 +1,147 @@
-// class OutgoingTransaction {
-//   //initialize object parameters for each OutgoingTransaction
-//   constructor() {
-//     // this.scannedItem = $("#idBarcode");
-//     this.store = $("#storeId").val();
-//     this.employeeId = $("#employeeId").val();
-//     this.subtotal = 0;
-//     this.tax = 0;
-//     this.total = this.subtotal + this.tax;
-//   }
+class OutgoingTransaction {
+  //initialize object parameters for each OutgoingTransaction
+  constructor() {
+    // this.scannedItem = $("#idBarcode");
+    this.store = $("#storeId").val();
+    this.employeeId = $("#employeeId").val();
+    this.subtotal = $("#subtotal").val();
+    this.tax = .875;
+    this.total = this.subtotal + this.tax;
+  }
+
+  postObject(){
+        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+        $.ajaxSetup({
+            type: 'POST',
+            url:'/polls/api/outgoingTransactions/',
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken",
+                    jQuery("[name=csrfmiddlewaretoken]").val());
+                }
+            }
+        });
+        // sets up the data into json format
+        $.ajax({
+            data:{
+            'storeId': this.store,
+            'employeeId': this.employeeId,
+            'tax': this.tax,
+            'subtotal': this.subtotal,
+            'total': this.total
+            },
+            dataType: 'application/json',
+            success:function(data){
+            }
+        });
+  }
+}
+
+class OutgoingTransactionItem{
+  constructor(data) {
+    // this.scannedItem = $("#idBarcode");
+    this.item = data.itemId;
+    this.name = data.name;
+    this.qty = 1;
+    this.price = data.salePrice;
+    this.tax = .0975;
+  }
+  incrementQty(){
+    this.qty++;
+  }
+  getItemName(){
+    return this.name;
+  }
+  displayItem(){
+
+  }
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+
+function retriveItemData(callback){
+  var $input = $("#idBarcode").val();
+  var itemContainer = [];
+  return $.ajax({
+         type: 'GET',
+         url:'/polls/api/items/',
+         success:function(items){
+           $.each(items, function(i,item){
+             // if the id from the item is the same as the input
+             if(item.itemId == $input){
+               // window.alert(item.itemId);
+               callback(item);
+           }});
+         },
+       });
+}
+
+
+function alertItem(item){
+  var transItem = new OutgoingTransactionItem(item);
+  window.alert(transItem.getItemName());
+}
+
+
+
+
+
+$('#itemNotFound').hide();
+// this can set in function
+$("#idBarcode").change(function(){
+  $input = $("#idBarcode").val();
+    retriveItemData(alertItem);
+    // retriveItemData(function(data){
+    //   if(localStorage.getItem($input) == null){
+    //     var item = new OutgoingTransactionItem(data);
+    //     localStorage.setItem(data.itemId, JSON.stringify(item));
+    //     $( "#itemsList" ).append( "<dt id="+ item.item+" > qty: "+item.qty+"<dt>" );
+    //     subtotal(item.price);
+    //
+    //   }
+    //   else{
+    //     var repeatedItem = JSON.parse(localStorage.getItem($input));
+    //     repeatedItem.qty++;
+    //     localStorage.setItem($input, JSON.stringify(repeatedItem));
+    //     $( "#itemsList" ).append( "<dt id=" + repeatedItem.item +" > qty: "+repeatedItem.qty+"<dt>" );
+    //     subtotal(repeatedItem.price);
+    //
+    //
+    //   }
+    // });
+  $("#idBarcode").val("");
+});
+
+
+$( "#submit" ).click(function() {
+  var newTransaction =  new OutgoingTransaction();
+  newTransaction.postObject();
+
+});
+
+$( "#cancel" ).click(function() {
+  localStorage.clear();
+  location.reload();
+});
+
+
+localStorage.setItem('subtotal', 0);
+localStorage.setItem('total', 0);
 //
-//   postObject(){
-//         // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-//         //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-//         $.ajaxSetup({
-//             type: 'POST',
-//             url:'/polls/api/outgoingTransactions/',
-//             beforeSend: function(xhr, settings) {
-//                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-//                     xhr.setRequestHeader("X-CSRFToken",
-//                     jQuery("[name=csrfmiddlewaretoken]").val());
-//                 }
-//             }
-//         });
-//         // sets up the data into json format
-//         $.ajax({
-//             data:{
-//             'storeId': this.store,
-//             'employeeId': this.employeeId,
-//             'tax': this.tax,
-//             'subtotal': this.subtotal,
-//             'total': this.total
-//             },
-//             dataType: 'application/json',
-//             success:function(data){
-//             }
-//         });
-//   }
-// }
-//
-// class OutgoingTransactionItem{
-//   constructor(data) {
-//     // this.scannedItem = $("#idBarcode");
-//     this.item = data.itemId;
-//     this.name = data.name;
-//     this.qty = 1;
-//     this.price = data.salePrice;
-//     this.tax = .0975;
-//   }
-//   getQty(){
-//     return this.qty;
-//   }
-//   incrementQty(){
-//     this.qty++;
-//   }
-//   displayItem(){
-//
-//   }
-// }
-//
-// function csrfSafeMethod(method) {
-//     // these HTTP methods do not require CSRF protection
-//     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-// }
-//
-// function retriveItemData(callback){
-//   var $input = $("#idBarcode").val();
-//   var itemContainer = [];
-//   return $.ajax({
-//          type: 'GET',
-//          url:'/polls/api/items/',
-//          success:function(items){
-//            $.each(items, function(i,item){
-//              // if the id from the item is the same as the input
-//              if(item.itemId == $input){
-//                // window.alert(item.itemId);
-//                callback(item);
-//            }});
-//          },
-//        });
-// }
-//
-//
-//
-// $('#itemNotFound').hide();
-// // this can set in function
-// $("#idBarcode").change(function(){
-//   $input = $("#idBarcode").val();
-//     retriveItemData(function(data){
-//       if(localStorage.getItem($input) == null){
-//         var item = new OutgoingTransactionItem(data);
-//         localStorage.setItem(data.itemId, JSON.stringify(item));
-//         $( "#itemsList" ).append( "<dt id="+ item.item+" >Test<dt>" );
-//
-//       }
-//       else{
-//         var repeatedItem = JSON.parse(localStorage.getItem($input));
-//         repeatedItem.qty++;
-//         localStorage.setItem($input, JSON.stringify(repeatedItem));
-//         window.alert(repeatedItem.qty);
-//
-//
-//       }
-//     });
-//   $("#idBarcode").val("");
-// });
-//
-//
-// $( "#submit" ).click(function() {
-//   var newTransaction =  new OutgoingTransaction();
-//   newTransaction.postObject();
-//
-// });
-//
-// $( "#cancel" ).click(function() {
-//   localStorage.clear();
-//   location.reload();
-// });
+// funtion updates the value of subtotal and total base on user input
+function subtotal(price){
+  var increment = parseFloat(localStorage.getItem('subtotal'));
+  increment += parseFloat(price);
+  localStorage.setItem('subtotal', increment);
+  localStorage.setItem('total', increment + (increment * .0975));
+  $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
+  $('#total').text("Total: " + localStorage.getItem('total'));
+}
 
 
 //=============================================================================
@@ -251,7 +277,7 @@
 //
 // localStorage.setItem('subtotal', 0);
 // localStorage.setItem('total', 0);
-//
+// //
 // // funtion updates the value of subtotal and total base on user input
 // function subtotal(price){
 //   var increment = parseFloat(localStorage.getItem('subtotal'));
@@ -261,4 +287,3 @@
 //   $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
 //   $('#total').text("Total: " + localStorage.getItem('total'));
 // }
-//
