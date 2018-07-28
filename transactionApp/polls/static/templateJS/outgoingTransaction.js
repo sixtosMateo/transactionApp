@@ -1,5 +1,13 @@
+// things to change on this page:
+// change: initializing trasanction item not found messages appear for a second
+// dont make ajax eveytime something gets scan do it once and store it locally
+// jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
+
+
+
 class OutgoingTransaction {
-  //initialize object parameters for each OutgoingTransaction
+
+  // initialize object parameters for each OutgoingTransaction
   constructor() {
     // this.scannedItem = $("#idBarcode");
     this.store = $("#storeId").val();
@@ -9,6 +17,7 @@ class OutgoingTransaction {
     this.total = $("#total").val();
   }
 
+  // this function post data to the database using ajax
   postObject(){
         // ajaxSetup keeps CSRFToken safe from attacks since we using external url
         //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
@@ -40,8 +49,8 @@ class OutgoingTransaction {
 
 class OutgoingTransactionItem{
 
+  // initialize object parameters for each OutgoingTransactionItem
   constructor(data) {
-    // this.scannedItem = $("#idBarcode");
     this.item = data.itemId;
     this.name = data.name;
     this.qty = 1;
@@ -62,7 +71,8 @@ class OutgoingTransactionItem{
                 }
             }
         });
-        // sets up the data into json format
+
+        // this function post data to the database using ajax
         $.ajax({
             data:{
             'itemId': this.item,
@@ -78,13 +88,13 @@ class OutgoingTransactionItem{
   }
 }
 
-
+//required for ajaxSetup for each class postObject function
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-// does ajax call to retrieve function and uses callback function
+// does ajax call to retrieve data and takes in a callback function to access data
 function retriveItemData(callback){
   var $input = $("#idBarcode").val();
   var itemContainer = [];
@@ -104,7 +114,7 @@ function retriveItemData(callback){
 
 localStorage.setItem('subtotal', 0);
 
-// callback function returns item object
+// callback function calls a function that display and update subtotal, total, tax
 function itemCallback(data){
   subtotal(data.salePrice);
 }
@@ -114,20 +124,22 @@ function createTransactionItem(data){
   var tableName = $("#itemsList");
 
   if($("#"+data.itemId).length == 0){
-    var transItem = new OutgoingTransactionItem(data);
-    tableName.append("<tr id=" + transItem.item + ">" +
-                      "<td id='itemId' value='"+transItem.item+"'>"+transItem.item+"</td>"+
-                      "<td id='name' value='"+transItem.name+"'>"+transItem.name+"</td>"+
-                      "<td id='price' value='"+transItem.price+"'>"+transItem.price+"</td>"+
-                      "<td id='qty' value='"+transItem.qty+"'>"+transItem.qty+"</td>"+
+    // var transItem = new OutgoingTransactionItem(data);
+    tableName.append("<tr id=" + data.itemId + ">" +
+                      "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
+                      "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
+                      "<td id='price' value='"+data.salePrice+"'>"+data.salePrice+"</td>"+
+                      "<td id='qty' value='"+1+"'>"+1+"</td>"+
                       "</tr>");
   }
   else{
-    // tableName.find('tr#' +data.itemId).find('td#qty').html("<td id='qty' value='"+   +"'>"+  +"</td>");
-    var qtyValue = parseInt(tableName.find('tr#' +data.itemId).find('td#qty').html());
-    console.log(qtyValue);
+    // find() function allows to access each element that we are looking for
+    var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
     qtyValue++;
-    tableName.find('tr#' +data.itemId).find('td#qty').replaceWith("<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
+
+    //replaceWith is replacing an element with another, in this case itself with new values
+    tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
+      "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
   }
 
 }
@@ -167,130 +179,3 @@ $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
 });
-
-
-//this to change the value of cell
-
-//     $('#'+table).find('tr#'+rowId).find('td:eq(colNum)').html(newValue);
-
-
-//$('#elemId').length -> this to check if element with ID exist
-
-// $input = $("#idBarcode").val();
-//
-// if(localStorage.getItem($input) == null){
-//
-//   var item = new OutgoingTransactionItem(data);
-//
-//   localStorage.setItem(item.item, JSON.stringify(item));
-//
-//   $( "#itemsList" ).append( "<dt id="+ item.item+" > qty: "+ item.item+ " "+item.qty+" <dt>" );
-//   // subtotal(item.price);
-// }
-// else{
-//   var repeatedItem = JSON.parse(localStorage.getItem($input));
-//   repeatedItem.qty++;
-//
-//   localStorage.setItem($input, JSON.stringify(repeatedItem));
-//
-//   $( "#"+ repeatedItem.item).text("qty: "+repeatedItem.qty );
-//   // subtotal(repeatedItem.price);
- // }
-
-
-// localStorage.setItem('subtotal', 0);
-// localStorage.setItem('total', 0);
-//
-// funtion updates the value of subtotal and total base on user input
-
-
-
-
-//=============================================================================
-
-// // things to change on this page:
-// // make function that set and get items from local storage
-// // change: initializing trasanction item not found messages appear for a second
-// // content need to appear even after page refresh unless user cancel Transaction
-// // float number should only be display to the tenth decimal
-// // dont make ajax eveytime something gets scan do it once and store it locally
-// // total and subtotal doesnt contain the value
-// // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
-// // create a function that makes ajax function with arguments
-
-
-//
-// $("#idBarcode").change(function(){
-//   $(function(){
-//     var $input = $("#idBarcode").val();
-//     var $itemId = $('#itemId');
-//     var $itemName = $('#itemName');
-//     var $itemQty= $('#itemQty');
-//     var $price = $('#price');
-//
-//     // if the input id doesnt exist in local storage
-//     if(localStorage.getItem($input) == null){
-//
-//       var $itemContainer = [];
-//
-//       // make ajax get request to look for item
-//       $.ajax({
-//         type: 'GET',
-//         url:'/polls/api/items/',
-//         success:function(items){
-//           $.each(items, function(i,item){
-//             // if the id from the item is the same as the input
-//             if(item.itemId == $input){
-//               var itemId = item.itemId;
-//               var itemName = item.name;
-//               var itemSalePrice = item.salePrice;
-//               var itemQty = 1;
-//               var tax = .0975;
-//
-//               // push all items as json object into $itemContainer array
-//               $itemContainer.push({"itemId": itemId, "itemName": itemName,
-//               "itemSalePrice": itemSalePrice, "itemQty": itemQty, "tax": tax});
-//
-//               // set the item into localStorage as json object
-//               localStorage.setItem(itemId, JSON.stringify($itemContainer));
-//
-//               displayItemScanned(JSON.parse(localStorage.getItem(itemId)));
-//               subtotal(itemSalePrice);
-//               return;
-//           }});
-//         }});
-//     }
-//     else{
-//       // if $input has been stored in local storage update the qty
-//       var updateItem = JSON.parse(localStorage.getItem($input));
-//       updateItem[0].itemQty++;
-//       localStorage.setItem(updateItem[0].itemId, JSON.stringify(updateItem));
-//       subtotal(updateItem[0].itemSalePrice);
-//     }
-//
-//     // parse the json object from localStorage based on the input
-//     var x = JSON.parse(localStorage.getItem($input));
-//     displayItemScanned(x);
-//     $("#idBarcode").val("");
-//   });
-// });
-//
-//
-
-//
-//
-
-//
-//
-// localStorage.setItem('subtotal', 0);
-// localStorage.setItem('total', 0);
-// //
-// // funtion updates the value of subtotal and total base on user input
-// function subtotal(price){
-//   var increment = parseFloat(localStorage.getItem('subtotal'));
-//   increment += parseFloat(price);
-//   localStorage.setItem('subtotal', increment);
-//   localStorage.setItem('total', increment + (increment * .0975));
-//   $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
-//   $('#total').text("Total: " + localStorage.getItem('total'));
-// }
