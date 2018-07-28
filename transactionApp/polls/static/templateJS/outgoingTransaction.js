@@ -47,23 +47,15 @@ class OutgoingTransactionItem{
     this.price = data.salePrice;
     this.tax = .0975;
   }
-  incrementQty(){
-    this.qty++;
-  }
-  getItemName(){
-    return this.name;
-  }
-  displayItem(){
-
-  }
 }
+
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-
+// does ajax call to retrieve function and uses callback function
 function retriveItemData(callback){
   var $input = $("#idBarcode").val();
   var itemContainer = [];
@@ -81,41 +73,23 @@ function retriveItemData(callback){
        });
 }
 
+localStorage.setItem('subtotal', 0);
 
-function alertItem(item){
-  var transItem = new OutgoingTransactionItem(item);
-  window.alert(transItem.getItemName());
+// callback function returns item object
+function itemCallback(data){
+  subtotal(data.salePrice);
 }
-
-
-
 
 
 $('#itemNotFound').hide();
 // this can set in function
 $("#idBarcode").change(function(){
-  $input = $("#idBarcode").val();
-    retriveItemData(alertItem);
-    // retriveItemData(function(data){
-    //   if(localStorage.getItem($input) == null){
-    //     var item = new OutgoingTransactionItem(data);
-    //     localStorage.setItem(data.itemId, JSON.stringify(item));
-    //     $( "#itemsList" ).append( "<dt id="+ item.item+" > qty: "+item.qty+"<dt>" );
-    //     subtotal(item.price);
-    //
-    //   }
-    //   else{
-    //     var repeatedItem = JSON.parse(localStorage.getItem($input));
-    //     repeatedItem.qty++;
-    //     localStorage.setItem($input, JSON.stringify(repeatedItem));
-    //     $( "#itemsList" ).append( "<dt id=" + repeatedItem.item +" > qty: "+repeatedItem.qty+"<dt>" );
-    //     subtotal(repeatedItem.price);
-    //
-    //
-    //   }
-    // });
+    retriveItemData(itemCallback);
+
   $("#idBarcode").val("");
+
 });
+
 
 
 $( "#submit" ).click(function() {
@@ -130,8 +104,30 @@ $( "#cancel" ).click(function() {
 });
 
 
-localStorage.setItem('subtotal', 0);
-localStorage.setItem('total', 0);
+// $input = $("#idBarcode").val();
+//
+// if(localStorage.getItem($input) == null){
+//
+//   var item = new OutgoingTransactionItem(data);
+//
+//   localStorage.setItem(item.item, JSON.stringify(item));
+//
+//   $( "#itemsList" ).append( "<dt id="+ item.item+" > qty: "+ item.item+ " "+item.qty+" <dt>" );
+//   // subtotal(item.price);
+// }
+// else{
+//   var repeatedItem = JSON.parse(localStorage.getItem($input));
+//   repeatedItem.qty++;
+//
+//   localStorage.setItem($input, JSON.stringify(repeatedItem));
+//
+//   $( "#"+ repeatedItem.item).text("qty: "+repeatedItem.qty );
+//   // subtotal(repeatedItem.price);
+ // }
+
+
+// localStorage.setItem('subtotal', 0);
+// localStorage.setItem('total', 0);
 //
 // funtion updates the value of subtotal and total base on user input
 function subtotal(price){
@@ -139,9 +135,13 @@ function subtotal(price){
   increment += parseFloat(price);
   localStorage.setItem('subtotal', increment);
   localStorage.setItem('total', increment + (increment * .0975));
-  $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
-  $('#total').text("Total: " + localStorage.getItem('total'));
+  $('#subtotal').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +localStorage.getItem('subtotal')+ " readonly><br>");
+  // $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
+
+  $('#total').html("Total: <input type='text' id='total' name='total' value=" +localStorage.getItem('total')+ " readonly><br>");
+
 }
+
 
 
 //=============================================================================

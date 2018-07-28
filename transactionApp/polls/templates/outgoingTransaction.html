@@ -6,6 +6,9 @@
   #noBorderText{
     border-style: none;
   }
+  #total, #subtotal{
+   border-style: none;
+ }
 </style>
 {% endblock %}
 
@@ -40,8 +43,10 @@
           <h1 id="itemNotFound">Item Not Found</h1>
           <dl id="itemsList">
           </dl>
-          <h1 id="subtotal"></h1>
+
           <h1 id="tax"></h1>
+
+          <h1 id="subtotal"></h1>
           <h1 id="total"></h1>
 
           <a role ="button" id="submit">Submit</a>
