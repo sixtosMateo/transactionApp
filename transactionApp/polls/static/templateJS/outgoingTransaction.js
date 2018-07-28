@@ -46,7 +46,7 @@ class OutgoingTransactionItem{
     this.name = data.name;
     this.qty = 1;
     this.price = data.salePrice;
-    this.tax = .0975;
+    this.tax = .0925;
   }
 
   postObject(){
@@ -109,6 +109,7 @@ function itemCallback(data){
   subtotal(data.salePrice);
 }
 
+//this is a callback funtion that display a table with the object data
 function createTransactionItem(data){
   var tableName = $("#itemsList");
 
@@ -121,11 +122,13 @@ function createTransactionItem(data){
                       "<td id='qty' value='"+transItem.qty+"'>"+transItem.qty+"</td>"+
                       "</tr>");
   }
-
-//         $itemDetails.append("<dt id=" + key.itemId + "> Item Id: " + key.itemId
-//         + " Item Name: " + key.itemName+ " Price: " + key.itemSalePrice+
-//         " Qty: " + key.itemQty + "</dt>");
-
+  else{
+    // tableName.find('tr#' +data.itemId).find('td#qty').html("<td id='qty' value='"+   +"'>"+  +"</td>");
+    var qtyValue = parseInt(tableName.find('tr#' +data.itemId).find('td#qty').html());
+    console.log(qtyValue);
+    qtyValue++;
+    tableName.find('tr#' +data.itemId).find('td#qty').replaceWith("<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
+  }
 
 }
 
@@ -133,8 +136,8 @@ function subtotal(price){
   var increment = parseFloat(localStorage.getItem('subtotal'));
   increment += parseFloat(price);
   localStorage.setItem('subtotal', increment);
-  localStorage.setItem('tax', increment * .0975);
-  localStorage.setItem('total', increment + (increment * .0975));
+  localStorage.setItem('tax', increment * .0925);
+  localStorage.setItem('total', increment + (increment * .0925));
   $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
   $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
   $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
@@ -149,13 +152,9 @@ $("#idBarcode").change(function(){
     retriveItemData(itemCallback);
     retriveItemData(createTransactionItem);
 
-
   $("#idBarcode").val("");
 
 });
-
-
-
 
 $( "#submit" ).click(function() {
   var newTransaction =  new OutgoingTransaction();
@@ -168,6 +167,12 @@ $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
 });
+
+
+//this to change the value of cell
+
+//     $('#'+table).find('tr#'+rowId).find('td:eq(colNum)').html(newValue);
+
 
 //$('#elemId').length -> this to check if element with ID exist
 
@@ -212,10 +217,7 @@ $( "#cancel" ).click(function() {
 // // total and subtotal doesnt contain the value
 // // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
 // // create a function that makes ajax function with arguments
-//
-//
-// $('#itemNotFound').hide();
-//
+
 
 //
 // $("#idBarcode").change(function(){
@@ -274,62 +276,10 @@ $( "#cancel" ).click(function() {
 // });
 //
 //
-// function completeTransaction(){
-//     // access value of total and subtotal from local localStorage
-//
-//     var $subtotal = parseFloat(localStorage.getItem('subtotal'));
-//     var $total = parseFloat(localStorage.getItem('total'));
-//
-//     // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-//     //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-//     $.ajaxSetup({
-//         type: 'POST',
-//         url:'/polls/api/outgoingTransactions/',
-//         beforeSend: function(xhr, settings) {
-//             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-//                 xhr.setRequestHeader("X-CSRFToken",
-//                 jQuery("[name=csrfmiddlewaretoken]").val());
-//             }
-//         }
-//     });
-//     // sets up the data into json format
-//     $.ajax({
-//         data:{
-//         'storeId': $('#storeId').val(),
-//         'employeeId': $('#employeeId').val(),
-//         'tax': .0975,
-//         'subtotal': $subtotal,
-//         'total': $total
-//         },
-//         dataType: 'application/json',
-//         success:function(data){
-//         }
-//     });
-//
-// }
+
 //
 //
-// // function displays the item info
-// function displayItemScanned(object){
-//   var $itemDetails = $('#itemsList');
-//   $('#itemNotFound').hide();
-//
-//   if(object){
-//     // iterating data fields from localStorage object that was pass in
-//     object.forEach(function(key){
-//       if(key.itemQty==1){
-//         $itemDetails.append("<dt id=" + key.itemId + "> Item Id: " + key.itemId
-//         + " Item Name: " + key.itemName+ " Price: " + key.itemSalePrice+
-//         " Qty: " + key.itemQty + "</dt>");
-//       }else{
-//         $("#"+key.itemId).text("Item Id: "+ key.itemId + " Item Name: " +
-//         key.itemName + " Price: " + key.itemSalePrice+" Qty: " + key.itemQty);
-//       }
-//     });
-//   }else{
-//     $('#itemNotFound').show();
-//   }
-// }
+
 //
 //
 // localStorage.setItem('subtotal', 0);
