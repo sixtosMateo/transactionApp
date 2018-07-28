@@ -1,4 +1,5 @@
 // things to change on this page:
+// delete items from table or decrease qty
 // change: initializing trasanction item not found messages appear for a second
 // dont make ajax eveytime something gets scan do it once and store it locally
 // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
@@ -122,8 +123,9 @@ function itemCallback(data){
 //this is a callback funtion that display a table with the object data
 function createTransactionItem(data){
   var tableName = $("#itemsList");
-
+  $('#itemsList').show()
   if($("#"+data.itemId).length == 0){
+
     // var transItem = new OutgoingTransactionItem(data);
     tableName.append("<tr id=" + data.itemId + ">" +
                       "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
@@ -159,8 +161,10 @@ function subtotal(price){
 
 
 $('#itemNotFound').hide();
+$('#itemsList').hide()
 // this can set in function
 $("#idBarcode").change(function(){
+
     retriveItemData(itemCallback);
     retriveItemData(createTransactionItem);
 
