@@ -39,6 +39,7 @@ class OutgoingTransaction {
 }
 
 class OutgoingTransactionItem{
+
   constructor(data) {
     // this.scannedItem = $("#idBarcode");
     this.item = data.itemId;
@@ -46,6 +47,34 @@ class OutgoingTransactionItem{
     this.qty = 1;
     this.price = data.salePrice;
     this.tax = .0975;
+  }
+
+  postObject(){
+        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+        $.ajaxSetup({
+            type: 'POST',
+            url:'/polls/api/outgoingTransactionItems/',
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken",
+                    jQuery("[name=csrfmiddlewaretoken]").val());
+                }
+            }
+        });
+        // sets up the data into json format
+        $.ajax({
+            data:{
+            'itemId': this.item,
+            'quantitySold': this.qty,
+            'tax': this.tax,
+            'subtotal': this.subtotal,
+            'transactionId':this.obj
+            },
+            dataType: 'application/json',
+            success:function(data){
+            }
+        });
   }
 }
 
@@ -80,11 +109,46 @@ function itemCallback(data){
   subtotal(data.salePrice);
 }
 
+function createTransactionItem(data){
+  var tableName = $("#itemsList");
+
+  if($("#"+data.itemId).length == 0){
+    var transItem = new OutgoingTransactionItem(data);
+    tableName.append("<tr id=" + transItem.item + ">" +
+                      "<td id='itemId' value='"+transItem.item+"'>"+transItem.item+"</td>"+
+                      "<td id='name' value='"+transItem.name+"'>"+transItem.name+"</td>"+
+                      "<td id='price' value='"+transItem.price+"'>"+transItem.price+"</td>"+
+                      "<td id='qty' value='"+transItem.qty+"'>"+transItem.qty+"</td>"+
+                      "</tr>");
+  }
+
+//         $itemDetails.append("<dt id=" + key.itemId + "> Item Id: " + key.itemId
+//         + " Item Name: " + key.itemName+ " Price: " + key.itemSalePrice+
+//         " Qty: " + key.itemQty + "</dt>");
+
+
+}
+
+function subtotal(price){
+  var increment = parseFloat(localStorage.getItem('subtotal'));
+  increment += parseFloat(price);
+  localStorage.setItem('subtotal', increment);
+  localStorage.setItem('tax', increment * .0975);
+  localStorage.setItem('total', increment + (increment * .0975));
+  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
+
+}
+
+
 
 $('#itemNotFound').hide();
 // this can set in function
 $("#idBarcode").change(function(){
     retriveItemData(itemCallback);
+    retriveItemData(createTransactionItem);
+
 
   $("#idBarcode").val("");
 
@@ -92,10 +156,12 @@ $("#idBarcode").change(function(){
 
 
 
+
 $( "#submit" ).click(function() {
   var newTransaction =  new OutgoingTransaction();
   newTransaction.postObject();
-
+  localStorage.clear();
+  location.reload();
 });
 
 $( "#cancel" ).click(function() {
@@ -103,6 +169,7 @@ $( "#cancel" ).click(function() {
   location.reload();
 });
 
+//$('#elemId').length -> this to check if element with ID exist
 
 // $input = $("#idBarcode").val();
 //
@@ -130,17 +197,7 @@ $( "#cancel" ).click(function() {
 // localStorage.setItem('total', 0);
 //
 // funtion updates the value of subtotal and total base on user input
-function subtotal(price){
-  var increment = parseFloat(localStorage.getItem('subtotal'));
-  increment += parseFloat(price);
-  localStorage.setItem('subtotal', increment);
-  localStorage.setItem('tax', increment * .0975);
-  localStorage.setItem('total', increment + (increment * .0975));
-  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
-  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
-  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
 
-}
 
 
 
