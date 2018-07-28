@@ -5,8 +5,8 @@ class OutgoingTransaction {
     this.store = $("#storeId").val();
     this.employeeId = $("#employeeId").val();
     this.subtotal = $("#subtotal").val();
-    this.tax = .875;
-    this.total = this.subtotal + this.tax;
+    this.tax = $("#tax").val();
+    this.total = $("#total").val();
   }
 
   postObject(){
@@ -134,11 +134,11 @@ function subtotal(price){
   var increment = parseFloat(localStorage.getItem('subtotal'));
   increment += parseFloat(price);
   localStorage.setItem('subtotal', increment);
+  localStorage.setItem('tax', increment * .0975);
   localStorage.setItem('total', increment + (increment * .0975));
-  $('#subtotal').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +localStorage.getItem('subtotal')+ " readonly><br>");
-  // $('#subtotal').text("Subtotal: " + localStorage.getItem('subtotal'));
-
-  $('#total').html("Total: <input type='text' id='total' name='total' value=" +localStorage.getItem('total')+ " readonly><br>");
+  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
 
 }
 

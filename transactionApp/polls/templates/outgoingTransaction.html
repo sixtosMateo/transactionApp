@@ -3,10 +3,8 @@
 {% block head %}
 <title>Outgoing Transaction</title>
 <style>
-  #noBorderText{
-    border-style: none;
-  }
-  #total, #subtotal{
+
+  #total, #subtotal, #employeeId, #tax{
    border-style: none;
  }
 </style>
@@ -34,7 +32,7 @@
 
           <fieldset class="form-group">
             <label for="employeeId">Employee:</label>
-            <input type="text" name="employeeId" value={{user.id}} readonly id="noBorderText"><br>
+            <input type="text" name="employeeId" value={{user.id}} readonly id="employeeId"><br>
             <!-- <select id="employeeId" name="employeeId">
               <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
             </select> -->
@@ -44,10 +42,11 @@
           <dl id="itemsList">
           </dl>
 
-          <h1 id="tax"></h1>
 
-          <h1 id="subtotal"></h1>
-          <h1 id="total"></h1>
+
+          <h1 id="sub"></h1>
+          <h1 id="taxTotal"></h1>
+          <h1 id="tot"></h1>
 
           <a role ="button" id="submit">Submit</a>
           <a role ="button" id="cancel">Cancel</a>
