@@ -12,7 +12,7 @@ $("#id").change(function(){
     var $count =0;
     $.ajax({
       type: 'GET',
-      url:'/polls/items/',
+      url:'/polls/api/items/',
       success:function(items){
         $.each(items, function(i,item){
           if(item.itemId == $input){

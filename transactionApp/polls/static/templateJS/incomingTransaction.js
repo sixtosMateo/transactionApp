@@ -1,13 +1,19 @@
-$( "#idBarcode" ).change(function() {
+$("#idBarcode").change(function(){
+
+  $("#idBarcode").val("");
 
 });
 
+$( "#submit" ).click(function() {
 
+  
+  localStorage.clear();
+  location.reload();
+});
 
 $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
-
 });
 
 function completeTransaction(){

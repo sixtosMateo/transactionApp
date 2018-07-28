@@ -2,6 +2,12 @@
 
 {% block head %}
 <title>IncomingTransaction</title>
+<style>
+#employeeId{
+  border-style: none;
+}
+
+</style>
 {% endblock %}
 
 
@@ -16,7 +22,7 @@
           <form onsubmit="completeTransaction()">
 
             <fieldset class="form-group">
-              <label for="vendorId">Vendor Name:</label> <a role ="button" href="{% url 'newVendor' %}"> Create Vendor</a></br>
+              <label for="vendorId">Vendor Name:</label> <a role ="button" href="{% url 'newVendor' %}" target="_blank"> Create Vendor</a></br>
               <select id="vendorId" name="vendorId">
                 {% for vendor in vendors %}
                 <option value={{vendor.vendorId}}>{{vendor.name}}</option>
@@ -26,10 +32,8 @@
             <!-- add another link to add a vendor  -->
 
             <fieldset class="form-group">
-              <label for="employeeId">Employee:</label></br>
-              <select id="employeeId" name="employeeId">
-                <option value={{user.id}}>{{user.first_name}} {{user.last_name}}</option>
-              </select>
+              <label for="employeeId">Employee:</label>
+              <input type="text" name="employeeId" value={{user.id}} readonly id="employeeId"><br>
             </fieldset>
 
           <!-- dont forget about the barcode -->
