@@ -1,5 +1,5 @@
 // what happen when the purchasedPrice changes
-
+//when its in the thousandth it should round it not ceil 
 $("#newitemForm").hide();
 $("#itemsTable").hide();
 $("#idBarcode").change(function(){
