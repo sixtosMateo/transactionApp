@@ -194,10 +194,11 @@ def viewOutgoingTransactionItems(request, pk,
 @login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):
     vendors = Vendor.objects.all()
-    
+    stores = Store.objects.all()
     form = IncomingTransactionForm()
+
     #there might be a switch with user and employee *needs attention*
-    return render(request, template_name,{'form':form, 'vendors':vendors, 'user':request.user})
+    return render(request, template_name,{'form':form, 'vendors':vendors, 'stores': stores,'user':request.user})
 
 @login_required
 def vendor(request, template_name="vendor.html"):

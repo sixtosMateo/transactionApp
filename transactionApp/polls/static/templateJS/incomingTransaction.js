@@ -1,12 +1,14 @@
+$("#newitemForm").hide();
 $("#idBarcode").change(function(){
+  $("#newitemForm").hide();
+  verifiedItemExist(callbackFound);
 
   $("#idBarcode").val("");
-
 });
 
 $( "#submit" ).click(function() {
 
-  
+
   localStorage.clear();
   location.reload();
 });
@@ -52,3 +54,54 @@ function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
+// this function
+function verifiedItemExist(callback){
+  var $input = $("#idBarcode").val();
+  var $exist =false;
+  return $.ajax({
+         type: 'GET',
+         url:'/polls/api/items/',
+         success:function(items){
+           $.map(items, function (item){
+             if(item.itemId == $input){
+               $exist=true;
+               callback($exist);
+
+             }
+           });
+           if ($exist == false){
+            callback($exist);
+           }
+
+         }
+       });
+  //
+}
+
+
+function callbackFound(found){
+  if(found == false){
+    $("#newitemForm").show();
+  }
+
+}
+
+
+
+// var id = "Commercial Banking"; // eg vale
+//   $.ajax({
+//        type        : "GET",
+//        dataType    : "json",
+
+//        async       : false,
+//        success     : function(outlet){
+//
+//           $.map(outlet, function (v) {
+//              if(v.NamaOutlet == id){
+//                window.location.href = "page_a.php";
+//              }
+//           });
+//           window.location.href = "page_b.php";
+//        }
+// });

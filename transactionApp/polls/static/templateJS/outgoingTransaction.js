@@ -3,8 +3,9 @@
 // change: initializing trasanction item not found messages appear for a second
 // dont make ajax eveytime something gets scan do it once and store it locally
 // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
+// i need to update the total quantity of inventory when OutgoingTransaction is posted
 
-
+//************************** OBJECT SAVE AS CLASSES:**************************
 
 class OutgoingTransaction {
 
@@ -89,6 +90,8 @@ class OutgoingTransactionItem{
   }
 }
 
+//************************** USEFUL FUNCTION:**************************
+
 //required for ajaxSetup for each class postObject function
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -109,7 +112,7 @@ function retriveItemData(callback){
                // window.alert(item.itemId);
                callback(item);
            }});
-         },
+         }
        });
 }
 
@@ -158,7 +161,7 @@ function subtotal(price){
 
 }
 
-
+//************************** EVENT LISTENER:**************************
 
 $('#itemNotFound').hide();
 $('#itemsList').hide()
