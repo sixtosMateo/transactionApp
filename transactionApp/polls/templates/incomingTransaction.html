@@ -3,10 +3,13 @@
 {% block head %}
 <title>IncomingTransaction</title>
 <style>
-#employeeId{
-  border-style: none;
+#total, #subtotal, #employeeId, #tax{
+ border-style: none;
 }
 
+#itemsTable{
+  width:50%;
+}
 </style>
 {% endblock %}
 
@@ -45,7 +48,13 @@
               </tr>
 
             </table>
-
+          </br>
+          <div id="calculation">
+            <h2 id="sub"></h2>
+            <h2 id="taxTotal"></h2>
+            <h2 id="tot"></h2>
+          </div>
+          </br>
             <button id="submit" type="submit">Submit</button>
             <a role ="button" id="cancel">Cancel</a>
         </form>

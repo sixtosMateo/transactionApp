@@ -12,11 +12,25 @@ $( "#submit" ).click(function() {
   localStorage.clear();
   location.reload();
 });
-
 $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
 });
+
+localStorage.setItem('subtotal', 0);
+function subtotal(price){
+  var increment = parseFloat(localStorage.getItem('subtotal'));
+  increment += parseFloat(price);
+  localStorage.setItem('subtotal', increment);
+  localStorage.setItem('tax', increment * .0925);
+  localStorage.setItem('total', increment + (increment * .0925));
+  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
+
+}
+
+
 
 function completeTransaction(){
     // access value of total and subtotal from local localStorage
@@ -105,7 +119,7 @@ function callbackFound(found, data){
 
     }
   }
-
+  subtotal(data.purchasedPrice);
 }
 
 class IncomingTransactionItem{
