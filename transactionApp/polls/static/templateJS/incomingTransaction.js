@@ -1,3 +1,5 @@
+// what happen when the purchasedPrice changes
+
 $("#newitemForm").hide();
 $("#itemsTable").hide();
 $("#idBarcode").change(function(){
@@ -78,11 +80,30 @@ function verifiedItemExist(callback){
 }
 
 function callbackFound(found, data){
+  var tableName = $("#itemsTable");
   if(found == false){
     $("#newitemForm").show();
   }
   else{
     $('#itemsTable').show()
+    if($("#"+data.itemId).length == 0){
+      // var transItem = new OutgoingTransactionItem(data);
+      tableName.append("<tr id=" + data.itemId + ">" +
+                        "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
+                        "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
+                        "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
+                        "<td id='qty' value='"+1+"'>"+1+"</td>"+
+                        "</tr>");
+    }
+    else{
+      var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
+      qtyValue++;
+
+      //replaceWith is replacing an element with another, in this case itself with new values
+      tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
+        "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
+
+    }
   }
 
 }
