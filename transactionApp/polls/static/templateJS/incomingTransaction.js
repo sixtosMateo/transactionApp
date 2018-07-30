@@ -1,14 +1,12 @@
 $("#newitemForm").hide();
+$("#itemsTable").hide();
 $("#idBarcode").change(function(){
   $("#newitemForm").hide();
   verifiedItemExist(callbackFound);
-
   $("#idBarcode").val("");
 });
 
 $( "#submit" ).click(function() {
-
-
   localStorage.clear();
   location.reload();
 });
@@ -66,7 +64,7 @@ function verifiedItemExist(callback){
            $.map(items, function (item){
              if(item.itemId == $input){
                $exist=true;
-               callback($exist);
+               callback($exist, item);
 
              }
            });
@@ -79,29 +77,22 @@ function verifiedItemExist(callback){
   //
 }
 
-
-function callbackFound(found){
+function callbackFound(found, data){
   if(found == false){
     $("#newitemForm").show();
+  }
+  else{
+    $('#itemsTable').show()
   }
 
 }
 
+class IncomingTransactionItem{
+  constructor(data){
+    this.item = data.itemId;
+    this.qty = data.quantityBought;
+    this.store = data.storeId;
+    this.price = data.purchasedPrice;
+  }
 
-
-// var id = "Commercial Banking"; // eg vale
-//   $.ajax({
-//        type        : "GET",
-//        dataType    : "json",
-
-//        async       : false,
-//        success     : function(outlet){
-//
-//           $.map(outlet, function (v) {
-//              if(v.NamaOutlet == id){
-//                window.location.href = "page_a.php";
-//              }
-//           });
-//           window.location.href = "page_b.php";
-//        }
-// });
+}

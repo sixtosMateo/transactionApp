@@ -36,13 +36,29 @@
               <input type="text" name="employeeId" value={{user.id}} readonly id="employeeId"><br>
             </fieldset>
 
-          <!-- dont forget about the barcode -->
+            <table id="itemsTable">
+              <tr id ="labels">
+                <th>Id:</th>
+                <th>Name:</th>
+                <th>Price:</th>
+                <th>Qty:</th>
+              </tr>
+
+            </table>
 
             <button id="submit" type="submit">Submit</button>
             <a role ="button" id="cancel">Cancel</a>
         </form>
 
         <div id="newitemForm">
+            <fieldset class="form-group">
+              <label for="locationId">Store Name:</label>
+              <select id="locationId" name="locationId">
+              {% for store in stores %}
+              <option value={{store.storeId}}>{{store.name}}</option>
+              {% endfor %}
+              </select>
+            </fieldset>
             <fieldset class="form-group">
               <label for="id">Barcode:</label>
               <input  class="form-control" id="barcode" name="barcode" type="text" >
@@ -79,22 +95,7 @@
               <label for="department">Department:</label>
               <input  class="form-control" id="department" name="department" type="text">
             </fieldset>
-            <fieldset class="form-group">
-              <label for="vendorId">Vendor Name:</label>
-              <select id="vendorId" name="vendorId">
-              {% for vendor in vendors %}
-              <option value={{vendor.vendorId}}>{{vendor.name}}</option>
-              {% endfor %}
-              </select>
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="locationId">Store Name:</label>
-              <select id="locationId" name="locationId">
-              {% for store in stores %}
-              <option value={{store.storeId}}>{{store.name}}</option>
-              {% endfor %}
-              </select>
-            </fieldset>
+
         </div>
 
       </div>

@@ -163,11 +163,11 @@ function subtotal(price){
 
 //************************** EVENT LISTENER:**************************
 
-$('#itemNotFound').hide();
+
 $('#itemsList').hide()
 // this can set in function
 $("#idBarcode").change(function(){
-
+    $('#itemNotFound').hide();
     retriveItemData(itemCallback);
     retriveItemData(createTransactionItem);
 
