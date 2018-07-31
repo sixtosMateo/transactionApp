@@ -7,11 +7,17 @@ $("#itemsTable").hide();
 $("#formButtons").hide();
 
 $("#idBarcode").change(function(){
-
   // $("#itemFormStyle").hide();
   verifiedItemExist(callbackFound);
   $("#idBarcode").val("");
 });
+
+$( "#newItem" ).click(function() {
+  var newItem = new Item();
+  newItem.postNewItem();
+  $("#itemFormStyle").hide();
+});
+
 
 $( "#submit" ).click(function() {
   localStorage.clear();
@@ -143,7 +149,7 @@ class IncomingTransactionItem{
 class Item{
   constructor(){
     this.name = $("#name").val();
-    this.inStockQty = $("##inStockQty").val();
+    this.inStockQty = $("#inStockQty").val();
     this.picture = $("#picture").val();
     this.color = $("#color").val();
     this.ageRequirement = $("#ageRequirement").val();
@@ -157,7 +163,7 @@ class Item{
   postNewItem(){
     $.ajaxSetup({
         type: 'POST',
-        url:'polls/api/post/items/',
+        url:'../api/items/',
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken",

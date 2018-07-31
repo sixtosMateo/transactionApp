@@ -41,7 +41,6 @@ urlpatterns = [
     url(r'^viewOutgoingTransactionItems/(?P<pk>\d+)$', views.viewOutgoingTransactionItems, name='viewOutgoingTransactionItems'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
     url(r'^api/items/$', views.ItemList.as_view(), name='items'),
-    url(r'^api/post/items/$', views.ItemList.as_view(), name='items'),
     url(r'^api/incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactionList'),
     url(r'^api/incomingTransactionsItems/$', views.incomingTransactionItemList.as_view(), name='incomingTransactionList'),
     url(r'^api/outgoingTransactions/$', views.outgoingTransactionList.as_view(), name='outgoingTransactionsList'),
