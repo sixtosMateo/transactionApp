@@ -1,9 +1,11 @@
 // what happen when the purchasedPrice changes
 //when its in the thousandth it should round it not ceil
-$("#newitemForm").hide();
+$("#itemFormStyle").hide();
 $("#itemsTable").hide();
+$("#formButtons").hide();
+
 $("#idBarcode").change(function(){
-  $("#newitemForm").hide();
+  $("#itemFormStyle").hide();
   verifiedItemExist(callbackFound);
   $("#idBarcode").val("");
 });
@@ -96,10 +98,11 @@ function verifiedItemExist(callback){
 function callbackFound(found, data){
   var tableName = $("#itemsTable");
   if(found == false){
-    $("#newitemForm").show();
+    $("#itemFormStyle").show();
   }
   else{
     $('#itemsTable').show()
+    $("#formButtons").show();
     if($("#"+data.itemId).length == 0){
       // var transItem = new OutgoingTransactionItem(data);
       tableName.append("<tr id=" + data.itemId + ">" +
