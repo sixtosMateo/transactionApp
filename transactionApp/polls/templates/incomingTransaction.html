@@ -15,7 +15,11 @@
 
 
 {% block body %}
+    <section class="features" id="features">
       <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="container-fluid">
           {% csrf_token %}
           <fieldset class="form-group">
             <label for="id">Barcode:</label>
@@ -56,57 +60,60 @@
 
             <button id="submit" type="submit">Submit</button>
             <a role ="button" id="cancel">Cancel</a>
+          </div>
+        </div>
+          <br>
+          <div class="col-md-8">
+            <div id="newitemForm">
+                <fieldset class="form-group">
+                  <label for="locationId">Store Name:</label>
+                  <select id="locationId" name="locationId">
+                  {% for store in stores %}
+                  <option value={{store.storeId}}>{{store.name}}</option>
+                  {% endfor %}
+                  </select>
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="name">Name:</label>
+                  <input  class="form-control" id="name" name="name" type="text" >
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="inStockQty">Qty:</label>
+                  <input  class="form-control" id="inStockQty" name="inStockQty" type="number">
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="picture">Picture:</label>
+                  <input  class="form-control" id="picture" name="picture" type="text">
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="color">Color:</label>
+                  <input  class="form-control" id="color" name="color" type="text">
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="ageRequirement">Age Requirement:</label>
+                  <input  class="form-control" id="ageRequirement" name="ageRequirement" type="text">
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="purchasedPrice">Purchased Price:</label>
+                  <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="number">
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="salePrice">Sale Price:</label>
+                  <input  class="form-control" id="salePrice" name="salePrice" type="number">
+                </fieldset>
+                <fieldset class="form-group">
+                  <label for="department">Department:</label>
+                  <input  class="form-control" id="department" name="department" type="text">
+                </fieldset>
+
+            </div>
+          </div>
         </form>
 
-        <div id="newitemForm">
-            <fieldset class="form-group">
-              <label for="locationId">Store Name:</label>
-              <select id="locationId" name="locationId">
-              {% for store in stores %}
-              <option value={{store.storeId}}>{{store.name}}</option>
-              {% endfor %}
-              </select>
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="id">Barcode:</label>
-              <input  class="form-control" id="barcode" name="barcode" type="text" >
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="name">Name:</label>
-              <input  class="form-control" id="name" name="name" type="text" >
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="inStockQty">Qty:</label>
-              <input  class="form-control" id="inStockQty" name="inStockQty" type="number">
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="picture">Picture:</label>
-              <input  class="form-control" id="picture" name="picture" type="text">
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="color">Color:</label>
-              <input  class="form-control" id="color" name="color" type="text">
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="ageRequirement">Age Requirement:</label>
-              <input  class="form-control" id="ageRequirement" name="ageRequirement" type="text">
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="purchasedPrice">Purchased Price:</label>
-              <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="number">
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="salePrice">Sale Price:</label>
-              <input  class="form-control" id="salePrice" name="salePrice" type="number">
-            </fieldset>
-            <fieldset class="form-group">
-              <label for="department">Department:</label>
-              <input  class="form-control" id="department" name="department" type="text">
-            </fieldset>
-
-        </div>
 
       </div>
+      </div>
+    </section>
 
       {% load static %}
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">

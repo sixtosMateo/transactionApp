@@ -249,8 +249,14 @@ def deleteVendor(request, pk):
     return JsonResponse(data)
 
 
-
 class ItemList(APIView):
+    def post(self, request):
+        serializers = ItemSerializer(data =request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+
     def get(self, request):
         items = Item.objects.all()
         serializers = ItemSerializer(items, many=True)

@@ -1,5 +1,5 @@
 // what happen when the purchasedPrice changes
-//when its in the thousandth it should round it not ceil 
+//when its in the thousandth it should round it not ceil
 $("#newitemForm").hide();
 $("#itemsTable").hide();
 $("#idBarcode").change(function(){
@@ -118,8 +118,10 @@ function callbackFound(found, data){
         "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
 
     }
+    subtotal(data.purchasedPrice);
   }
-  subtotal(data.purchasedPrice);
+
+
 }
 
 class IncomingTransactionItem{
