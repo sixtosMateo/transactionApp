@@ -1,11 +1,14 @@
 // what happen when the purchasedPrice changes
 //when its in the thousandth it should round it not ceil
+//need to create a function that hide div
+
 $("#itemFormStyle").hide();
 $("#itemsTable").hide();
 $("#formButtons").hide();
 
 $("#idBarcode").change(function(){
-  $("#itemFormStyle").hide();
+
+  // $("#itemFormStyle").hide();
   verifiedItemExist(callbackFound);
   $("#idBarcode").val("");
 });
@@ -31,8 +34,6 @@ function subtotal(price){
   $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
 
 }
-
-
 
 function completeTransaction(){
     // access value of total and subtotal from local localStorage
@@ -95,6 +96,8 @@ function verifiedItemExist(callback){
   //
 }
 
+
+
 function callbackFound(found, data){
   var tableName = $("#itemsTable");
   if(found == false){
@@ -133,6 +136,54 @@ class IncomingTransactionItem{
     this.qty = data.quantityBought;
     this.store = data.storeId;
     this.price = data.purchasedPrice;
+  }
+
+}
+
+class Item{
+  constructor(){
+    this.name = $("#name").val();
+    this.inStockQty = $("##inStockQty").val();
+    this.picture = $("#picture").val();
+    this.color = $("#color").val();
+    this.ageRequirement = $("#ageRequirement").val();
+    this.purchasedPrice = $("#purchasedPrice").val();
+    this.salePrice = $("#salePrice").val();
+    this.vendorId = $("#vendorId").val();
+    this.locationId = $("#locationId").val();
+    this.barcode = $("#barcode").val();
+    this.department = $("#department").val();
+  }
+  postNewItem(){
+    $.ajaxSetup({
+        type: 'POST',
+        url:'polls/api/post/items/',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken",
+                jQuery("[name=csrfmiddlewaretoken]").val());
+            }
+        }
+    });
+
+    $.ajax({
+        data:{
+        'name': this.name,
+        'inStockQty': this.inStockQty,
+        'picture': this.picture,
+        'color': this.color,
+        'ageRequirement': this.ageRequirement,
+        'purchasedPrice': this.purchasedPrice,
+        'salePrice': this.salePrice,
+        'vendorId': this.vendorId,
+        'locationId': this.locationId,
+        'barcode': this.barcode,
+        'department': this.department
+        },
+        dataType: 'application/json',
+        success:function(data){
+        }
+    });
   }
 
 }
