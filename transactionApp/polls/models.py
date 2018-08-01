@@ -222,15 +222,16 @@ class DamageItem(models.Model):
     employeeId = models.CharField(max_length = 30, default=None)
     storeId = models.IntegerField(default = 0, blank=True)
     locationId = models.IntegerField(default = 0, blank=True)
+    barcode = models.CharField(unique=True, max_length = 30, default=None)
 
     class Meta:
         db_table = "damage_item"
 
     def save(self, *args, **kwargs):
         print('save() is called.')
-        super(DamageItem,self).save(using="store_master")
+        super(DamageItem,self).save(using="karis_db")
 
     def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5}".format(
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
             self.itemId, self.qtyDamage, self.createdAt, self.employeeId,
-            self.storeId, self.locationId)
+            self.storeId, self.locationId, self.barcode)

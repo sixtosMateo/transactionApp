@@ -116,7 +116,7 @@ class DamageItemForm(forms.ModelForm):
         model = DamageItem
         fields=(
         'barcode',
-        'qtyDamge',
+        'qtyDamage',
         'employeeId',
         'storeId',
         'locationId',
