@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Vendor, Item, OutgoingTransaction, OutgoingTransactionItem, IncomingTransaction
+from .models import Vendor, Item, OutgoingTransaction, OutgoingTransactionItem, IncomingTransaction, DamageItem
 
 
 # we are going to inherit from django UserCreationForm's fields from User
@@ -108,3 +108,17 @@ class IncomingTransactionForm(forms.ModelForm):
         'total'
         )
         db_table = "incoming_transaction"
+
+
+# added barcode
+class DamageItemForm(forms.ModelForm):
+    class Meta:
+        model = DamageItem
+        fields=(
+        'barcode',
+        'qtyDamge',
+        'employeeId',
+        'storeId',
+        'locationId',
+        )
+        db_table = "damage_item"

@@ -31,6 +31,7 @@ urlpatterns = [
     password_reset_confirm, name='password_reset_confirm'),
     url(r'^resetPassword/complete/$', password_reset_complete, name='password_reset_complete'),
     url(r'^mainMenu/$', views.mainMenu, name='mainMenu'),
+    url(r'^report/$', views.report, name='report'),
     url(r'^item/$', views.item, name='item'),
     url(r'^editItem/(?P<pk>\d+)$', views.editItem, name='editItem'),
     url(r'^inventory/$', views.inventory, name='inventory'),

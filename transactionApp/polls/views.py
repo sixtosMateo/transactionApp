@@ -206,6 +206,10 @@ def vendor(request, template_name="vendor.html"):
     return render(request, template_name, {'vendors':vendors})
 
 @login_required
+def report(request, template_name="report.html"):
+    return render(request, template_name)
+
+@login_required
 def newVendor(request, template_name='newVendor.html'):
     if request.method == 'POST':
         form = VendorForm(request.POST)
