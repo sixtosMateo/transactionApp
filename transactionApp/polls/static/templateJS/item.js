@@ -1,39 +1,66 @@
-$("#id").change(function(){
-
-  $(function(){
-    var $itemNotFound = $('#itemNotFound');
-    var $itemName = $('#itemName');
-    var $itemDetails = $('#itemDetails');
-    var $itemQty= $('#itemQty');
-    var $price = $('#price');
-    var $editButton = $('#edit');
-    var $deleteButton = $('#delete');
-    var $input = $("#id").val();
-    var $count =0;
-    $.ajax({
-      type: 'GET',
-      url:'/polls/api/items/',
-      success:function(items){
-        $.each(items, function(i,item){
-          if(item.itemId == $input){
-            $itemDetails.show();
-            $itemNotFound.hide();
-            $itemName.html("Item Name: " + item.name +"</br>");
-            $itemQty.html("Item Qty: "+ item.inStockQty +"</br>");
-            $price.html("Item Price:" + item.salePrice +"</br>");
-            // $editButton.html("<a role ='button' href= '{% url 'editItem' item.itemId %}'> Edit </a>");
-            // $deleteButton.html("Item Price:" + item.salePrice +"</br>");
-            $count++;
-            return;
-        }
-        });
-        if($count==0){
-          $itemDetails.hide();
-          $itemNotFound.show();
-        }
-      }
-    });
-
-  });
+$('#itemNotFound').hide();
+$("#itemsTable").hide();
+$("#idBarcode").change(function(){
+  $('#itemNotFound').hide();
+  getItem(callbackFound);
 
 });
+
+
+function getItem(callback){
+  var $input = $("#idBarcode").val();
+  var $exist =false;
+  return $.ajax({
+    type: 'GET',
+    url:'/polls/api/items/',
+    success:function(items){
+      $.map(items, function (item){
+        if(item.itemId == $input){
+          $exist=true;
+          callback($exist, item);
+
+        }
+      });
+      if ($exist == false){
+       callback($exist);
+      }
+
+    }
+  });
+
+}
+
+
+function callbackFound(found, data){
+  var tableName = $("#itemsTable");
+  if(found == false){
+    $('#itemNotFound').show();
+  }
+  else{
+    $('#itemsTable').show()
+    tableName.html(
+                      "<tr id ='labels'>"+
+                        "<th>Name:</th>"+
+                        "<th>SalePrice:</th>"+
+                        "<th>inStockQty:</th>"+
+                        "<th>color:</th>"+
+                        "<th>ageRequirement:</th>"+
+                        "<th>vendorId:</th>"+
+                        "<th>locationId:</th>"+
+                        "<th>Barcode:</th>"+
+                        "<th>Department:</th>"+
+                      "</tr>"+
+                      "<tr id=" + data.itemId + ">" +
+                        "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
+                        "<td id='salePrice' value='"+data.salePrice+"'>"+data.salePrice+"</td>"+
+                        "<td id='qty' value='"+data.inStockQty+"'>"+data.inStockQty+"</td>"+
+                        "<td id='color' value='"+data.color+"'>"+data.color+"</td>"+
+                        "<td id='ageRequirement' value='"+data.ageRequirement+"'>"+data.ageRequirement+"</td>"+
+                        "<td id='vendorId' value='"+data.vendorId+"'>"+data.vendorId+"</td>"+
+                        "<td id='locationId' value='"+data.locationId+"'>"+data.locationId+"</td>"+
+                        "<td id='barcode' value='"+data.barcode+"'>"+data.barcode+"</td>"+
+                        "<td id='department' value='"+data.department+"'>"+data.department+"</td>"+
+                      "</tr>");
+
+  }
+}
