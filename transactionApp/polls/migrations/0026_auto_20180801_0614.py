@@ -10,33 +10,33 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='damageitem',
-        #     name='barcode',
-        #     field=models.CharField(default=None, max_length=30, unique=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='incomingtransaction',
-        #     name='subtotal',
-        #     field=models.FloatField(blank=True, default=None),
-        # ),
-        # migrations.AddField(
-        #     model_name='incomingtransaction',
-        #     name='total',
-        #     field=models.FloatField(blank=True, default=None),
-        # ),
-        # migrations.AddField(
-        #     model_name='item',
-        #     name='barcode',
-        #     field=models.CharField(default=None, max_length=30, unique=True),
-        # ),
-        # migrations.AlterField(
-        #     model_name='outgoingtransactionitem',
-        #     name='itemId',
-        #     field=models.IntegerField(default=None, null=True),
-        # ),
-        # migrations.AlterModelTable(
-        #     name='employee',
-        #     table=None,
-        # ),
+        migrations.AddField(
+            model_name='damageitem',
+            name='barcode',
+            field=models.CharField(default=None, max_length=30, unique=True),
+        ),
+        migrations.AddField(
+            model_name='incomingtransaction',
+            name='subtotal',
+            field=models.FloatField(blank=True, default=None),
+        ),
+        migrations.AddField(
+            model_name='incomingtransaction',
+            name='total',
+            field=models.FloatField(blank=True, default=None),
+        ),
+        migrations.AddField(
+            model_name='item',
+            name='barcode',
+            field=models.CharField(default=None, max_length=30, unique=True),
+        ),
+        migrations.AlterField(
+            model_name='outgoingtransactionitem',
+            name='itemId',
+            field=models.IntegerField(default=None, null=True),
+        ),
+        migrations.AlterModelTable(
+            name='employee',
+            table=None,
+        ),
     ]

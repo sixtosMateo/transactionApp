@@ -120,5 +120,6 @@ class DamageItemForm(forms.ModelForm):
         'employeeId',
         'storeId',
         'locationId',
+        'description'
         )
         db_table = "damage_item"
