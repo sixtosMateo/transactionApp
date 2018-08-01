@@ -2,12 +2,16 @@
 //when its in the thousandth it should round it not ceil
 //need to create a function that hide div
 
+// barcode needs to be change it wont let me submit new item
+// unless the value of barcode is unique the value of barcode is set to 6 right now
+
+
 $("#itemFormStyle").hide();
 $("#itemsTable").hide();
 $("#formButtons").hide();
 
 $("#idBarcode").change(function(){
-  // $("#itemFormStyle").hide();
+  $("#itemFormStyle").hide();
   verifiedItemExist(callbackFound);
   $("#idBarcode").val("");
 });
@@ -20,6 +24,8 @@ $( "#newItem" ).click(function() {
 
 
 $( "#submit" ).click(function() {
+  var newTransaction = new IncomingTransaction();
+  newTransaction.postObject();
   localStorage.clear();
   location.reload();
 });
@@ -41,37 +47,37 @@ function subtotal(price){
 
 }
 
-function completeTransaction(){
-    // access value of total and subtotal from local localStorage
-    // var $subtotal = parseFloat(localStorage.getItem('subtotal'));
-    // var $total = parseFloat(localStorage.getItem('total'));
-
-    // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-    //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-    $.ajaxSetup({
-        type: 'POST',
-        url:'/polls/api/incomingTransactions/',
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken",
-                jQuery("[name=csrfmiddlewaretoken]").val());
-            }
-        }
-    });
-    // sets up the data into json format
-    $.ajax({
-        data:{
-        'vendorId': $('#vendorId').val(),
-        'employeeId': $('#employeeId').val(),
-        'tax': .0975,
-        'subtotal': 1,
-        'total': 1
-        },
-        dataType: 'application/json',
-        success:function(data){
-        }
-    });
-}
+// function completeTransaction(){
+//     // access value of total and subtotal from local localStorage
+//     // var $subtotal = parseFloat(localStorage.getItem('subtotal'));
+//     // var $total = parseFloat(localStorage.getItem('total'));
+//
+//     // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+//     //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+//     $.ajaxSetup({
+//         type: 'POST',
+//         url:'/polls/api/incomingTransactions/',
+//         beforeSend: function(xhr, settings) {
+//             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+//                 xhr.setRequestHeader("X-CSRFToken",
+//                 jQuery("[name=csrfmiddlewaretoken]").val());
+//             }
+//         }
+//     });
+//     // sets up the data into json format
+//     $.ajax({
+//         data:{
+//         'vendorId': $('#vendorId').val(),
+//         'employeeId': $('#employeeId').val(),
+//         'tax': .0975,
+//         'subtotal': 1,
+//         'total': 1
+//         },
+//         dataType: 'application/json',
+//         success:function(data){
+//         }
+//     });
+// }
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -188,6 +194,44 @@ class Item{
         },
         dataType: 'application/json',
         success:function(data){
+        }
+    });
+  }
+
+}
+
+
+class IncomingTransaction{
+  constructor(){
+    this.vendor = $("#vendorId").val();
+    this.employeeId = $("#employeeId").val();
+    this.tax = $("#tax").val();
+    this.subtotal = $("#subtotal").val();
+    this.total = $("#total").val();
+  }
+  postObject(){
+    $.ajaxSetup({
+        type: 'POST',
+        url:'/polls/api/incomingTransactions/',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken",
+                jQuery("[name=csrfmiddlewaretoken]").val());
+            }
+        }
+    });
+    // sets up the data into json format
+    $.ajax({
+        data:{
+        'vendorId': this.vendor,
+        'employeeId': this.employeeId,
+        'tax': this.tax,
+        'subtotal': this.subtotal,
+        'total': this.total
+        },
+        dataType: 'application/json',
+        success:function(data){
+          window.alert("object posted");
         }
     });
   }
