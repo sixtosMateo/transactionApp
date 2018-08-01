@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .models import (
     Item, Vendor, IncomingTransaction, IncomingTransactionItem,
-    Store, Employee, OutgoingTransaction, OutgoingTransactionItem)
+    Store, Employee, OutgoingTransaction, OutgoingTransactionItem, DamageItem)
 from .serializers import (
     ItemSerializer, IncomingTransactionSerializer,
     IncomingTransactionItemSerializer, OutgoingTransactionSerializer,
@@ -26,7 +26,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .forms import (
     NewEmployeeForm, EditProfileForm, VendorForm,
-    ItemForm, OutgoingTransactionForm, IncomingTransactionForm
+    ItemForm, OutgoingTransactionForm, IncomingTransactionForm, DamageItemForm
     )
 from django.contrib.auth.forms import (
     UserCreationForm,
@@ -170,6 +170,21 @@ def countCycle(request, template_name="countCycle.html"):
 
 @login_required
 def damageItem(request, template_name="damageItem.html"):
+    stores = Store.objects.all()
+    # employee = Employee.objects.all()
+    if request.method == 'POST':
+        print("inside the post")
+        form = DamageItemForm(request.POST)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('inventory')
+        else:
+            print('form is not validated')
+    else:
+        form = DamageItemForm()
+        return render(request, template_name, {'form':form, 'user':request.user, 'stores':stores })
+
     return render(request, template_name)
 
 @login_required

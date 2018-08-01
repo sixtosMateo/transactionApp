@@ -9,9 +9,23 @@
 <!-- some field types needs to be change -->
 <!-- the fields employeeId and storeId needs to display as they are sign in -->
       <div class="container">
+        <form method="post">
+          {% csrf_token %}
         <fieldset class="form-group">
-          <label for="id">Barcode:</label>
-          <input  class="form-control" id="id" name="id" type="text" >
+          <label for="employeeId">Employee:</label>
+          <input type="text" name="employeeId" value={{user.id}} readonly id="employeeId"><br>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="storeId">Store Name:</label>
+          <select id="storeId" name="storeId">
+            {% for store in stores %}
+            <option value={{store.storeId}}>{{store.name}}</option>
+            {% endfor %}
+          </select>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="barcode">Barcode:</label>
+          <input  class="form-control" id="barcode" name="barcode" type="text" >
         </fieldset>
         <fieldset class="form-group">
           <label for="qtyDamage">Qty:</label>
@@ -22,13 +36,14 @@
           <input  class="form-control" id="locationId" name="locationId" type="text" >
         </fieldset>
         <fieldset class="form-group">
-          <label for="locationId">Description:</label>
+          <label for="description">Description:</label>
           <input  class="form-control" id="description" name="description" type="textarea" >
         </fieldset>
 
         <!-- the cancel button needs to  -->
         <button type="submit">Submit</button>
         <button type="submit">Cancel</button>
+      </form>
       </div>
 
 
