@@ -34,6 +34,7 @@ function getItem(callback){
 function callbackFound(found, data){
   var tableName = $("#itemsTable");
   if(found == false){
+    $('#itemsTable').hide()
     $('#itemNotFound').show();
   }
   else{
