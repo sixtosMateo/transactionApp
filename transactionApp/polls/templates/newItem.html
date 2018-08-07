@@ -2,6 +2,8 @@
 
 {% block head %}
 <title>New Item</title>
+{% load static %}
+
 {% endblock %}
 
 {% block body %}
@@ -9,8 +11,9 @@
       <!-- this has to have the form tag to save data-->
 
       <div class="container">
-        <form method="post">
+        <form data-parsley-validate method="post">
           {% csrf_token %}
+
           <fieldset class="form-group">
             <label for="vendorId">Vendor Name:</label>
             <select id="vendorId" name="vendorId">
@@ -29,15 +32,15 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="id">Barcode:</label>
-            <input  class="form-control" id="barcode" name="barcode" type="text" >
+            <input  type="text" class="form-control" id="barcode" name="barcode" data-parsley-required="true">
           </fieldset>
           <fieldset class="form-group">
             <label for="name">Name:</label>
-            <input  class="form-control" id="name" name="name" type="text" >
+            <input  class="form-control" id="name" name="name" type="text" data-parsley-required="true">
           </fieldset>
           <fieldset class="form-group">
             <label for="inStockQty">Qty:</label>
-            <input  class="form-control" id="inStockQty" name="inStockQty" type="number">
+            <input  class="form-control" id="inStockQty" name="inStockQty" type="number" data-parsley-required="true"  >
           </fieldset>
           <fieldset class="form-group">
             <label for="picture">Picture:</label>
@@ -53,11 +56,11 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="purchasedPrice">Purchased Price:</label>
-            <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="number">
+            <input  class="form-control" id="purchasedPrice" name="purchasedPrice" type="number" data-parsley-required="true">
           </fieldset>
           <fieldset class="form-group">
             <label for="salePrice">Sale Price:</label>
-            <input  class="form-control" id="salePrice" name="salePrice" type="number">
+            <input  class="form-control" id="salePrice" name="salePrice" type="number" data-parsley-required="true">
           </fieldset>
           <fieldset class="form-group">
             <label for="department">Department:</label>
@@ -70,5 +73,11 @@
       </form>
 
       </div>
-      <!-- the cancel button needs to  -->
+
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="{% static '/parsley/parsley.js' %}" ></script>
+
 {% endblock %}
