@@ -11,6 +11,13 @@
  #itemsList{
    width:50%;
  }
+
+ #tableStyle{
+   width: 100%;
+   height: 150px;
+   overflow:auto;
+ }
+
 </style>
 {% endblock %}
 
@@ -40,7 +47,7 @@
           </fieldset>
 
           <!-- <h1 id="itemNotFound">Item Not Found</h1> -->
-
+          <div id="tableStyle">
 
           <table id="itemsList">
             <tr id ="labels">
@@ -51,6 +58,7 @@
             </tr>
 
           </table>
+        </div>
 
 
           <div id="calculation">
@@ -61,7 +69,7 @@
 
             <a role ="button" id="submit" >Submit</a>
             <a role ="button" id="cancel">Cancel</a>
-          
+
         </form>
 
       </div>

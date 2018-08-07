@@ -2,13 +2,22 @@
 
 {% block head %}
 <title>Vendors</title>
+<style>
+#itemFormStyle{
+  width: 75%;
+  height: 450px;
+  overflow:auto;
+}
+</style>
+
 {% endblock %}
 
 
 {% block body %}
       <div class="container">
+        <a href="{% url 'newVendor' %}"><input type="button" value="New vendor"/></a>
         <h1>List of Vendor</h1>
-
+        <div id="itemFormStyle">
         {% for vendor in vendors %}
 
             <dl>
@@ -20,6 +29,7 @@
               <button type="button" class="js-delete-vendors" data-url ="{% url 'deleteVendor' vendor.vendorId %}"> Delete </button>
             </dl>
         {% endfor %}
+      </div>
 
       </div>
 
@@ -33,8 +43,8 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      {% block javascript %}
 
+      {% block javascript %}
         <script src="{% static 'templateJS/vendor.js' %}"></script>
 
       {% endblock %}

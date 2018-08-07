@@ -8,18 +8,22 @@
 {% block body %}
 
         <div class="container">
-          <form method="post">
+          <form data-parsley-validate method="post" >
             {% csrf_token %}
-            Vendor Name: <input id="name" name="name" type="text" ><br>
-            Vendor Phone: <input id="phoneNumber" name="phoneNumber" type="text" ><br>
-            Vendor Address: <input id="address" name="address" type="text"><br>
+            Vendor Name: <input id="name" name="name" type="text" data-parsley-required="true" ><br>
+            Vendor Phone: <input id="phoneNumber" name="phoneNumber" type="text" data-parsley-required="true"><br>
+            Vendor Address: <input id="address" name="address" type="text" data-parsley-required="true"><br>
             Vendor Open Hours: <input id="hoursOpen" name="hoursOpen" type="text"><br>
           </br>
           <button type="submit">Submit</button>
           <a href="{% url 'vendor'%}"><input type="button" value="Cancel"/></a>
         </form>
       </div>
-
-
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="{% static '/parsley/parsley.js' %}" ></script>
+      <script src="{% static '/parsley/comparison.js' %}" ></script>
 
 {% endblock %}
