@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Vendor, Item, OutgoingTransaction, OutgoingTransactionItem, IncomingTransaction, DamageItem
+from .models import Vendor, Item, OutgoingTransaction, IncomingTransaction, DamageItem
 
 
 # we are going to inherit from django UserCreationForm's fields from User
@@ -86,16 +86,16 @@ class OutgoingTransactionForm(forms.ModelForm):
         'total'
         )
 
-class OutgoingTransactionItemForm(forms.ModelForm):
-    class Meta:
-        model = OutgoingTransactionItem
-        fields = (
-        'transactionId',
-        'quantitySold',
-        'price',
-        'tax',
-        'itemId'
-        )
+# class OutgoingTransactionItemForm(forms.ModelForm):
+#     class Meta:
+#         model = OutgoingTransactionItem
+#         fields = (
+#         'transactionId',
+#         'quantitySold',
+#         'price',
+#         'tax',
+#         'itemId'
+#         )
 
 class IncomingTransactionForm(forms.ModelForm):
     class Meta:

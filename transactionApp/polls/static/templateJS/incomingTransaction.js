@@ -23,8 +23,11 @@ $( "#newItem" ).click(function() {
 });
 
 $( "#submit" ).click(function() {
-  var newTransaction = new IncomingTransaction();
-  newTransaction.postObject();
+  // var newTransaction = new IncomingTransaction();
+  var newTransactionItem = new IncomingTransactionItem();
+  newTransactionItem.postObject();
+  // newTransaction.postObject();
+
   localStorage.clear();
   location.reload();
 });
@@ -106,15 +109,7 @@ function callbackFound(found, data){
 
 }
 
-class IncomingTransactionItem{
-  constructor(data){
-    this.item = data.itemId;
-    this.qty = data.quantityBought;
-    this.store = data.storeId;
-    this.price = data.purchasedPrice;
-  }
 
-}
 
 class Item{
   constructor(){
@@ -194,7 +189,7 @@ class IncomingTransaction{
         },
         dataType: 'application/json',
         success:function(data){
-          window.alert("object posted");
+
         }
     });
   }

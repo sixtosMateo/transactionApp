@@ -15,12 +15,12 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import (
-    Item, Vendor, IncomingTransaction, IncomingTransactionItem,
-    Store, Employee, OutgoingTransaction, OutgoingTransactionItem, DamageItem)
+    Item, Vendor, IncomingTransaction,
+    Store, Employee, OutgoingTransaction, DamageItem)
 from .serializers import (
     ItemSerializer, IncomingTransactionSerializer,
-    IncomingTransactionItemSerializer, OutgoingTransactionSerializer,
-    OutgoingTransactionItemSerializer
+    OutgoingTransactionSerializer
+
     )
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -289,13 +289,13 @@ class incomingTransactionList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
-class incomingTransactionItemList(APIView):
-    def post(self, request):
-        serializers = IncomingTransactionItemSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+# class incomingTransactionItemList(APIView):
+#     def post(self, request):
+#         serializers = IncomingTransactionItemSerializer(data=request.data)
+#         if serializers.is_valid():
+#             serializers.save()
+#             return Response(serializers.data, status=status.HTTP_201_CREATED)
+#         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
 class outgoingTransactionList(APIView):
     def post(self, request):
@@ -305,10 +305,10 @@ class outgoingTransactionList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
-class outgoingTransactionItemList(APIView):
-    def post(self, request):
-        serializers = OutgoingTransactionItemSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+# class outgoingTransactionItemList(APIView):
+#     def post(self, request):
+#         serializers = OutgoingTransactionItemSerializer(data=request.data)
+#         if serializers.is_valid():
+#             serializers.save()
+#             return Response(serializers.data, status=status.HTTP_201_CREATED)
+#         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)

@@ -66,28 +66,6 @@ class OutgoingTransaction(models.Model):
             self.tax, self.total, self.subtotal)
 
 
-class OutgoingTransactionItem(models.Model):
-    id = models.AutoField(primary_key=True)
-    itemId = models.IntegerField(null=True,default=None)
-    transactionId = models.ForeignKey(OutgoingTransaction, on_delete=models.CASCADE)
-    quantitySold = models.IntegerField(default = 0, blank=True)
-    price = models.FloatField(null=True, blank=True, default=None)
-    tax = models.FloatField(null=True, blank=True, default=0.0925)
-    createdAt = models.DateTimeField(auto_now=True)
-
-
-    class Meta:
-        db_table = "outgoing_transaction_item"
-    def save(self, *args, **kwargs):
-        print('save() is called.')
-        super(OutgoingTransactionItem, self).save(using='karis_db')
-
-    def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5} {6}".format(
-            self.pk, self.transactionId, self.quantitySold, self.price, self.tax,
-            self.createdAt, self.itemId)
-
-
 class Item(models.Model):
     itemId = models.AutoField(primary_key=True)
     barcode = models.CharField(unique=True, max_length=30, default=None)
@@ -161,25 +139,46 @@ class IncomingTransaction(models.Model):
             self.tax, self.total, self.subtotal)
 
 
-class IncomingTransactionItem(models.Model):
-    itemId = models.AutoField(primary_key=True)
-    transactionId = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
-    quantityBought = models.IntegerField(default = 0, blank=True)
-    storeId = models.IntegerField(default = 0, blank=True)
-    purchasedPrice = models.FloatField(null=True, blank=True, default=None)
-    createdAt = models.DateTimeField(auto_now=True)
+# class IncomingTransactionItem(models.Model):
+#     itemId = models.IntegerField(default = 0, blank=True)
+#     transactionId_id = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
+#     quantityBought = models.IntegerField(default = 0, blank=True)
+#     storeId = models.IntegerField(default = 0, blank=True)
+#     purchasedPrice = models.FloatField(null=True, blank=True, default=None)
+#     createdAt = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         db_table = "incoming_transaction_item"
+#
+#     def save(self, *args, **kwargs):
+#         print('save() is called.')
+#         super(IncomingTransactionItem, self).save(using="store_master")
+#
+#     def __unicode__(self):
+#         return "{0} {1} {2} {3} {4} {5}".format(
+#             self.itemId, self.transactionId_id, self.quantityBought, self.storeId,
+#             self.purchasedPrice, self.createdAt)
 
-    class Meta:
-        db_table = "incoming_transaction_item"
+# class OutgoingTransactionItem(models.Model):
+#     itemId = models.AutoField(primary_key=True)
+#     transactionId = models.ForeignKey(OutgoingTransaction, on_delete=models.CASCADE)
+#     quantitySold = models.IntegerField(default = 0, blank=True)
+#     price = models.FloatField(null=True, blank=True, default=None)
+#     tax = models.FloatField(null=True, blank=True, default=0.0925)
+#     createdAt = models.DateTimeField(auto_now=True)
+#
+#
+#     class Meta:
+#         db_table = "outgoing_transaction_item"
+#     def save(self, *args, **kwargs):
+#         print('save() is called.')
+#         super(OutgoingTransactionItem, self).save(using='karis_db')
+#
+#     def __unicode__(self):
+#         return "{0} {1} {2} {3} {4} {5} {6}".format(
+#             self.transactionId, self.quantitySold, self.price, self.tax,
+#             self.createdAt, self.itemId)
 
-    def save(self, *args, **kwargs):
-        print('save() is called.')
-        super(IncomingTransactionItem, self).save(using="store_master")
-
-    def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5}".format(
-            self.itemId, self.transactionId, self.quantityBought, self.storeId,
-            self.purchasedPrice, self.createdAt)
 
 class Location(models.Model):
     locationId = models.AutoField(primary_key=True)
