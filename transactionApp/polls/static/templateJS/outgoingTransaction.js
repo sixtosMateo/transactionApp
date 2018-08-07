@@ -127,6 +127,7 @@ function itemCallback(data){
 function createTransactionItem(data){
   var tableName = $("#itemsList");
   $('#itemsList').show()
+  $('#formButtons').show()
   if($("#"+data.itemId).length == 0){
 
     // var transItem = new OutgoingTransactionItem(data);
@@ -165,6 +166,8 @@ function subtotal(price){
 
 
 $('#itemsList').hide()
+$("#formButtons").hide();
+
 // this can set in function
 $("#idBarcode").change(function(){
     $('#itemNotFound').hide();

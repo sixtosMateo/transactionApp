@@ -9,7 +9,7 @@
 <!-- some field types needs to be change -->
 <!-- the fields employeeId and storeId needs to display as they are sign in -->
       <div class="container">
-        <form method="post">
+        <form data-parsley-validate method="post">
           {% csrf_token %}
         <fieldset class="form-group">
           <label for="employeeId">Employee:</label>
@@ -25,19 +25,23 @@
         </fieldset>
         <fieldset class="form-group">
           <label for="barcode">Barcode:</label>
-          <input  class="form-control" id="barcode" name="barcode" type="text" >
+          <input  class="form-control" id="barcode" name="barcode" type="text"
+          data-parsley-required="true">
         </fieldset>
         <fieldset class="form-group">
           <label for="qtyDamage">Qty:</label>
-          <input  class="form-control" id="qtyDamage" name="qtyDamage" type="text" >
+          <input  class="form-control" id="qtyDamage" name="qtyDamage" type="text"
+          data-parsley-required="true">
         </fieldset>
         <fieldset class="form-group">
           <label for="locationId">Location ID:</label>
-          <input  class="form-control" id="locationId" name="locationId" type="text" >
+          <input  class="form-control" id="locationId" name="locationId" type="text"
+          data-parsley-required="true">
         </fieldset>
         <fieldset class="form-group">
           <label for="description">Description:</label>
-          <input  class="form-control" id="description" name="description" type="textarea" >
+          <input  class="form-control" id="description" name="description" type="textarea"
+          data-parsley-required="true">
         </fieldset>
 
         <!-- the cancel button needs to  -->
@@ -46,5 +50,10 @@
       </form>
       </div>
 
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="{% static '/parsley/parsley.js' %}" ></script>
 
 {% endblock %}
