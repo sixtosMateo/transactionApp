@@ -2,6 +2,14 @@
 
 {% block head %}
 <title>Employees</title>
+
+<style>
+#tableStyle{
+  width: 100%;
+  height: 400px;
+  overflow:auto;
+}
+</style>
 {% endblock %}
 
 
@@ -11,7 +19,7 @@
         <h1>Employees</h1>
 
             <a role ="button" href="{% url 'newEmployee' %}">Create Employee</a>
-
+          <div id="tableStyle">
             {% for user in users %}
               <dl>
                 <dt></th>
@@ -27,6 +35,7 @@
                 </td>
               </dl>
             {% endfor %}
+          </div>
 
 
       </div>
