@@ -139,25 +139,25 @@ class IncomingTransaction(models.Model):
             self.tax, self.total, self.subtotal)
 
 
-# class IncomingTransactionItem(models.Model):
-#     itemId = models.IntegerField(default = 0, blank=True)
-#     transactionId_id = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
-#     quantityBought = models.IntegerField(default = 0, blank=True)
-#     storeId = models.IntegerField(default = 0, blank=True)
-#     purchasedPrice = models.FloatField(null=True, blank=True, default=None)
-#     createdAt = models.DateTimeField(auto_now=True)
-#
-#     class Meta:
-#         db_table = "incoming_transaction_item"
-#
-#     def save(self, *args, **kwargs):
-#         print('save() is called.')
-#         super(IncomingTransactionItem, self).save(using="store_master")
-#
-#     def __unicode__(self):
-#         return "{0} {1} {2} {3} {4} {5}".format(
-#             self.itemId, self.transactionId_id, self.quantityBought, self.storeId,
-#             self.purchasedPrice, self.createdAt)
+class IncomingTransactionItem(models.Model):
+    itemId = models.IntegerField(default = 0, blank=True)
+    transactionId = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
+    quantityBought = models.IntegerField(default = 0, blank=True)
+    storeId = models.IntegerField(default = 0, blank=True)
+    purchasedPrice = models.FloatField(null=True, blank=True, default=None)
+    createdAt = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "incoming_transaction_item"
+
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(IncomingTransactionItem, self).save(using="store_master")
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5}".format(
+            self.itemId, self.transactionId_id, self.quantityBought, self.storeId,
+            self.purchasedPrice, self.createdAt)
 
 # class OutgoingTransactionItem(models.Model):
 #     itemId = models.AutoField(primary_key=True)

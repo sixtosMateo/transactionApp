@@ -16,10 +16,10 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .models import (
     Item, Vendor, IncomingTransaction,
-    Store, Employee, OutgoingTransaction, DamageItem)
+    Store, Employee, OutgoingTransaction, DamageItem, IncomingTransactionItem)
 from .serializers import (
     ItemSerializer, IncomingTransactionSerializer,
-    OutgoingTransactionSerializer
+    OutgoingTransactionSerializer, IncomingTransactionItemSerializer
 
     )
 from django.contrib.auth import authenticate
@@ -51,17 +51,28 @@ def newEmployee(request, template_name = "createEmployee.html"):
         args = {'form':form}
         return render(request, template_name, args )
 
-# two scenarios some GET request for the page
-# another would POST the form to edit profile
-@login_required
-def employeeProfile(request, pk, template = "employeeProfile.html"):
-    selectUser = get_object_or_404(User, pk=pk)
-    outTransactions = OutgoingTransaction.objects.all().filter(
-                                                    employeeId=selectUser.id)
-    # args = {'user': request.user}
-    return render(request, template, {'selectUser': selectUser,
-                    'outTransactions':outTransactions})
 
+@login_required
+def changePassword(request, template = "changePassword.html"):
+    if request.method == 'POST':
+        # specify request.POST is supposed to receive thats why wen add data
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            print("form valid")
+            # dont want request.user as parameter automatically set to anonymous
+            # when form is updated
+            update_session_auth_hash(request, form.user)
+            return redirect('employeeProfile')
+
+        else:
+            return redirect('changePassword')
+
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form': form}
+        return render(request, template, args)
+
+#==============================Views Required ================================
 @login_required
 def editProfile(request, pk, template = "editProfile.html"):
     selectUser = get_object_or_404(User, pk=pk)
@@ -92,25 +103,16 @@ def deleteProfile(request, pk):
 										   )
     return JsonResponse(data)
 
+# two scenarios some GET request for the page
+# another would POST the form to edit profile
 @login_required
-def changePassword(request, template = "changePassword.html"):
-    if request.method == 'POST':
-        # specify request.POST is supposed to receive thats why wen add data
-        form = PasswordChangeForm(data=request.POST, user=request.user)
-        if form.is_valid():
-            print("form valid")
-            # dont want request.user as parameter automatically set to anonymous
-            # when form is updated
-            update_session_auth_hash(request, form.user)
-            return redirect('employeeProfile')
-
-        else:
-            return redirect('changePassword')
-
-    else:
-        form = PasswordChangeForm(user=request.user)
-        args = {'form': form}
-        return render(request, template, args)
+def employeeProfile(request, pk, template = "employeeProfile.html"):
+    selectUser = get_object_or_404(User, pk=pk)
+    outTransactions = OutgoingTransaction.objects.all().filter(
+                                                    employeeId=selectUser.id)
+    # args = {'user': request.user}
+    return render(request, template, {'selectUser': selectUser,
+                    'outTransactions':outTransactions})
 
 @login_required
 def employees(request, template_name="employees.html"):
@@ -284,18 +286,19 @@ class ItemList(APIView):
 class incomingTransactionList(APIView):
     def post(self, request):
         serializers = IncomingTransactionSerializer(data=request.data)
+        print("serializers" + serializers)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
-# class incomingTransactionItemList(APIView):
-#     def post(self, request):
-#         serializers = IncomingTransactionItemSerializer(data=request.data)
-#         if serializers.is_valid():
-#             serializers.save()
-#             return Response(serializers.data, status=status.HTTP_201_CREATED)
-#         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+class incomingTransactionItemList(APIView):
+    def post(self, request):
+        serializers = IncomingTransactionItemSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
 class outgoingTransactionList(APIView):
     def post(self, request):

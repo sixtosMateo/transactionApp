@@ -17,6 +17,7 @@
       <!-- some of this fields need to interger and floats -->
       <!-- this has to have the form tag to save data-->
       <div class="container">
+        <a href="{% url 'inventory' %}">Go back</a>
         <form data-parsley-validate method="post">
           {% csrf_token %}
           <fieldset class="form-group">

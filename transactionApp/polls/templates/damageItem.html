@@ -9,6 +9,7 @@
 <!-- some field types needs to be change -->
 <!-- the fields employeeId and storeId needs to display as they are sign in -->
       <div class="container">
+        <a href="{% url 'inventory' %}">Go back</a>
         <form data-parsley-validate method="post">
           {% csrf_token %}
         <fieldset class="form-group">

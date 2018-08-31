@@ -7,50 +7,11 @@
 
 //************************** OBJECT SAVE AS CLASSES:**************************
 
-class OutgoingTransaction {
 
-  // initialize object parameters for each OutgoingTransaction
-  constructor() {
-    // this.scannedItem = $("#idBarcode");
-    this.store = $("#storeId").val();
-    this.employeeId = $("#employeeId").val();
-    this.subtotal = $("#subtotal").val();
-    this.tax = $("#tax").val();
-    this.total = $("#total").val();
-  }
+var outTransactionItems = [];
 
-  // this function post data to the database using ajax
-  postObject(){
-        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-        $.ajaxSetup({
-            type: 'POST',
-            url:'/polls/api/outgoingTransactions/',
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken",
-                    jQuery("[name=csrfmiddlewaretoken]").val());
-                }
-            }
-        });
-        // sets up the data into json format
-        $.ajax({
-            data:{
-            'storeId': this.store,
-            'employeeId': this.employeeId,
-            'tax': this.tax,
-            'subtotal': this.subtotal,
-            'total': this.total
-            },
-            dataType: 'application/json',
-            success:function(data){
-            }
-        });
-  }
-}
 
 class OutgoingTransactionItem{
-
   // initialize object parameters for each OutgoingTransactionItem
   constructor(data) {
     this.item = data.itemId;
@@ -58,35 +19,6 @@ class OutgoingTransactionItem{
     this.qty = 1;
     this.price = data.salePrice;
     this.tax = .0925;
-  }
-
-  postObject(){
-        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
-        $.ajaxSetup({
-            type: 'POST',
-            url:'/polls/api/outgoingTransactionItems/',
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken",
-                    jQuery("[name=csrfmiddlewaretoken]").val());
-                }
-            }
-        });
-
-        // this function post data to the database using ajax
-        $.ajax({
-            data:{
-            'itemId': this.item,
-            'quantitySold': this.qty,
-            'tax': this.tax,
-            'subtotal': this.subtotal,
-            'transactionId':this.obj
-            },
-            dataType: 'application/json',
-            success:function(data){
-            }
-        });
   }
 }
 
@@ -130,6 +62,9 @@ function createTransactionItem(data){
   $('#formButtons').show()
   if($("#"+data.itemId).length == 0){
 
+    var newTransactionItem =  new OutgoingTransactionItem(data);
+    outTransactionItems.push(newTransactionItem);
+
     // var transItem = new OutgoingTransactionItem(data);
     tableName.append("<tr id=" + data.itemId + ">" +
                       "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
@@ -139,6 +74,13 @@ function createTransactionItem(data){
                       "</tr>");
   }
   else{
+    // updates the qty in array for specific object
+    outTransactionItems.forEach(function(transactionItem, data){
+      if(transactionItem.itemId == data.itemId){
+        transactionItem.qty = transactionItem.qty+1;
+      }
+    });
+
     // find() function allows to access each element that we are looking for
     var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
     qtyValue++;
@@ -178,9 +120,11 @@ $("#idBarcode").change(function(){
 
 });
 
+
+
 $( "#submit" ).click(function() {
-  var newTransaction =  new OutgoingTransaction();
-  newTransaction.postObject();
+
+  postObject(outTransactionItems);
   localStorage.clear();
   location.reload();
 });
@@ -189,3 +133,38 @@ $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
 });
+
+function postObject(outTransactionItems){
+
+        var store = $("#storeId").val();
+        var employeeId = $("#employeeId").val();
+        var subtotal = $("#subtotal").val();
+        var tax = $("#tax").val();
+        var total = $("#total").val();
+        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
+        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+        $.ajaxSetup({
+            type: 'POST',
+            url:'/polls/api/outgoingTransactions/',
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken",
+                    jQuery("[name=csrfmiddlewaretoken]").val());
+                }
+            }
+        });
+        // sets up the data into json format
+        $.ajax({
+            data:{
+            'storeId': store,
+            'employeeId': employeeId,
+            'tax': tax,
+            'subtotal': subtotal,
+            'total':total,
+            outTransactionItems
+            },
+            dataType: 'application/json',
+            success:function(data){
+            }
+        });
+  }
