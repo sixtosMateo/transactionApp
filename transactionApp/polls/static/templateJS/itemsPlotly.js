@@ -1,11 +1,10 @@
-$(document).ready(function(){
-var endpoint = '/polls/api/items/'
+$('#items').ready(function(){
 var itemId = inStockQty = []
 var graphDiv = document.getElementById('items')
 
 $.ajaxSetup({
     type: 'GET',
-    url: '/polls/api/items/',
+    url: '/polls/api/plotly/items/',
     beforeSend: function(xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken",
@@ -16,12 +15,12 @@ $.ajaxSetup({
 
 $.ajax({
     method: "GET",
-    url: '/polls/api/items/',
+    url: '/polls/api/plotly/items/',
     success: function(data){
         itemId = data.itemId
         inStockQty = data.inStockQty
         articleChart()
-        transcriptChart()
+        <!-- transcriptChart() -->
     // console.log(data)
     },
     error: function(error_data){
@@ -29,19 +28,22 @@ $.ajax({
         console.log(error_data)
     },
 })
-
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
 function articleChart(){
     var data = [{
         x: itemId,
         y: inStockQty,
-        type: 'bar',
-        orientation: 'h',
+        type: 'line',
+        orientation: 'v',
         marker: {
             color: '#23b7e5',
         },
     }];
     var layout = {
-        title: 'Number of Articles per Company',
+        title: 'inStockQty for each item',
         titlefont: {
             family: 'Droid Sans Mono',
             size: 36,
@@ -50,7 +52,7 @@ function articleChart(){
         margin: {l:200},
     };
 
-    Plotly.newPlot(graphDiv, data, layout);
+    Plotly.newPlot('items', data, layout);
 }
 
 })

@@ -5,8 +5,8 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <style>
 #items{
-  width:1400px;
-  height:800px;
+  width: 100%;
+  height:50%;
 }
 </style>
 {% endblock %}
@@ -14,9 +14,11 @@
 
 {% block body %}
 <div class="container">
-
-        <div id="items" ></div>
-
+  <div class="row">
+<div class="col-md-6">
+  <div id="items" ></div>
+  </div>
+</div>
 
 </div>
 
@@ -27,67 +29,7 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 {% block javascript %}
-{% block jquery %}
-  $('#items').ready(function(){
-  var endpoint = '/polls/api/items/'
-  var itemId = inStockQty = []
-  var graphDiv = document.getElementById('items')
-
-  $.ajaxSetup({
-      type: 'GET',
-      url: '/polls/api/plotly/items/',
-      beforeSend: function(xhr, settings) {
-          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-              xhr.setRequestHeader("X-CSRFToken",
-              jQuery("[name=csrfmiddlewaretoken]").val());
-          }
-      }
-  });
-
-  $.ajax({
-      method: "GET",
-      url: '/polls/api/plotly/items/',
-      success: function(data){
-          itemId = data.itemId
-          inStockQty = data.inStockQty
-          articleChart()
-          <!-- transcriptChart() -->
-      // console.log(data)
-      },
-      error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-      },
-  })
-  function csrfSafeMethod(method) {
-      // these HTTP methods do not require CSRF protection
-      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-  }
-  function articleChart(){
-      var data = [{
-          x: itemId,
-          y: inStockQty,
-          type: 'bar',
-          orientation: 'h',
-          marker: {
-              color: '#23b7e5',
-          },
-      }];
-      var layout = {
-          title: 'Number of Articles per Company',
-          titlefont: {
-              family: 'Droid Sans Mono',
-              size: 36,
-              color: '#000000'
-          },
-          margin: {l:200},
-      };
-
-      Plotly.newPlot('items', data, layout);
-  }
-
-  })
-{% endblock %}
+<script src="{% static 'templateJS/itemsPlotly.js' %}"></script>
 {% endblock %}
 
 
