@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from . import views
+from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth.views import (
     login,
@@ -10,6 +11,8 @@ from django.contrib.auth.views import (
     password_reset_confirm,
     password_reset_complete
     )
+
+
 
 urlpatterns = [
     # login view comes from default django
@@ -42,8 +45,10 @@ urlpatterns = [
     url(r'^viewOutgoingTransactionItems/(?P<pk>\d+)$', views.viewOutgoingTransactionItems, name='viewOutgoingTransactionItems'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
     url(r'^api/items/$', views.ItemList.as_view(), name='items'),
+    url(r'^api/plotly/items/$', views.ItemPlotly.as_view(), name='itemsPlot'),
+    url(r'^plotly/items/$', views.viewItemPlotly, name='viewitemsPlot'),
     url(r'^api/incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactionList'),
-    url(r'^api/incomingTransactionsItems/$', views.incomingTransactionItemList.as_view(), name='incomingTransactionItemList'),
+    # url(r'^api/incomingTransactionsItems/$', views.incomingTransactionItemList.as_view(), name='incomingTransactionItemList'),
     url(r'^api/outgoingTransactions/$', views.outgoingTransactionList.as_view(), name='outgoingTransactionsList'),
     # url(r'^api/outgoingTransactionItems/$', views.outgoingTransactionItemList.as_view(), name='outgoingTransactionItemList'),
     url(r'^vendor/$', views.vendor, name='vendor'),

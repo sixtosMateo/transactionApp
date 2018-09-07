@@ -5,7 +5,7 @@
 // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
 // i need to update the total quantity of inventory when OutgoingTransaction is posted
 
-//************************** OBJECT SAVE AS CLASSES:**************************
+//************************** CLASSES and GLOBAL Varibles:**************************
 
 
 var outTransactionItems = [];
@@ -14,9 +14,9 @@ var outTransactionItems = [];
 class OutgoingTransactionItem{
   // initialize object parameters for each OutgoingTransactionItem
   constructor(data) {
-    this.item = data.itemId;
+    this.itemId = data.itemId;
     this.name = data.name;
-    this.qty = 1;
+    this.quantitySold = 1;
     this.price = data.salePrice;
     this.tax = .0925;
   }
@@ -63,8 +63,8 @@ function createTransactionItem(data){
   if($("#"+data.itemId).length == 0){
 
     var newTransactionItem =  new OutgoingTransactionItem(data);
-    outTransactionItems.push(newTransactionItem);
 
+    outTransactionItems.push(newTransactionItem);
     // var transItem = new OutgoingTransactionItem(data);
     tableName.append("<tr id=" + data.itemId + ">" +
                       "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
@@ -77,7 +77,7 @@ function createTransactionItem(data){
     // updates the qty in array for specific object
     outTransactionItems.forEach(function(transactionItem, data){
       if(transactionItem.itemId == data.itemId){
-        transactionItem.qty = transactionItem.qty+1;
+        transactionItem.quantitySold = transactionItem.quantitySold+1;
       }
     });
 
@@ -91,48 +91,6 @@ function createTransactionItem(data){
   }
 
 }
-
-function subtotal(price){
-  var increment = parseFloat(localStorage.getItem('subtotal'));
-  increment += parseFloat(price);
-  localStorage.setItem('subtotal', increment);
-  localStorage.setItem('tax', increment * .0925);
-  localStorage.setItem('total', increment + (increment * .0925));
-  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
-  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
-  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
-
-}
-
-//************************** EVENT LISTENER:**************************
-
-
-$('#itemsList').hide()
-$("#formButtons").hide();
-
-// this can set in function
-$("#idBarcode").change(function(){
-    $('#itemNotFound').hide();
-    retriveItemData(itemCallback);
-    retriveItemData(createTransactionItem);
-
-  $("#idBarcode").val("");
-
-});
-
-
-
-$( "#submit" ).click(function() {
-
-  postObject(outTransactionItems);
-  localStorage.clear();
-  location.reload();
-});
-
-$( "#cancel" ).click(function() {
-  localStorage.clear();
-  location.reload();
-});
 
 function postObject(outTransactionItems){
 
@@ -161,10 +119,49 @@ function postObject(outTransactionItems){
             'tax': tax,
             'subtotal': subtotal,
             'total':total,
-            outTransactionItems
+            'transactionItems': JSON.stringify(outTransactionItems)
             },
             dataType: 'application/json',
             success:function(data){
             }
         });
   }
+
+function subtotal(price){
+  var increment = parseFloat(localStorage.getItem('subtotal'));
+  increment += parseFloat(price);
+  localStorage.setItem('subtotal', increment);
+  localStorage.setItem('tax', increment * .0925);
+  localStorage.setItem('total', increment + (increment * .0925));
+  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
+
+}
+
+//************************** EVENT LISTENER:**************************
+
+
+$('#itemsList').hide()
+$("#formButtons").hide();
+
+// this can set in function
+$("#idBarcode").change(function(){
+    $('#itemNotFound').hide();
+    retriveItemData(itemCallback);
+    retriveItemData(createTransactionItem);
+    $("#idBarcode").val("");
+
+});
+
+
+$( "#submit" ).click(function() {
+  postObject(outTransactionItems);
+  // localStorage.clear();
+  // location.reload();
+});
+
+$( "#cancel" ).click(function() {
+  localStorage.clear();
+  location.reload();
+});

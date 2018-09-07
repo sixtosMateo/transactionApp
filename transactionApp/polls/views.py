@@ -8,26 +8,38 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
+
+from django.views.decorators.http import require_http_methods
+
+
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import serializers
+
+#provides us many views
+from rest_framework import generics
+from rest_framework import mixins
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, viewsets
+from django.utils.six import BytesIO
+
+
+import json
 from .models import (
     Item, Vendor, IncomingTransaction,
-    Store, Employee, OutgoingTransaction, DamageItem, IncomingTransactionItem)
+    Store, Employee, OutgoingTransaction, DamageItem, OutgoingTransactionItem)
 from .serializers import (
     ItemSerializer, IncomingTransactionSerializer,
-    OutgoingTransactionSerializer, IncomingTransactionItemSerializer
-
+    OutgoingTransactionSerializer,
+    OutgoingTransactionItemSerializer
     )
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 from .forms import (
     NewEmployeeForm, EditProfileForm, VendorForm,
     ItemForm, OutgoingTransactionForm, IncomingTransactionForm, DamageItemForm
     )
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import (
     UserCreationForm,
     UserChangeForm,
@@ -239,7 +251,6 @@ def newVendor(request, template_name='newVendor.html'):
         args = {'form':form}
         return render(request, template_name, args)
 
-
 @login_required
 def editVendor(request, pk, template_name="editVendor.html"):
     vendor = get_object_or_404(Vendor, pk=pk)
@@ -269,6 +280,11 @@ def deleteVendor(request, pk):
                                        )
     return JsonResponse(data)
 
+@login_required
+def viewItemPlotly(request, template_name="plotlyItemGraph.html"):
+
+    return render(request, template_name)
+
 
 class ItemList(APIView):
     def post(self, request):
@@ -283,35 +299,51 @@ class ItemList(APIView):
         serializers = ItemSerializer(items, many=True)
         return Response(serializers.data)
 
+class ItemPlotly(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, format=None):
+        items = dict()
+        for item in Item.objects.all():
+            items[item.itemId] = item.inStockQty
+
+        items = sorted(items.items(), key=lambda x: x[1])
+        items = dict(items)
+
+        data = {
+            "itemId": items.keys(),
+            "inStockQty" : items.values(),
+        }
+
+        return Response(data)
+
 class incomingTransactionList(APIView):
     def post(self, request):
         serializers = IncomingTransactionSerializer(data=request.data)
-        print("serializers" + serializers)
+
         if serializers.is_valid():
-            serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
-class incomingTransactionItemList(APIView):
-    def post(self, request):
-        serializers = IncomingTransactionItemSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
-
-class outgoingTransactionList(APIView):
-    def post(self, request):
-        serializers = OutgoingTransactionSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
-
-# class outgoingTransactionItemList(APIView):
+# class incomingTransactionItemList(APIView):
 #     def post(self, request):
-#         serializers = OutgoingTransactionItemSerializer(data=request.data)
+#         serializers = IncomingTransactionItemSerializer(data=request.data)
 #         if serializers.is_valid():
 #             serializers.save()
 #             return Response(serializers.data, status=status.HTTP_201_CREATED)
 #         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+
+
+class outgoingTransactionList(APIView):
+    def post(self, request):
+        serializers = OutgoingTransactionSerializer(data=request.data)
+        # print(request.data.get('outTransactionItems'))
+
+        # Return a 400 response if the data was invalid.
+        if serializers.is_valid(raise_exception=True):
+            #put in a variable by setting it as an argument from save(arg)
+            serializers.save()
+            # print(serializers.data)
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
