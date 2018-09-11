@@ -24,8 +24,13 @@ from rest_framework.views import APIView
 from rest_framework import status, viewsets
 from django.utils.six import BytesIO
 
+from django.db.models import Sum
 
 import json
+import datetime
+import time
+
+
 from .models import (
     Item, Vendor, IncomingTransaction,
     Store, Employee, OutgoingTransaction, DamageItem, OutgoingTransactionItem)
@@ -285,6 +290,11 @@ def viewItemPlotly(request, template_name="plotlyItemGraph.html"):
 
     return render(request, template_name)
 
+@login_required
+def viewOutgoingTransactionReport(request, template_name="report.html"):
+
+    return render(request, template_name)
+
 
 class ItemList(APIView):
     def post(self, request):
@@ -307,10 +317,11 @@ class ItemPlotly(APIView):
         items = dict()
         for item in Item.objects.all():
             items[item.itemId] = item.inStockQty
-
         items = sorted(items.items(), key=lambda x: x[1])
         items = dict(items)
 
+        # for i,j in items.items():
+        #     print(j)
         data = {
             "itemId": items.keys(),
             "inStockQty" : items.values(),
@@ -318,11 +329,29 @@ class ItemPlotly(APIView):
 
         return Response(data)
 
+class OutgoingTransactionQty(APIView):
+    def get(self, request, format=None):
+        transactionQty = dict()
+        transactions = OutgoingTransaction.objects.values('createdAt').annotate(Sum('total'))
+
+        for transaction in transactions:
+            if(transaction['createdAt'].month in transactionQty):
+                transactionQty[transaction['createdAt'].month] += transaction['total__sum']
+            else:
+                transactionQty[transaction['createdAt'].month] = transaction['total__sum']
+
+        data={
+            "month": transactionQty.keys(),
+            "transactionQty" : transactionQty.values()
+        }
+
+        return Response(data)
+
 class incomingTransactionList(APIView):
     def post(self, request):
         serializers = IncomingTransactionSerializer(data=request.data)
-
         if serializers.is_valid():
+            serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
@@ -344,6 +373,6 @@ class outgoingTransactionList(APIView):
         if serializers.is_valid(raise_exception=True):
             #put in a variable by setting it as an argument from save(arg)
             serializers.save()
-            # print(serializers.data)
+            print(serializers.data)
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
