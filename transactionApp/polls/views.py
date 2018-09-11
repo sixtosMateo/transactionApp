@@ -239,9 +239,7 @@ def vendor(request, template_name="vendor.html"):
     vendors= Vendor.objects.all()
     return render(request, template_name, {'vendors':vendors})
 
-@login_required
-def report(request, template_name="report.html"):
-    return render(request, template_name)
+
 
 @login_required
 def newVendor(request, template_name='newVendor.html'):
@@ -284,95 +282,3 @@ def deleteVendor(request, pk):
                                        request=request,
                                        )
     return JsonResponse(data)
-
-@login_required
-def viewItemPlotly(request, template_name="plotlyItemGraph.html"):
-
-    return render(request, template_name)
-
-@login_required
-def viewOutgoingTransactionReport(request, template_name="report.html"):
-
-    return render(request, template_name)
-
-
-class ItemList(APIView):
-    def post(self, request):
-        serializers = ItemSerializer(data =request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
-
-    def get(self, request):
-        items = Item.objects.all()
-        serializers = ItemSerializer(items, many=True)
-        return Response(serializers.data)
-
-class ItemPlotly(APIView):
-    authentication_classes = []
-    permission_classes = []
-
-    def get(self, request, format=None):
-        items = dict()
-        for item in Item.objects.all():
-            items[item.itemId] = item.inStockQty
-        items = sorted(items.items(), key=lambda x: x[1])
-        items = dict(items)
-
-        # for i,j in items.items():
-        #     print(j)
-        data = {
-            "itemId": items.keys(),
-            "inStockQty" : items.values(),
-        }
-
-        return Response(data)
-
-class OutgoingTransactionQty(APIView):
-    def get(self, request, format=None):
-        transactionQty = dict()
-        transactions = OutgoingTransaction.objects.values('createdAt').annotate(Sum('total'))
-
-        for transaction in transactions:
-            if(transaction['createdAt'].month in transactionQty):
-                transactionQty[transaction['createdAt'].month] += transaction['total__sum']
-            else:
-                transactionQty[transaction['createdAt'].month] = transaction['total__sum']
-
-        data={
-            "month": transactionQty.keys(),
-            "transactionQty" : transactionQty.values()
-        }
-
-        return Response(data)
-
-class incomingTransactionList(APIView):
-    def post(self, request):
-        serializers = IncomingTransactionSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
-
-# class incomingTransactionItemList(APIView):
-#     def post(self, request):
-#         serializers = IncomingTransactionItemSerializer(data=request.data)
-#         if serializers.is_valid():
-#             serializers.save()
-#             return Response(serializers.data, status=status.HTTP_201_CREATED)
-#         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
-
-
-class outgoingTransactionList(APIView):
-    def post(self, request):
-        serializers = OutgoingTransactionSerializer(data=request.data)
-        # print(request.data.get('outTransactionItems'))
-
-        # Return a 400 response if the data was invalid.
-        if serializers.is_valid(raise_exception=True):
-            #put in a variable by setting it as an argument from save(arg)
-            serializers.save()
-            print(serializers.data)
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)

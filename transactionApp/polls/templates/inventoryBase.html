@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   {% block head %}
-  <title>Base</title>
+  <title>Inventory</title>
   {% endblock %}
 </head>
 
@@ -15,7 +15,7 @@
     </br>
     <div class="container">
             <nav class="navbar navbar-default">
-            <div class="container-fluid">
+              <div class="container-fluid">
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                   <span class="sr-only">Toggle navigation</span>
@@ -71,11 +71,22 @@
 
               </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
-          </nav>
-        </div>
+            </nav>
+            <div class"inventory-navigation">
+            <h1>Inventory</h1>
+            <a href="{% url 'item' %}"><input id="item" type="button" value="Item"/></a>
+            <a href="{% url 'newItem' %}"><input id="newItem" type="button" value="New Item"/></a>
+            <a href="{% url 'countCycle' %}"><input id="countCycle" type="button" value="Count Cycle"/></a>
+            <a href="{% url 'damageItem' %}"><input id="damageItem" type="button" value="Damage Item"/></a>
+          </div>
+          <br><br>
+    </div>
 
   {% block body %}
-    <h1>Base</h1>
+
+
+
+
 
   {% endblock %}
 

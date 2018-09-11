@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from . import views
+from .apiView import apiView
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth.views import (
@@ -34,7 +35,7 @@ urlpatterns = [
     password_reset_confirm, name='password_reset_confirm'),
     url(r'^resetPassword/complete/$', password_reset_complete, name='password_reset_complete'),
     url(r'^mainMenu/$', views.mainMenu, name='mainMenu'),
-    url(r'^report/$', views.report, name='report'),
+    url(r'^report/$', apiView.report, name='report'),
     url(r'^item/$', views.item, name='item'),
     url(r'^editItem/(?P<pk>\d+)$', views.editItem, name='editItem'),
     url(r'^inventory/$', views.inventory, name='inventory'),
@@ -44,14 +45,14 @@ urlpatterns = [
     url(r'^outgoingTransaction/$', views.outgoingTransaction, name='outgoingTransaction'),
     url(r'^viewOutgoingTransactionItems/(?P<pk>\d+)$', views.viewOutgoingTransactionItems, name='viewOutgoingTransactionItems'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
-    url(r'^api/items/$', views.ItemList.as_view(), name='items'),
-    url(r'^api/plotly/items/$', views.ItemPlotly.as_view(), name='itemsPlot'),
-    url(r'^plotly/items/$', views.viewItemPlotly, name='viewitemsPlot'),
-    url(r'^api/plotly/outgoingTransactionQty/$', views.OutgoingTransactionQty.as_view(), name='OutgoingTransactionQty'),
-    url(r'^plotly/outgoingTransactionReport/$', views.viewOutgoingTransactionReport, name='viewOutgoingTransactionReport'),
-    url(r'^api/incomingTransactions/$', views.incomingTransactionList.as_view(), name='incomingTransactionList'),
+    url(r'^api/items/$', apiView.ItemList.as_view(), name='items'),
+    url(r'^api/plotly/items/$', apiView.ItemPlotly.as_view(), name='itemsPlot'),
+    url(r'^plotly/items/$', apiView.viewItemPlotly, name='viewitemsPlot'),
+    url(r'^api/plotly/outgoingTransactionQty/$', apiView.OutgoingTransactionQty.as_view(), name='OutgoingTransactionQty'),
+    url(r'^plotly/outgoingTransactionReport/$', apiView.viewOutgoingTransactionReport, name='viewOutgoingTransactionReport'),
+    url(r'^api/incomingTransactions/$', apiView.incomingTransactionList.as_view(), name='incomingTransactionList'),
     # url(r'^api/incomingTransactionsItems/$', views.incomingTransactionItemList.as_view(), name='incomingTransactionItemList'),
-    url(r'^api/outgoingTransactions/$', views.outgoingTransactionList.as_view(), name='outgoingTransactionsList'),
+    url(r'^api/outgoingTransactions/$', apiView.outgoingTransactionList.as_view(), name='outgoingTransactionsList'),
     # url(r'^api/outgoingTransactionItems/$', views.outgoingTransactionItemList.as_view(), name='outgoingTransactionItemList'),
     url(r'^vendor/$', views.vendor, name='vendor'),
     url(r'^newVendor/$', views.newVendor, name='newVendor'),
