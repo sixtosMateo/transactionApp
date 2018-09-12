@@ -8,6 +8,8 @@
 
 //************************** OBJECT SAVE AS CLASSES:**************************
 var inTransactionItems = [];
+
+// var tempBarcode = null;
 class Item{
   constructor(){
     this.name = $("#name").val();
@@ -75,122 +77,121 @@ localStorage.setItem('subtotal', 0);
 
 
 
+function verifiedItemExist(callback){
+  var $input = $("#idBarcode").val();
+  var $exist =false;
+  return $.ajax({
+         type: 'GET',
+         url:'/polls/api/items/',
+         success:function(items){
+           $.map(items, function (item){
+             if(item.itemId == $input){
+               $exist=true;
+               callback($exist, item);
 
-  function verifiedItemExist(callback){
-    var $input = $("#idBarcode").val();
-    var $exist =false;
-    return $.ajax({
-           type: 'GET',
-           url:'/polls/api/items/',
-           success:function(items){
-             $.map(items, function (item){
-               if(item.itemId == $input){
-                 $exist=true;
-                 callback($exist, item);
-
-               }
-             });
-             if ($exist == false){
-              callback($exist);
              }
+           });
+           if ($exist == false){
+            callback($exist);
+           }
 
-           },
-           error: function(error_data){
-               console.log("error")
-               console.log(error_data)
-           },
-         });
+         },
+         error: function(data){
+             console.log("error")
+             console.log(error_data)
+         },
+       });
+}
+// function itemCallback(data){
+//
+//   subtotal(data.purchasedPrice);
+// }
+
+function callbackFound(found, data){
+  var tableName = $("#itemsTable");
+  if(found == false){
+    $("#itemFormStyle").show();
   }
-  // function itemCallback(data){
-  //
-  //   subtotal(data.purchasedPrice);
-  // }
+  else{
+    $('#itemsTable').show()
+    $("#formButtons").show();
 
-  function callbackFound(found, data){
-    var tableName = $("#itemsTable");
-    if(found == false){
-      $("#itemFormStyle").show();
+    if($("#"+data.itemId).length == 0){
+      subtotal(data.purchasedPrice);
+      var newTransactionItem =  new IncomingTransactionItem(data);
+      inTransactionItems.push(newTransactionItem);
+
+      tableName.append("<tr id=" + data.itemId + ">" +
+                        "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
+                        "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
+                        "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
+                        "<td id='qty' value='"+1+"'>"+1+"</td>"+
+                        "</tr>");
     }
     else{
-      $('#itemsTable').show()
-      $("#formButtons").show();
+      subtotal(data.purchasedPrice);
+      inTransactionItems.forEach(function(transactionItem, data){
+        if(transactionItem.itemId == data.itemId){
+          transactionItem.quantityBought = transactionItem.quantityBought+1;
+        }
+      });
 
-      if($("#"+data.itemId).length == 0){
-        subtotal(data.purchasedPrice);
-        var newTransactionItem =  new IncomingTransactionItem(data);
-        inTransactionItems.push(newTransactionItem);
+      var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
+      qtyValue++;
 
-        tableName.append("<tr id=" + data.itemId + ">" +
-                          "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
-                          "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
-                          "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
-                          "<td id='qty' value='"+1+"'>"+1+"</td>"+
-                          "</tr>");
-      }
-      else{
-        subtotal(data.purchasedPrice);
-        inTransactionItems.forEach(function(transactionItem, data){
-          if(transactionItem.itemId == data.itemId){
-            transactionItem.quantityBought = transactionItem.quantityBought+1;
-          }
-        });
-
-        var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
-        qtyValue++;
-
-        //replaceWith is replacing an element with another, in this case itself with new values
-        tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
-          "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
-
-      }
+      //replaceWith is replacing an element with another, in this case itself with new values
+      tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
+        "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
 
     }
 
-
   }
 
-  function postObject(inTransactionItems){
-    var vendorId = $("#vendorId").val();
-    var employeeId = $("#employeeId").val();
-    var subtotal = $("#subtotal").val();
-    var tax = $("#tax").val();
-    var total = $("#total").val();
 
-    $.ajaxSetup({
-        type: 'POST',
-        url:'/polls/api/incomingTransactions/',
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken",
-                jQuery("[name=csrfmiddlewaretoken]").val());
-            }
-        }
-    });
-    // sets up the data into json format
-    //write failed message
-    $.ajax({
-        data:{
-        'vendorId': vendorId,
-        'employeeId': employeeId,
-        'tax': tax,
-        'subtotal': subtotal,
-        'total': total,
-        'transactionItems': JSON.stringify(inTransactionItems)
-        },
-        dataType: 'application/json',
-        success:function(data){
+}
 
-        },
-        error: function(error_data){
-            console.log("error")
-            console.log(error_data)
-        },
-    });
-  }
+function postObject(inTransactionItems){
+  var vendorId = $("#vendorId").val();
+  var employeeId = $("#employeeId").val();
+  var subtotal = $("#subtotal").val();
+  var tax = $("#tax").val();
+  var total = $("#total").val();
+
+  $.ajaxSetup({
+      type: 'POST',
+      url:'/polls/api/incomingTransactions/',
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken",
+              jQuery("[name=csrfmiddlewaretoken]").val());
+          }
+      }
+  });
+  // sets up the data into json format
+  //write failed message
+  $.ajax({
+      data:{
+      'vendorId': vendorId,
+      'employeeId': employeeId,
+      'tax': tax,
+      'subtotal': subtotal,
+      'total': total,
+      'transactionItems': JSON.stringify(inTransactionItems)
+      },
+      dataType: 'application/json',
+      success:function(data){
+
+      },
+      error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+      },
+  });
+}
 
 
 function subtotal(price){
-    console.log(price);
+
     var increment = parseFloat(localStorage.getItem('subtotal'));
     increment += parseFloat(price);
     localStorage.setItem('subtotal', increment);
@@ -208,10 +209,11 @@ $("#itemsTable").hide();
 $("#formButtons").hide();
 
 $("#idBarcode").change(function(){
+
   $("#itemFormStyle").hide();
   // verifiedItemExist(itemCallback);
   verifiedItemExist(callbackFound);
-
+  $("#barcode").val($("#idBarcode").val());
   $("#idBarcode").val("");
 });
 
@@ -226,7 +228,6 @@ $( "#submit" ).click(function() {
 
   postObject(inTransactionItems);
   // newTransaction.postObject();
-
   localStorage.clear();
   location.reload();
 });
