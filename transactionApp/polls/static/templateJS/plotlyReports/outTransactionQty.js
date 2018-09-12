@@ -18,7 +18,6 @@ $.ajax({
     url: '/polls/api/plotly/outgoingTransactionQty/',
     success: function(data){
         month = data.month
-        month.sort()
         transactionQty = data.transactionQty
         articleChart()
         <!-- transcriptChart() -->
