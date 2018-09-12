@@ -60,7 +60,7 @@ class Item{
 
 class IncomingTransactionItem{
   constructor(data){
-    this.itemId = data.itemId;
+    this.barcode = data.barcode;
     this.name = data.name;
     this.quantityBought = 1;
     this.tax = .0925;
@@ -85,7 +85,7 @@ function verifiedItemExist(callback){
          url:'/polls/api/items/',
          success:function(items){
            $.map(items, function (item){
-             if(item.itemId == $input){
+             if(item.barcode == $input){
                $exist=true;
                callback($exist, item);
 
@@ -116,13 +116,13 @@ function callbackFound(found, data){
     $('#itemsTable').show()
     $("#formButtons").show();
 
-    if($("#"+data.itemId).length == 0){
+    if($("#"+data.barcode).length == 0){
       subtotal(data.purchasedPrice);
       var newTransactionItem =  new IncomingTransactionItem(data);
       inTransactionItems.push(newTransactionItem);
 
-      tableName.append("<tr id=" + data.itemId + ">" +
-                        "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
+      tableName.append("<tr id=" + data.barcode + ">" +
+                        "<td id='barcode' value='"+data.barcode+"'>"+data.barcode+"</td>"+
                         "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
                         "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
                         "<td id='qty' value='"+1+"'>"+1+"</td>"+
@@ -131,16 +131,16 @@ function callbackFound(found, data){
     else{
       subtotal(data.purchasedPrice);
       inTransactionItems.forEach(function(transactionItem, data){
-        if(transactionItem.itemId == data.itemId){
+        if(transactionItem.barcode == data.barcode){
           transactionItem.quantityBought = transactionItem.quantityBought+1;
         }
       });
 
-      var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
+      var qtyValue = parseInt(tableName.find('tr#' + data.barcode).find('td#qty').html());
       qtyValue++;
 
       //replaceWith is replacing an element with another, in this case itself with new values
-      tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
+      tableName.find('tr#' +data.barcode).find('td#qty').replaceWith(
         "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
 
     }
