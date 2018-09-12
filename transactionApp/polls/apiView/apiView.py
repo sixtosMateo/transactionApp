@@ -105,7 +105,7 @@ class OutgoingTransactionQty(APIView):
             else:
                 transactionQty[transaction['createdAt'].month] = transaction['total__sum']
         transactionQty = OrderedDict(sorted(transactionQty.items(), key=lambda x: x[0]))
-        print(transactionQty)
+
         data={
             "month": transactionQty.keys(),
             "transactionQty" : transactionQty.values()
@@ -123,7 +123,7 @@ class IncomingTransactionQty(APIView):
                 transactionQty[transaction['createdAt'].month] += transaction['total__sum']
             else:
                 transactionQty[transaction['createdAt'].month] = transaction['total__sum']
-
+        print(transactionQty)
         transactionQty = OrderedDict(sorted(transactionQty.items(), key=lambda x: x[0]))
         # transactionQty = dict(transactionQty)
 

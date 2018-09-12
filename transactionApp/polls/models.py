@@ -165,7 +165,6 @@ class IncomingTransaction(models.Model):
 #     itemId = models.IntegerField(default = 0, blank=True)
 #     transactionId = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
 #     quantityBought = models.IntegerField(default = 0, blank=True)
-#     storeId = models.IntegerField(default = 0, blank=True)
 #     purchasedPrice = models.FloatField(null=True, blank=True, default=None)
 #     createdAt = models.DateTimeField(auto_now=True)
 #

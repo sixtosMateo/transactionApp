@@ -7,6 +7,7 @@
 
 
 //************************** OBJECT SAVE AS CLASSES:**************************
+var inTransactionItems = [];
 class Item{
   constructor(){
     this.name = $("#name").val();
@@ -55,15 +56,106 @@ class Item{
 
 }
 
-class IncomingTransaction{
-  constructor(){
-    this.vendor = $("#vendorId").val();
-    this.employeeId = $("#employeeId").val();
-    this.tax = $("#tax").val();
-    this.subtotal = $("#subtotal").val();
-    this.total = $("#total").val();
+class IncomingTransactionItem{
+  constructor(data){
+    this.itemId = data.itemId;
+    this.name = data.name;
+    this.quantityBought = 1;
+    this.tax = .0925;
+    this.purchasedPrice = data.purchasedPrice;
   }
-  postObject(){
+
+}
+
+//************************** USEFUL FUNCTION:**************************
+
+
+localStorage.setItem('subtotal', 0);
+
+
+
+
+
+  function verifiedItemExist(callback){
+    var $input = $("#idBarcode").val();
+    var $exist =false;
+    return $.ajax({
+           type: 'GET',
+           url:'/polls/api/items/',
+           success:function(items){
+             $.map(items, function (item){
+               if(item.itemId == $input){
+                 $exist=true;
+                 callback($exist, item);
+
+               }
+             });
+             if ($exist == false){
+              callback($exist);
+             }
+
+           },
+           error: function(error_data){
+               console.log("error")
+               console.log(error_data)
+           },
+         });
+  }
+  // function itemCallback(data){
+  //
+  //   subtotal(data.purchasedPrice);
+  // }
+
+  function callbackFound(found, data){
+    var tableName = $("#itemsTable");
+    if(found == false){
+      $("#itemFormStyle").show();
+    }
+    else{
+      $('#itemsTable').show()
+      $("#formButtons").show();
+
+      if($("#"+data.itemId).length == 0){
+        subtotal(data.purchasedPrice);
+        var newTransactionItem =  new IncomingTransactionItem(data);
+        inTransactionItems.push(newTransactionItem);
+
+        tableName.append("<tr id=" + data.itemId + ">" +
+                          "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
+                          "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
+                          "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
+                          "<td id='qty' value='"+1+"'>"+1+"</td>"+
+                          "</tr>");
+      }
+      else{
+        subtotal(data.purchasedPrice);
+        inTransactionItems.forEach(function(transactionItem, data){
+          if(transactionItem.itemId == data.itemId){
+            transactionItem.quantityBought = transactionItem.quantityBought+1;
+          }
+        });
+
+        var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
+        qtyValue++;
+
+        //replaceWith is replacing an element with another, in this case itself with new values
+        tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
+          "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
+
+      }
+
+    }
+
+
+  }
+
+  function postObject(inTransactionItems){
+    var vendorId = $("#vendorId").val();
+    var employeeId = $("#employeeId").val();
+    var subtotal = $("#subtotal").val();
+    var tax = $("#tax").val();
+    var total = $("#total").val();
+
     $.ajaxSetup({
         type: 'POST',
         url:'/polls/api/incomingTransactions/',
@@ -75,27 +167,38 @@ class IncomingTransaction{
         }
     });
     // sets up the data into json format
+    //write failed message
     $.ajax({
         data:{
-        'vendorId': this.vendor,
-        'employeeId': this.employeeId,
-        'tax': this.tax,
-        'subtotal': this.subtotal,
-        'total': this.total
+        'vendorId': vendorId,
+        'employeeId': employeeId,
+        'tax': tax,
+        'subtotal': subtotal,
+        'total': total,
+        'transactionItems': JSON.stringify(inTransactionItems)
         },
         dataType: 'application/json',
         success:function(data){
 
-        }
+        },
+        error: function(error_data){
+            console.log("error")
+            console.log(error_data)
+        },
     });
   }
 
-}
 
-class IncomingTransactionItem{
-  constructor(){
-
-  }
+function subtotal(price){
+    console.log(price);
+    var increment = parseFloat(localStorage.getItem('subtotal'));
+    increment += parseFloat(price);
+    localStorage.setItem('subtotal', increment);
+    localStorage.setItem('tax', increment * .0925);
+    localStorage.setItem('total', increment + (increment * .0925));
+    $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+    $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+    $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
 
 }
 //************************** EVENT LISTENER:**************************
@@ -106,7 +209,9 @@ $("#formButtons").hide();
 
 $("#idBarcode").change(function(){
   $("#itemFormStyle").hide();
+  // verifiedItemExist(itemCallback);
   verifiedItemExist(callbackFound);
+
   $("#idBarcode").val("");
 });
 
@@ -118,8 +223,8 @@ $( "#newItem" ).click(function() {
 
 $( "#submit" ).click(function() {
   // var newTransaction = new IncomingTransaction();
-  var newTransactionItem = new IncomingTransactionItem();
-  newTransactionItem.postObject();
+
+  postObject(inTransactionItems);
   // newTransaction.postObject();
 
   localStorage.clear();
@@ -130,76 +235,3 @@ $( "#cancel" ).click(function() {
   localStorage.clear();
   location.reload();
 });
-
-//************************** USEFUL FUNCTION:**************************
-
-localStorage.setItem('subtotal', 0);
-
-function subtotal(price){
-  var increment = parseFloat(localStorage.getItem('subtotal'));
-  increment += parseFloat(price);
-  localStorage.setItem('subtotal', increment);
-  localStorage.setItem('tax', increment * .0925);
-  localStorage.setItem('total', increment + (increment * .0925));
-  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
-  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
-  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
-
-}
-
-
-
-function verifiedItemExist(callback){
-  var $input = $("#idBarcode").val();
-  var $exist =false;
-  return $.ajax({
-         type: 'GET',
-         url:'/polls/api/items/',
-         success:function(items){
-           $.map(items, function (item){
-             if(item.itemId == $input){
-               $exist=true;
-               callback($exist, item);
-
-             }
-           });
-           if ($exist == false){
-            callback($exist);
-           }
-
-         }
-       });
-  //
-}
-
-function callbackFound(found, data){
-  var tableName = $("#itemsTable");
-  if(found == false){
-    $("#itemFormStyle").show();
-  }
-  else{
-    $('#itemsTable').show()
-    $("#formButtons").show();
-    if($("#"+data.itemId).length == 0){
-      // var transItem = new OutgoingTransactionItem(data);
-      tableName.append("<tr id=" + data.itemId + ">" +
-                        "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
-                        "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
-                        "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
-                        "<td id='qty' value='"+1+"'>"+1+"</td>"+
-                        "</tr>");
-    }
-    else{
-      var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
-      qtyValue++;
-
-      //replaceWith is replacing an element with another, in this case itself with new values
-      tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
-        "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
-
-    }
-    subtotal(data.purchasedPrice);
-  }
-
-
-}

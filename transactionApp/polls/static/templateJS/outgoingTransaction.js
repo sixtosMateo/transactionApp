@@ -119,7 +119,11 @@ function postObject(outTransactionItems){
             },
             dataType: 'application/json',
             success:function(data){
-            }
+            },
+            error: function(error_data){
+                console.log("error")
+                console.log(error_data)
+            },
         });
   }
 
@@ -153,8 +157,8 @@ $("#idBarcode").change(function(){
 
 $( "#submit" ).click(function() {
   postObject(outTransactionItems);
-  localStorage.clear();
-  location.reload();
+  // localStorage.clear();
+  // location.reload();
 });
 
 $( "#cancel" ).click(function() {
