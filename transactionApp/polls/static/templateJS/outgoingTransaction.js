@@ -24,11 +24,7 @@ class OutgoingTransactionItem{
 
 //************************** USEFUL FUNCTION:**************************
 
-//required for ajaxSetup for each class postObject function
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
+
 
 // does ajax call to retrieve data and takes in a callback function to access data
 function retriveItemData(callback){
@@ -157,8 +153,8 @@ $("#idBarcode").change(function(){
 
 $( "#submit" ).click(function() {
   postObject(outTransactionItems);
-  // localStorage.clear();
-  // location.reload();
+  localStorage.clear();
+  location.reload();
 });
 
 $( "#cancel" ).click(function() {

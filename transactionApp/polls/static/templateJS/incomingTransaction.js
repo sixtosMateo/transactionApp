@@ -96,7 +96,7 @@ class IncomingTransactionItem{
   constructor(){
 
   }
-  
+
 }
 //************************** EVENT LISTENER:**************************
 
@@ -147,10 +147,7 @@ function subtotal(price){
 
 }
 
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
+
 
 function verifiedItemExist(callback){
   var $input = $("#idBarcode").val();
