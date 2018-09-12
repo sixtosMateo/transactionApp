@@ -282,3 +282,8 @@ def deleteVendor(request, pk):
                                        request=request,
                                        )
     return JsonResponse(data)
+
+
+@login_required
+def report(request, template_name="reportBase.html"):
+    return render(request, template_name)

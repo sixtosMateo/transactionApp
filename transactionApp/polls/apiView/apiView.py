@@ -29,7 +29,7 @@ from django.db.models import Sum
 import json
 import datetime
 import time
-
+from collections import OrderedDict
 
 from ..models import (
     Item, Vendor, IncomingTransaction,
@@ -45,19 +45,18 @@ from ..serializers import (
 from django.contrib.auth.decorators import login_required
 
 
-
-@login_required
-def report(request, template_name="plotlyReports/report.html"):
-    return render(request, template_name)
-
-
 @login_required
 def viewItemPlotly(request, template_name="plotlyReports/plotlyItemGraph.html"):
 
     return render(request, template_name)
 
 @login_required
-def viewOutgoingTransactionReport(request, template_name="plotlyReports/report.html"):
+def viewIncomingTransactionReport(request, template_name="plotlyReports/plotlyIncomingTransactionReport.html"):
+
+    return render(request, template_name)
+
+@login_required
+def viewOutgoingTransactionReport(request, template_name="plotlyReports/plotlyOutgoingTransactionReport.html"):
 
     return render(request, template_name)
 
@@ -111,6 +110,27 @@ class OutgoingTransactionQty(APIView):
             "transactionQty" : transactionQty.values()
         }
 
+        return Response(data)
+
+class IncomingTransactionQty(APIView):
+    def get(self, request, format=None):
+        transactionQty = dict()
+        transactions = IncomingTransaction.objects.values('createdAt').annotate(Sum('total'))
+
+        for transaction in transactions:
+            if(transaction['createdAt'].month in transactionQty):
+                transactionQty[transaction['createdAt'].month] += transaction['total__sum']
+            else:
+                transactionQty[transaction['createdAt'].month] = transaction['total__sum']
+        print(transactionQty)
+        transactionQty = OrderedDict(sorted(transactionQty.items(), key=lambda x: x[0]))
+        # transactionQty = dict(transactionQty)
+        print(transactionQty)
+        data={
+            "month": transactionQty.keys(),
+            "transactionQty" : transactionQty.values()
+        }
+        # print(data['month']
         return Response(data)
 
 class incomingTransactionList(APIView):

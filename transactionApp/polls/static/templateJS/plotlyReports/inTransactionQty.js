@@ -4,7 +4,7 @@ var graphDiv = document.getElementById('transactionQty')
 
 $.ajaxSetup({
     type: 'GET',
-    url: '/polls/api/plotly/outgoingTransactionQty/',
+    url: 'polls/api/plotly/incomingTransactionQty/',
     beforeSend: function(xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken",
@@ -15,10 +15,9 @@ $.ajaxSetup({
 
 $.ajax({
     method: "GET",
-    url: '/polls/api/plotly/outgoingTransactionQty/',
+    url: '/polls/api/plotly/incomingTransactionQty/',
     success: function(data){
         month = data.month
-        month.sort()
         transactionQty = data.transactionQty
         articleChart()
         <!-- transcriptChart() -->
@@ -29,10 +28,12 @@ $.ajax({
         console.log(error_data)
     },
 })
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
 function articleChart(){
     var data = [{
         x: month,
@@ -44,7 +45,7 @@ function articleChart(){
         },
     }];
     var layout = {
-        title: 'Outgoing Transaction per month',
+        title: 'Incoming transaction per month',
         titlefont: {
             family: 'Droid Sans Mono',
             size: 36,
