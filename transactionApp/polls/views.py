@@ -285,5 +285,5 @@ def deleteVendor(request, pk):
 
 
 @login_required
-def report(request, template_name="reportBase.html"):
+def report(request, template_name="plotlyReports/plotlyOutgoingTransactionReport.html"):
     return render(request, template_name)
