@@ -185,9 +185,14 @@ def newItem(request,template_name="newItem.html"):
 
 @login_required
 def countCycle(request, template_name="countCycle.html"):
+    # need to create a form function and hide form or show through js
+    # post
     stores = Store.objects.all()
-    
-    return render(request, template_name,{'stores':stores})
+    if request.method == 'POST':
+        return redirect(countCycle)
+    else:
+        # form = CountCycleForm()
+        return render(request, template_name,{'stores':stores})
 
 @login_required
 def damageItem(request, template_name="damageItem.html"):
