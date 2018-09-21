@@ -44,6 +44,9 @@ from ..serializers import (
 # decorators are ways to provide functionality to one of your function
 from django.contrib.auth.decorators import login_required
 
+@login_required
+def viewDamageCostReport(request, template_name="plotlyReports/damageCostReport.html"):
+    return render(request, template_name)
 
 @login_required
 def viewItemPlotly(request, template_name="plotlyReports/plotlyItemGraph.html"):

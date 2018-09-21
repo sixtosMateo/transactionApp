@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^api/plotly/outgoingTransactionQty/$', apiView.OutgoingTransactionQty.as_view(), name='OutgoingTransactionQty'),
     url(r'^api/plotly/incomingTransactionQty/$', apiView.IncomingTransactionQty.as_view(), name='IncomingTransactionQty'),
     url(r'^plotly/items/$', apiView.viewItemPlotly, name='viewitemsPlot'),
+    url(r'^plotly/damageCostReport/$', apiView.viewDamageCostReport, name='viewDamageCostReport'),
     url(r'^plotly/outgoingTransactionReport/$', apiView.viewOutgoingTransactionReport, name='viewOutgoingTransactionReport'),
     url(r'^plotly/incomingTransactionReport/$', apiView.viewIncomingTransactionReport, name='viewIncomingTransactionReport'),
     url(r'^api/items/$', apiView.ItemList.as_view(), name='items'),

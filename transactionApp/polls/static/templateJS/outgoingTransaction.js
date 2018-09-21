@@ -120,10 +120,9 @@ function postObject(outTransactionItems){
             dataType: 'application/json',
             success:function(data){
             },
-            error: function(error_data){
-                console.log("error")
-                console.log(error_data)
-            },
+            error: function(jqXHR, exception){
+              console.log(jqXHR);
+            }
         });
   }
 
