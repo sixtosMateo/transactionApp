@@ -97,6 +97,8 @@ class ItemPlotly(APIView):
 
         return Response(data)
 
+
+
 class OutgoingTransactionQty(APIView):
     def get(self, request, format=None):
         transactionQty = dict()
@@ -115,6 +117,22 @@ class OutgoingTransactionQty(APIView):
         }
 
         return Response(data)
+
+class DamageCostReport(APIView):
+    def get(self, request, format=None):
+        damageCost = dict()
+        damageCostTotal =  DamageItem.objects.all()
+
+        for damageItem in damageCostTotal:
+            damageCost[damageItem.itemId] = damageItem.qtyDamage
+
+        data={
+            "id": damageCost.keys(),
+            "qty": damageCost.values()
+        }
+        return Response(data)
+
+
 
 class IncomingTransactionQty(APIView):
     def get(self, request, format=None):
@@ -152,6 +170,7 @@ class incomingTransactionList(APIView):
 #             serializers.save()
 #             return Response(serializers.data, status=status.HTTP_201_CREATED)
 #         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class outgoingTransactionList(APIView):
