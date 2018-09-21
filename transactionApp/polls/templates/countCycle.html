@@ -7,7 +7,39 @@
 
 {% block body %}
 <div class="container">
+  <fieldset class="form-group">
+    <label for="idBarcode">Barcode:</label>
+    <input  class="form-control" id="idBarcode" name="idBarcode" type="text"  value="">
+  </fieldset>
 
+  <form data-parsley-validate method="post">
+    {% csrf_token %}
+
+    <fieldset class="form-group">
+      <label for="locationId">Store Name:</label>
+      <select id="locationId" name="locationId">
+      {% for store in stores %}
+      <option value={{store.storeId}}>{{store.name}}</option>
+      {% endfor %}
+      </select>
+    </fieldset>
+
+    <div id="formStyle">
+      <fieldset class="form-group">
+        <label for="barcode">Barcode:</label>
+        <input  type="text" class="form-control" id="barcode" name="barcode" data-parsley-required="true">
+      </fieldset>
+      <fieldset class="form-group">
+        <label for="inStockQty">Qty:</label>
+        <input  class="form-control" id="inStockQty" name="inStockQty" type="number" data-parsley-required="true">
+      </fieldset>
+
+    </div>
+
+    <button type="submit">Submit</button>
+    <a href="{% url 'countCycle' %}"><input type="button" value="Cancel"/></a>
+
+</form>
 
 </div>
 

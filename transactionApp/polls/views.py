@@ -185,7 +185,9 @@ def newItem(request,template_name="newItem.html"):
 
 @login_required
 def countCycle(request, template_name="countCycle.html"):
-    return render(request, template_name)
+    stores = Store.objects.all()
+    
+    return render(request, template_name,{'stores':stores})
 
 @login_required
 def damageItem(request, template_name="damageItem.html"):
