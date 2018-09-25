@@ -25,7 +25,7 @@ class OutgoingTransactionItem{
 
 //************************** USEFUL FUNCTION:**************************
 
-
+localStorage.setItem('subtotal', 0);
 
 // ajax call to retrieve data and takes in a callback function to access data
 function retriveItemData(callback){
@@ -45,8 +45,6 @@ function retriveItemData(callback){
        });
 }
 
-localStorage.setItem('subtotal', 0);
-
 // callback function calls function that display and update subtotal, total, tax
 function itemCallback(data){
   subtotal(data.salePrice);
@@ -55,36 +53,39 @@ function itemCallback(data){
 // this is a callback funtion that display a table with the object data
 function createTransactionItem(data){
   var tableName = $("#itemsList");
+
   $('#itemsList').show()
   $('#formButtons').show()
+
   if($("#"+data.itemId).length == 0){
 
     var newTransactionItem =  new OutgoingTransactionItem(data);
-
     outTransactionItems.push(newTransactionItem);
+
     // var transItem = new OutgoingTransactionItem(data);
     tableName.append("<tr id=" + data.itemId + ">" +
                       "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
                       "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
                       "<td id='price' value='"+data.salePrice+"'>"+data.salePrice+"</td>"+
-                      "<td id='qty' value='"+1+"'>"+1+"</td>"+
+                      "<td id='quantitySold' value='"+1+"'>"+1+"</td>"+
                       "</tr>");
   }
   else{
+
     // updates the qty in array for specific object
-    outTransactionItems.forEach(function(transactionItem, data){
+    outTransactionItems.forEach(function(transactionItem){
       if(transactionItem.itemId == data.itemId){
         transactionItem.quantitySold = transactionItem.quantitySold+1;
       }
     });
 
     // find() function allows to access each element that we are looking for
-    var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#qty').html());
+    var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#quantitySold').html());
     qtyValue++;
 
     //replaceWith is replacing an element with another, in this case itself with new values
-    tableName.find('tr#' +data.itemId).find('td#qty').replaceWith(
-      "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
+    tableName.find('tr#' +data.itemId).find('td#quantitySold').replaceWith(
+      "<td id='quantitySold' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
   }
 
 }
@@ -124,10 +125,9 @@ function postObject(outTransactionItems){
             // function calls ajax method that post items with transactionId
             complete: function(xhr){
               if(xhr.status == 201){
-                  console.log("inside complete");
+
                   transactionId = JSON.parse(xhr.responseText).transactionId;
 
-                  var transactionItems = [];
                   $.ajaxSetup({
                       type: 'POST',
                       url:'/polls/api/outgoingTransactionItems/',
@@ -139,11 +139,10 @@ function postObject(outTransactionItems){
                       },
                       complete: function(xhr){
                         if(xhr.status == 201){
-                          console.log("complete");
+                          location.reload();
+                          localStorage.clear();
                         }
-                        else{
-                          console.log("Error OutgoingTransaction.js: Ajax call inside postObject")
-                        }
+
                       }
                   });
 
@@ -160,7 +159,7 @@ function postObject(outTransactionItems){
                       });
               }
               else{
-                console.log("Error: Outgoing Transaction js file: PostObject");
+                console.log("Error: Outgoing Transaction.js file: PostObject");
               }
 
             }
@@ -197,8 +196,7 @@ $("#idBarcode").change(function(){
 
 $( "#submit" ).click(function() {
   postObject(outTransactionItems);
-  localStorage.clear();
-  location.reload();
+
 });
 
 $( "#cancel" ).click(function() {

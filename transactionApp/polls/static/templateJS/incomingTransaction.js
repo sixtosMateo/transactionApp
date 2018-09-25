@@ -117,7 +117,9 @@ function callbackFound(found, data){
     $("#formButtons").show();
 
     if($("#"+data.barcode).length == 0){
+
       subtotal(data.purchasedPrice);
+      
       var newTransactionItem =  new IncomingTransactionItem(data);
       inTransactionItems.push(newTransactionItem);
 
