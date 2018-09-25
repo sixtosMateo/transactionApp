@@ -9,6 +9,7 @@
 
 
 var outTransactionItems = [];
+var transactionId;
 
 
 class OutgoingTransactionItem{
@@ -88,6 +89,18 @@ function createTransactionItem(data){
 
 }
 
+function subtotal(price){
+  var increment = parseFloat(localStorage.getItem('subtotal'));
+  increment += parseFloat(price);
+  localStorage.setItem('subtotal', increment);
+  localStorage.setItem('tax', increment * .0925);
+  localStorage.setItem('total', increment + (increment * .0925));
+  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
+
+}
+
 // post transaction to db; calls postItems() w/ transactionId and its itemslist
 function postObject(outTransactionItems){
 
@@ -111,12 +124,43 @@ function postObject(outTransactionItems){
             // function calls ajax method that post items with transactionId
             complete: function(xhr){
               if(xhr.status == 201){
-                console.log("inside complete");
-                postItems(outTransactionItems,
-                            JSON.parse(xhr.responseText).transactionId );
+                  console.log("inside complete");
+                  transactionId = JSON.parse(xhr.responseText).transactionId;
+
+                  var transactionItems = [];
+                  $.ajaxSetup({
+                      type: 'POST',
+                      url:'/polls/api/outgoingTransactionItems/',
+                      beforeSend: function(xhr, settings) {
+                          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                              xhr.setRequestHeader("X-CSRFToken",
+                              jQuery("[name=csrfmiddlewaretoken]").val());
+                          }
+                      },
+                      complete: function(xhr){
+                        if(xhr.status == 201){
+                          console.log("complete");
+                        }
+                        else{
+                          console.log("Error OutgoingTransaction.js: Ajax call inside postObject")
+                        }
+                      }
+                  });
+
+                  outTransactionItems.forEach(function(arrayOfObject){
+                        $.ajax({
+                          data:
+                          {'itemId': arrayOfObject.itemId,
+                              'quantitySold': arrayOfObject.quantitySold,
+                              'price': arrayOfObject.price,
+                              'tax': arrayOfObject.tax,
+                              'transactionId': transactionId},
+                          dataType: 'application/json'
+                        });
+                      });
               }
               else{
-                console.log("Outgoing Transaction js file: PostObject");
+                console.log("Error: Outgoing Transaction js file: PostObject");
               }
 
             }
@@ -134,49 +178,8 @@ function postObject(outTransactionItems){
         });
   }
 
-function subtotal(price){
-  var increment = parseFloat(localStorage.getItem('subtotal'));
-  increment += parseFloat(price);
-  localStorage.setItem('subtotal', increment);
-  localStorage.setItem('tax', increment * .0925);
-  localStorage.setItem('total', increment + (increment * .0925));
-  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
-  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
-  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
-
-}
 
 
-function postItems(arrayOfObjects, transactionId){
-
-  arrayOfObjects.forEach(function(arrayOfObject){
-    console.log(transactionId);
-    $.ajaxSetup({
-        type: 'POST',
-        url:'/polls/api/outgoingTransactionItems/',
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken",
-                jQuery("[name=csrfmiddlewaretoken]").val());
-            }
-        }
-    });
-      $.ajax({
-
-          data:{
-          'itemId': arrayOfObject.itemId,
-          'quantitySold': arrayOfObject.quantitySold,
-          'price': arrayOfObject.price,
-          'tax': arrayOfObject.tax,
-          'transactionId': transactionId
-          },
-          dataType: 'application/json'
-      });
-  });
-
-
-
-}
 //************************** EVENT LISTENER:**************************
 
 
