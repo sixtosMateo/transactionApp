@@ -105,6 +105,16 @@ function postObject(outTransactionItems){
                     xhr.setRequestHeader("X-CSRFToken",
                     jQuery("[name=csrfmiddlewaretoken]").val());
                 }
+            },
+            complete: function(xhr){
+              if(xhr.status == 201){
+                console.log("inside complete");
+                test(outTransactionItems, JSON.parse(xhr.responseText).transactionId );
+              }
+              else{
+                console.log("Outgoing Transaction js file: PostObject");
+              }
+
             }
         });
         // sets up the data into json format
@@ -114,15 +124,9 @@ function postObject(outTransactionItems){
             'employeeId': employeeId,
             'tax': tax,
             'subtotal': subtotal,
-            'total':total,
-            'transactionItems': JSON.stringify(outTransactionItems)
+            'total':total
             },
-            dataType: 'application/json',
-            success:function(data){
-            },
-            error: function(jqXHR, exception){
-              console.log(jqXHR);
-            }
+            dataType: 'application/json'
         });
   }
 
@@ -138,6 +142,11 @@ function subtotal(price){
 
 }
 
+
+function test(arrayOfObject, transactionId){
+  window.alert(arrayOfObject);
+
+}
 //************************** EVENT LISTENER:**************************
 
 
@@ -153,11 +162,10 @@ $("#idBarcode").change(function(){
 
 });
 
-
 $( "#submit" ).click(function() {
   postObject(outTransactionItems);
-  // localStorage.clear();
-  // location.reload();
+  localStorage.clear();
+  location.reload();
 });
 
 $( "#cancel" ).click(function() {

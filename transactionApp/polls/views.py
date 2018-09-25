@@ -147,6 +147,68 @@ def inventory(request, template_name="inventory.html"):
     return render(request, template_name)
 
 @login_required
+def countCycle(request, template_name="countCycle.html"):
+    # need to create a form function and hide form or show through js
+    # post
+    stores = Store.objects.all()
+    if request.method == 'POST':
+        return redirect(countCycle)
+    else:
+        # form = CountCycleForm()
+        return render(request, template_name,{'stores':stores})
+
+@login_required
+def damageItem(request, template_name="damageItem.html"):
+    stores = Store.objects.all()
+    # employee = Employee.objects.all()
+    if request.method == 'POST':
+        print("inside the post")
+        form = DamageItemForm(request.POST)
+        if form.is_valid():
+            print("form valid")
+            form.save()
+            return redirect('inventory')
+        else:
+            print('form is not validated')
+    else:
+        form = DamageItemForm()
+        return render(request, template_name, {'form':form, 'user':request.user, 'stores':stores })
+
+    return render(request, template_name)
+
+#===================== Transaction views ==============================
+
+@login_required
+def outgoingTransaction(request, template_name="outgoingTransaction.html"):
+    stores = Store.objects.all()
+    employee = Employee.objects.all()
+
+    # newTransaction = OutgoingTransaction.objects.create()
+    # newTransactionItem = OutgoingTransactionItem.objects.create(itemId= 1, transactionId = newTransaction)
+    form = OutgoingTransactionForm()
+    args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
+    return render(request, template_name, args)
+
+@login_required
+def viewOutgoingTransactionItems(request, pk,
+                            template_name="viewOutgoingTransactionItems.html"):
+    outTransactionItems = OutgoingTransactionItem.objects.all().filter(
+                                                            transactionId=pk)
+    return render(
+            request, template_name, {'outTransactionItems':outTransactionItems})
+
+@login_required
+def incomingTransaction(request, template_name="incomingTransaction.html"):
+    vendors = Vendor.objects.all()
+    stores = Store.objects.all()
+    form = IncomingTransactionForm()
+
+    #there might be a switch with user and employee *needs attention*
+    return render(request, template_name,{'form':form, 'vendors':vendors, 'stores': stores,'user':request.user})
+
+
+#====================== Item Views ==================================
+@login_required
 def item(request, template_name="item.html"):
 
     return render(request, template_name)
@@ -183,70 +245,11 @@ def newItem(request,template_name="newItem.html"):
         form = ItemForm()
         return render(request, template_name, {'form':form, 'vendors':vendors, 'stores':stores })
 
-@login_required
-def countCycle(request, template_name="countCycle.html"):
-    # need to create a form function and hide form or show through js
-    # post
-    stores = Store.objects.all()
-    if request.method == 'POST':
-        return redirect(countCycle)
-    else:
-        # form = CountCycleForm()
-        return render(request, template_name,{'stores':stores})
-
-@login_required
-def damageItem(request, template_name="damageItem.html"):
-    stores = Store.objects.all()
-    # employee = Employee.objects.all()
-    if request.method == 'POST':
-        print("inside the post")
-        form = DamageItemForm(request.POST)
-        if form.is_valid():
-            print("form valid")
-            form.save()
-            return redirect('inventory')
-        else:
-            print('form is not validated')
-    else:
-        form = DamageItemForm()
-        return render(request, template_name, {'form':form, 'user':request.user, 'stores':stores })
-
-    return render(request, template_name)
-
-@login_required
-def outgoingTransaction(request, template_name="outgoingTransaction.html"):
-    stores = Store.objects.all()
-    employee = Employee.objects.all()
-
-    # newTransaction = OutgoingTransaction.objects.create()
-    # newTransactionItem = OutgoingTransactionItem.objects.create(itemId= 1, transactionId = newTransaction)
-    form = OutgoingTransactionForm()
-    args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
-    return render(request, template_name, args)
-
-@login_required
-def viewOutgoingTransactionItems(request, pk,
-                            template_name="viewOutgoingTransactionItems.html"):
-    outTransactionItems = OutgoingTransactionItem.objects.all().filter(
-                                                            transactionId=pk)
-    return render(
-            request, template_name, {'outTransactionItems':outTransactionItems})
-
-@login_required
-def incomingTransaction(request, template_name="incomingTransaction.html"):
-    vendors = Vendor.objects.all()
-    stores = Store.objects.all()
-    form = IncomingTransactionForm()
-
-    #there might be a switch with user and employee *needs attention*
-    return render(request, template_name,{'form':form, 'vendors':vendors, 'stores': stores,'user':request.user})
-
+#========================== vendor views ===============================
 @login_required
 def vendor(request, template_name="vendor.html"):
     vendors= Vendor.objects.all()
     return render(request, template_name, {'vendors':vendors})
-
-
 
 @login_required
 def newVendor(request, template_name='newVendor.html'):

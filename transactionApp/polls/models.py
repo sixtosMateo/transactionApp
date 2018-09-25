@@ -6,6 +6,47 @@ from django.db.models.signals import post_save
 from django.utils import timezone
 
 
+class OutgoingTransaction(models.Model):
+    transactionId = models.AutoField(primary_key=True)
+    createdAt = models.DateTimeField(auto_now=True)
+    storeId = models.IntegerField(default = 0, blank=True)
+    employeeId = models.CharField(null=True, max_length = 30, default=None)
+    tax = models.FloatField(null=True, blank=True, default=0.0925)
+    subtotal = models.FloatField(null=True, blank=True, default=None)
+    total = models.FloatField(null=True, blank=True, default=None)
+
+    class Meta:
+        db_table = 'outgoing_transaction'
+
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(OutgoingTransaction, self).save(using='karis_db')
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
+            self.pk, self.createdAt, self.storeId, self.employeeId,
+            self.tax, self.total, self.subtotal)
+
+class OutgoingTransactionItem(models.Model):
+    itemId = models.FloatField(null=True, blank=True, default=None)
+    transactionId = models.ForeignKey(OutgoingTransaction, on_delete=models.CASCADE)
+    quantitySold = models.IntegerField(default = 0, blank=True)
+    price = models.FloatField(null=True, blank=True, default=None)
+    tax = models.FloatField(null=True, blank=True, default=0.0925)
+    createdAt = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "outgoing_transaction_item"
+
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(OutgoingTransactionItem, self).save(using='karis_db')
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
+            self.pk, self.transactionId, self.quantitySold, self.price, self.tax,
+            self.createdAt, self.itemId)
+
 # need to add age, partTime/fullTime, .... when added it has to be added to the views
 class Employee(models.Model):
     #user is coming from Django default User
@@ -42,51 +83,6 @@ class Store(models.Model):
     def __unicode__(self):
         return "{0} {1} {2} {3} {4}".format(
             self.pk, self.name, self.address, self.hoursOpen, self.phoneNumber)
-
-
-class OutgoingTransaction(models.Model):
-    transactionId = models.AutoField(primary_key=True)
-    createdAt = models.DateTimeField(auto_now=True)
-    storeId = models.IntegerField(default = 0, blank=True)
-    employeeId = models.CharField(null=True, max_length = 30, default=None)
-    tax = models.FloatField(null=True, blank=True, default=0.0925)
-    subtotal = models.FloatField(null=True, blank=True, default=None)
-    total = models.FloatField(null=True, blank=True, default=None)
-
-    class Meta:
-        db_table = 'outgoing_transaction'
-
-    def save(self, *args, **kwargs):
-        print('save() is called.')
-        super(OutgoingTransaction, self).save(using='karis_db')
-
-    def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5} {6}".format(
-            self.pk, self.createdAt, self.storeId, self.employeeId,
-            self.tax, self.total, self.subtotal)
-
-
-
-class OutgoingTransactionItem(models.Model):
-    itemId = models.FloatField(null=True, blank=True, default=None)
-    transactionId = models.ForeignKey(OutgoingTransaction, on_delete=models.CASCADE)
-    quantitySold = models.IntegerField(default = 0, blank=True)
-    price = models.FloatField(null=True, blank=True, default=None)
-    tax = models.FloatField(null=True, blank=True, default=0.0925)
-    createdAt = models.DateTimeField(auto_now=True)
-
-
-    class Meta:
-        db_table = "outgoing_transaction_item"
-
-    def save(self, *args, **kwargs):
-        print('save() is called.')
-        super(OutgoingTransactionItem, self).save(using='karis_db')
-
-    def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5} {6}".format(
-            self.pk, self.transactionId, self.quantitySold, self.price, self.tax,
-            self.createdAt, self.itemId)
 
 class Item(models.Model):
     itemId = models.AutoField(primary_key=True)
