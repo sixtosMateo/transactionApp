@@ -26,11 +26,11 @@ class Migration(migrations.Migration):
         #     name='barcode',
         #     field=models.CharField(default=None, max_length=30, unique=True),
         # ),
-        migrations.AlterField(
-            model_name='incomingtransactionitem',
-            name='transactionId',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='polls.IncomingTransaction'),
-        ),
+        # migrations.AlterField(
+        #     model_name='incomingtransactionitem',
+        #     name='transactionId',
+        #     field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='polls.IncomingTransaction'),
+        # ),
         # migrations.AlterField(
         #     model_name='outgoingtransactionitem',
         #     name='itemId',

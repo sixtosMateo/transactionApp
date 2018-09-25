@@ -26,7 +26,7 @@ class OutgoingTransactionItem{
 
 
 
-// does ajax call to retrieve data and takes in a callback function to access data
+// ajax call to retrieve data and takes in a callback function to access data
 function retriveItemData(callback){
   var $input = $("#idBarcode").val();
   var itemContainer = [];
@@ -46,12 +46,12 @@ function retriveItemData(callback){
 
 localStorage.setItem('subtotal', 0);
 
-// callback function calls a function that display and update subtotal, total, tax
+// callback function calls function that display and update subtotal, total, tax
 function itemCallback(data){
   subtotal(data.salePrice);
 }
 
-//this is a callback funtion that display a table with the object data
+// this is a callback funtion that display a table with the object data
 function createTransactionItem(data){
   var tableName = $("#itemsList");
   $('#itemsList').show()
@@ -88,6 +88,7 @@ function createTransactionItem(data){
 
 }
 
+// post transaction to db; calls postItems() w/ transactionId and its itemslist
 function postObject(outTransactionItems){
 
         var store = $("#storeId").val();
@@ -95,8 +96,8 @@ function postObject(outTransactionItems){
         var subtotal = $("#subtotal").val();
         var tax = $("#tax").val();
         var total = $("#total").val();
-        // ajaxSetup keeps CSRFToken safe from attacks since we using external url
-        //jQuery("[name=csrfmiddlewaretoken]").val()); -> access value of csrf token
+        // method  keeps CSRFToken safe from attacks since we using external url
+        // jQuery("[name=csrfmiddlewaretoken]").val()); -> access value csrftoken
         $.ajaxSetup({
             type: 'POST',
             url:'/polls/api/outgoingTransactions/',
@@ -106,10 +107,13 @@ function postObject(outTransactionItems){
                     jQuery("[name=csrfmiddlewaretoken]").val());
                 }
             },
+
+            // function calls ajax method that post items with transactionId
             complete: function(xhr){
               if(xhr.status == 201){
                 console.log("inside complete");
-                test(outTransactionItems, JSON.parse(xhr.responseText).transactionId );
+                postItems(outTransactionItems,
+                            JSON.parse(xhr.responseText).transactionId );
               }
               else{
                 console.log("Outgoing Transaction js file: PostObject");
@@ -143,8 +147,34 @@ function subtotal(price){
 }
 
 
-function test(arrayOfObject, transactionId){
-  window.alert(arrayOfObject);
+function postItems(arrayOfObjects, transactionId){
+
+  arrayOfObjects.forEach(function(arrayOfObject){
+    console.log(transactionId);
+    $.ajaxSetup({
+        type: 'POST',
+        url:'/polls/api/outgoingTransactionItems/',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken",
+                jQuery("[name=csrfmiddlewaretoken]").val());
+            }
+        }
+    });
+      $.ajax({
+
+          data:{
+          'itemId': arrayOfObject.itemId,
+          'quantitySold': arrayOfObject.quantitySold,
+          'price': arrayOfObject.price,
+          'tax': arrayOfObject.tax,
+          'transactionId': transactionId
+          },
+          dataType: 'application/json'
+      });
+  });
+
+
 
 }
 //************************** EVENT LISTENER:**************************

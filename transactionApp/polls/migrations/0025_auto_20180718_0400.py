@@ -31,11 +31,11 @@ class Migration(migrations.Migration):
         #     name='itemId',
         #     field=models.IntegerField(default=None, null=True),
         # ),
-        migrations.AlterField(
-            model_name='outgoingtransactionitem',
-            name='transactionId',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='polls.OutgoingTransaction'),
-        ),
+        # migrations.AlterField(
+        #     model_name='outgoingtransactionitem',
+        #     name='transactionId',
+        #     field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='polls.OutgoingTransaction'),
+        # ),
         # migrations.AlterModelTable(
         #     name='employee',
         #     table=None,

@@ -29,7 +29,7 @@ class OutgoingTransaction(models.Model):
 
 class OutgoingTransactionItem(models.Model):
     itemId = models.FloatField(null=True, blank=True, default=None)
-    transactionId = models.ForeignKey(OutgoingTransaction, on_delete=models.CASCADE)
+    transactionId = models.IntegerField(default = 0, blank=True)
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
     tax = models.FloatField(null=True, blank=True, default=0.0925)

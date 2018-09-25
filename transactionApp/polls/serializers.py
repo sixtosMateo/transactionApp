@@ -24,12 +24,11 @@ class OutgoingTransactionItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OutgoingTransactionItem
-        fields = ('itemId', 'quantitySold', 'price', 'tax','transactionId')
+        fields = '__all__'
 
 class OutgoingTransactionSerializer(serializers.ModelSerializer):
     #tells that there can be more than one object in queryset
     # transactionItems = OutgoingTransactionItemSerializer(many=True)
-
     class Meta:
         model = OutgoingTransaction
         fields = ('transactionId', 'storeId', 'employeeId',

@@ -184,4 +184,17 @@ class outgoingTransactionList(APIView):
             serializers.save()
             print(serializers.data)
             return Response(serializers.data, status=status.HTTP_201_CREATED)
+            
+        return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
+
+class outgoingTransactionItemList(APIView):
+
+    def post(self, request):
+        serializers = OutgoingTransactionItemSerializer(data=request.data)
+
+        if serializers.is_valid(raise_exception=True):
+            serializers.save()
+            print(serializers.data)
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
