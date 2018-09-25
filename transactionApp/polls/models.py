@@ -28,7 +28,7 @@ class OutgoingTransaction(models.Model):
             self.tax, self.total, self.subtotal)
 
 class OutgoingTransactionItem(models.Model):
-    itemId = models.FloatField(null=True, blank=True, default=None)
+    barcode = models.CharField(max_length=30, default=None)
     transactionId = models.IntegerField(default = 0, blank=True)
     quantitySold = models.IntegerField(default = 0, blank=True)
     price = models.FloatField(null=True, blank=True, default=None)
@@ -45,7 +45,7 @@ class OutgoingTransactionItem(models.Model):
     def __unicode__(self):
         return "{0} {1} {2} {3} {4} {5} {6}".format(
             self.pk, self.transactionId, self.quantitySold, self.price, self.tax,
-            self.createdAt, self.itemId)
+            self.createdAt, self.barcode)
 
 # need to add age, partTime/fullTime, .... when added it has to be added to the views
 class Employee(models.Model):

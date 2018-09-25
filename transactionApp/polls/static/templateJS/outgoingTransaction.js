@@ -15,11 +15,11 @@ var transactionId;
 class OutgoingTransactionItem{
   // initialize object parameters for each OutgoingTransactionItem
   constructor(data) {
-    this.itemId = data.itemId;
+    this.barcode = data.barcode;
     this.name = data.name;
     this.quantitySold = 1;
     this.price = data.salePrice;
-    this.tax = .0925;
+    this.tax = (this.quantitySold * this.price) *.0975 ;
   }
 }
 
@@ -37,7 +37,7 @@ function retriveItemData(callback){
          success:function(items){
            $.each(items, function(i,item){
              // if the id from the item is the same as the input
-             if(item.itemId == $input){
+             if(item.barcode == $input){
                // window.alert(item.itemId);
                callback(item);
            }});
@@ -57,14 +57,14 @@ function createTransactionItem(data){
   $('#itemsList').show()
   $('#formButtons').show()
 
-  if($("#"+data.itemId).length == 0){
+  if($("#"+data.barcode).length == 0){
 
     var newTransactionItem =  new OutgoingTransactionItem(data);
     outTransactionItems.push(newTransactionItem);
 
     // var transItem = new OutgoingTransactionItem(data);
-    tableName.append("<tr id=" + data.itemId + ">" +
-                      "<td id='itemId' value='"+data.itemId+"'>"+data.itemId+"</td>"+
+    tableName.append("<tr id=" + data.barcode + ">" +
+                      "<td id='barcode' value='"+data.barcode+"'>"+data.barcode+"</td>"+
                       "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
                       "<td id='price' value='"+data.salePrice+"'>"+data.salePrice+"</td>"+
                       "<td id='quantitySold' value='"+1+"'>"+1+"</td>"+
@@ -74,17 +74,17 @@ function createTransactionItem(data){
 
     // updates the qty in array for specific object
     outTransactionItems.forEach(function(transactionItem){
-      if(transactionItem.itemId == data.itemId){
+      if(transactionItem.barcode == data.barcode){
         transactionItem.quantitySold = transactionItem.quantitySold+1;
       }
     });
 
     // find() function allows to access each element that we are looking for
-    var qtyValue = parseInt(tableName.find('tr#' + data.itemId).find('td#quantitySold').html());
+    var qtyValue = parseInt(tableName.find('tr#' + data.barcode).find('td#quantitySold').html());
     qtyValue++;
 
     //replaceWith is replacing an element with another, in this case itself with new values
-    tableName.find('tr#' +data.itemId).find('td#quantitySold').replaceWith(
+    tableName.find('tr#' +data.barcode).find('td#quantitySold').replaceWith(
       "<td id='quantitySold' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
   }
 
@@ -149,10 +149,10 @@ function postObject(outTransactionItems){
                   outTransactionItems.forEach(function(arrayOfObject){
                         $.ajax({
                           data:
-                          {'itemId': arrayOfObject.itemId,
+                          {'barcode': arrayOfObject.barcode,
                               'quantitySold': arrayOfObject.quantitySold,
                               'price': arrayOfObject.price,
-                              'tax': arrayOfObject.tax,
+                              'tax': (arrayOfObject.quantitySold * arrayOfObject.price) *.0975 ,
                               'transactionId': transactionId},
                           dataType: 'application/json'
                         });
@@ -196,7 +196,6 @@ $("#idBarcode").change(function(){
 
 $( "#submit" ).click(function() {
   postObject(outTransactionItems);
-
 });
 
 $( "#cancel" ).click(function() {

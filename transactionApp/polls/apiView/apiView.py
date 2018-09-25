@@ -182,9 +182,8 @@ class outgoingTransactionList(APIView):
         if serializers.is_valid(raise_exception=True):
             #put in a variable by setting it as an argument from save(arg)
             serializers.save()
-            print(serializers.data)
             return Response(serializers.data, status=status.HTTP_201_CREATED)
-            
+
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
 class outgoingTransactionItemList(APIView):
@@ -194,7 +193,6 @@ class outgoingTransactionItemList(APIView):
 
         if serializers.is_valid(raise_exception=True):
             serializers.save()
-            print(serializers.data)
             return Response(serializers.data, status=status.HTTP_201_CREATED)
 
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
