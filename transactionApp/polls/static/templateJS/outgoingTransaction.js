@@ -116,7 +116,6 @@ function postObject(outTransactionItems){
             // function calls ajax method that post items with transactionId
             complete: function(xhr){
               if(xhr.status == 201){
-
                   transactionId = JSON.parse(xhr.responseText).transactionId;
 
                   $.ajaxSetup({
@@ -133,9 +132,8 @@ function postObject(outTransactionItems){
                           location.reload();
                           localStorage.clear();
                         }
-
                       }
-                  });
+                   });
 
                   outTransactionItems.forEach(function(arrayOfObject){
                         $.ajax({

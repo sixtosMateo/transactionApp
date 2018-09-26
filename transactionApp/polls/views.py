@@ -185,8 +185,8 @@ def outgoingTransaction(request, template_name="outgoingTransaction.html"):
 
     # newTransaction = OutgoingTransaction.objects.create()
     # newTransactionItem = OutgoingTransactionItem.objects.create(itemId= 1, transactionId = newTransaction)
-    form = OutgoingTransactionForm()
-    args = {'form':form, 'employee': employee, 'stores':stores, 'user':request.user}
+
+    args = {'employee': employee, 'stores':stores, 'user':request.user}
     return render(request, template_name, args)
 
 @login_required
@@ -201,10 +201,10 @@ def viewOutgoingTransactionItems(request, pk,
 def incomingTransaction(request, template_name="incomingTransaction.html"):
     vendors = Vendor.objects.all()
     stores = Store.objects.all()
-    form = IncomingTransactionForm()
+
 
     #there might be a switch with user and employee *needs attention*
-    return render(request, template_name,{'form':form, 'vendors':vendors, 'stores': stores,'user':request.user})
+    return render(request, template_name,{ 'vendors':vendors, 'stores': stores,'user':request.user})
 
 
 #====================== Item Views ==================================

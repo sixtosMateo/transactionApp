@@ -9,7 +9,7 @@
 
 //************************** OBJECT SAVE AS CLASSES:**************************
 var inTransactionItems = [];
-
+var transactionId;
 // var tempBarcode = null;
 class Item{
   constructor(){
@@ -34,6 +34,11 @@ class Item{
                 xhr.setRequestHeader("X-CSRFToken",
                 jQuery("[name=csrfmiddlewaretoken]").val());
             }
+        },
+        complete:function(xhr){
+          if(xhr.status != 201){
+            console.log("Error-IncomingTransaction.js: postNewItem method")
+          }
         }
     });
 
@@ -51,9 +56,7 @@ class Item{
         'barcode': this.barcode,
         'department': this.department
         },
-        dataType: 'application/json',
-        success:function(data){
-        }
+        dataType: 'application/json'
     });
   }
 
@@ -117,29 +120,30 @@ function callbackFound(found, data){
       subtotal(data.purchasedPrice);
 
       var newTransactionItem =  new IncomingTransactionItem(data);
+
       inTransactionItems.push(newTransactionItem);
 
       tableName.append("<tr id=" + data.barcode + ">" +
                         "<td id='barcode' value='"+data.barcode+"'>"+data.barcode+"</td>"+
                         "<td id='name' value='"+data.name+"'>"+data.name+"</td>"+
-                        "<td id='price' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
-                        "<td id='qty' value='"+1+"'>"+1+"</td>"+
+                        "<td id='purchasedPrice' value='"+data.purchasedPrice+"'>"+data.purchasedPrice+"</td>"+
+                        "<td id='quantityBought' value='"+1+"'>"+1+"</td>"+
                         "</tr>");
     }
     else{
       subtotal(data.purchasedPrice);
-      inTransactionItems.forEach(function(transactionItem, data){
+      inTransactionItems.forEach(function(transactionItem){
         if(transactionItem.barcode == data.barcode){
-          transactionItem.quantityBought = transactionItem.quantityBought+1;
+          transactionItem.quantityBought = transactionItem.quantityBought + 1;
         }
       });
 
-      var qtyValue = parseInt(tableName.find('tr#' + data.barcode).find('td#qty').html());
+      var qtyValue = parseInt(tableName.find('tr#' + data.barcode).find('td#quantityBought').html());
       qtyValue++;
 
       //replaceWith is replacing an element with another, in this case itself with new values
-      tableName.find('tr#' +data.barcode).find('td#qty').replaceWith(
-        "<td id='qty' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
+      tableName.find('tr#' +data.barcode).find('td#quantityBought').replaceWith(
+        "<td id='quantityBought' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
 
     }
 
@@ -164,9 +168,43 @@ function postObject(inTransactionItems){
               jQuery("[name=csrfmiddlewaretoken]").val());
           }
       },
-      complete: function(xhr){
-        console.log("ajax post completed");
 
+      complete: function(xhr){
+        if(xhr.status == 201){
+          transactionId = JSON.parse(xhr.responseText).transactionId;
+
+          $.ajaxSetup({
+              type: 'POST',
+              url:'/polls/api/incomingTransactionsItems/',
+              beforeSend: function(xhr, settings) {
+                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken",
+                      jQuery("[name=csrfmiddlewaretoken]").val());
+                  }
+              },
+              complete: function(xhr){
+                if(xhr.status == 201){
+                  location.reload();
+                  localStorage.clear();
+                  }
+                }
+              });
+
+              inTransactionItems.forEach(function(arrayOfObject){
+                    $.ajax({
+                      data:
+                      {   'barcode': arrayOfObject.barcode,
+                          'quantityBought': arrayOfObject.quantityBought,
+                          'purchasedPrice': arrayOfObject.purchasedPrice,
+                          'tax': (arrayOfObject.quantityBought * arrayOfObject.purchasedPrice) *.0975 ,
+                          'transactionId': transactionId},
+                      dataType: 'application/json'
+                    });
+                  });
+            }
+        else{
+              console.log("Error: IncomingTransaction.js file: PostObject");
+            }
       }
   });
   // sets up the data into json format
@@ -177,8 +215,7 @@ function postObject(inTransactionItems){
       'employeeId': employeeId,
       'tax': tax,
       'subtotal': subtotal,
-      'total': total,
-      'transactionItems': JSON.stringify(inTransactionItems)
+      'total': total
       },
       dataType: 'application/json'
   });
@@ -219,12 +256,8 @@ $( "#newItem" ).click(function() {
 });
 
 $( "#submit" ).click(function() {
-  // var newTransaction = new IncomingTransaction();
-
   postObject(inTransactionItems);
-  // newTransaction.postObject();
-  localStorage.clear();
-  location.reload();
+
 });
 
 $( "#cancel" ).click(function() {

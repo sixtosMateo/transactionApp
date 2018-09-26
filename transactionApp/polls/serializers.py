@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from.models import (Item, IncomingTransaction,
+from.models import (Item, IncomingTransaction, IncomingTransactionItem,
                     OutgoingTransaction, OutgoingTransactionItem)
 
 # converting data into JSON from a model
@@ -14,10 +14,10 @@ class IncomingTransactionSerializer(serializers.ModelSerializer):
         model = IncomingTransaction
         fields = '__all__'
 
-# class IncomingTransactionItemSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = IncomingTransactionItem
-#         fields = '__all__'
+class IncomingTransactionItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IncomingTransactionItem
+        fields = '__all__'
 
 
 class OutgoingTransactionItemSerializer(serializers.ModelSerializer):
