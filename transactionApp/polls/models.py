@@ -47,6 +47,50 @@ class OutgoingTransactionItem(models.Model):
             self.pk, self.transactionId, self.quantitySold, self.price, self.tax,
             self.createdAt, self.barcode)
 
+class IncomingTransaction(models.Model):
+    transactionId = models.AutoField(primary_key=True)
+    createdAt = models.DateTimeField(auto_now=True)
+    vendorId = models.IntegerField(default = 0, blank=True)
+    employeeId = models.CharField(max_length = 30, default=None)
+    total = models.FloatField(blank=True, default=None)
+    subtotal = models.FloatField(blank=True, default=None)
+    tax = models.FloatField(null=True, blank=True, default=None)
+
+    class Meta:
+        db_table = "incoming_transaction"
+
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(IncomingTransaction, self).save(using="karis_db")
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5} {6}".format(
+            self.transactionId, self.createdAt, self.vendorId, self.employeeId,
+            self.tax, self.total, self.subtotal)
+
+
+class IncomingTransactionItem(models.Model):
+    barcode = models.CharField(max_length=30, default=None)
+    transactionId = models.IntegerField(default = 0, blank=True)
+    quantityBought = models.IntegerField(default = 0, blank=True)
+    purchasedPrice = models.FloatField(null=True, blank=True, default=None)
+    tax = models.FloatField(null=True, blank=True, default=0.0925)
+    createdAt = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "incoming_transaction_item"
+
+    def save(self, *args, **kwargs):
+        print('save() is called.')
+        super(IncomingTransactionItem, self).save(using="karis_db")
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5}".format(
+            self.barcode, self.transactionId, self.quantityBought, self.tax,
+            self.purchasedPrice, self.createdAt)
+
+
+
 # need to add age, partTime/fullTime, .... when added it has to be added to the views
 class Employee(models.Model):
     #user is coming from Django default User
@@ -131,50 +175,6 @@ class Vendor(models.Model):
         return "{0} {1} {2} {3} {4}".format(
             self.vendorId, self.address, self.phoneNumber, self.name,
             self.hoursOpen)
-
-
-
-
-class IncomingTransaction(models.Model):
-    transactionId = models.AutoField(primary_key=True)
-    createdAt = models.DateTimeField(auto_now=True)
-    vendorId = models.IntegerField(default = 0, blank=True)
-    employeeId = models.CharField(max_length = 30, default=None)
-    total = models.FloatField(blank=True, default=None)
-    subtotal = models.FloatField(blank=True, default=None)
-    tax = models.FloatField(null=True, blank=True, default=None)
-
-    class Meta:
-        db_table = "incoming_transaction"
-
-    def save(self, *args, **kwargs):
-        print('save() is called.')
-        super(IncomingTransaction, self).save(using="karis_db")
-
-    def __unicode__(self):
-        return "{0} {1} {2} {3} {4} {5} {6}".format(
-            self.transactionId, self.createdAt, self.vendorId, self.employeeId,
-            self.tax, self.total, self.subtotal)
-
-
-# class IncomingTransactionItem(models.Model):
-#     itemId = models.IntegerField(default = 0, blank=True)
-#     transactionId = models.ForeignKey(IncomingTransaction, on_delete=models.CASCADE)
-#     quantityBought = models.IntegerField(default = 0, blank=True)
-#     purchasedPrice = models.FloatField(null=True, blank=True, default=None)
-#     createdAt = models.DateTimeField(auto_now=True)
-#
-#     class Meta:
-#         db_table = "incoming_transaction_item"
-#
-#     def save(self, *args, **kwargs):
-#         print('save() is called.')
-#         super(IncomingTransactionItem, self).save(using="store_master")
-#
-#     def __unicode__(self):
-#         return "{0} {1} {2} {3} {4} {5}".format(
-#             self.itemId, self.transactionId_id, self.quantityBought, self.storeId,
-#             self.purchasedPrice, self.createdAt)
 
 
 
