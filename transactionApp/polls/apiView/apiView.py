@@ -164,7 +164,6 @@ class incomingTransactionItemList(APIView):
     def post(self, request):
         serializers = IncomingTransactionItemSerializer(data=request.data)
         if serializers.is_valid():
-            print("Inside is valid Item")
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)

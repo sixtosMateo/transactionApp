@@ -130,6 +130,13 @@ def employeeProfile(request, pk, template = "employeeProfile.html"):
     # args = {'user': request.user}
     return render(request, template, {'selectUser': selectUser,
                     'outTransactions':outTransactions})
+@login_required
+def viewOutgoingTransactionItems(request, pk,
+                            template_name="viewOutgoingTransactionItems.html"):
+    outTransactionItems = OutgoingTransactionItem.objects.all().filter(
+                                                            transactionId=pk)
+    return render(
+            request, template_name, {'outTransactionItems':outTransactionItems, 'pk': pk})
 
 @login_required
 def employees(request, template_name="employees.html"):
@@ -190,14 +197,6 @@ def outgoingTransaction(request, template_name="outgoingTransaction.html"):
     return render(request, template_name, args)
 
 @login_required
-def viewOutgoingTransactionItems(request, pk,
-                            template_name="viewOutgoingTransactionItems.html"):
-    outTransactionItems = OutgoingTransactionItem.objects.all().filter(
-                                                            transactionId=pk)
-    return render(
-            request, template_name, {'outTransactionItems':outTransactionItems})
-
-@login_required
 def incomingTransaction(request, template_name="incomingTransaction.html"):
     vendors = Vendor.objects.all()
     stores = Store.objects.all()
@@ -210,7 +209,6 @@ def incomingTransaction(request, template_name="incomingTransaction.html"):
 #====================== Item Views ==================================
 @login_required
 def item(request, template_name="item.html"):
-
     return render(request, template_name)
 
 @login_required

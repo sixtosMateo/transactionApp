@@ -8,22 +8,25 @@
 {% block body %}
 <div class="container">
 
-  <table style="width:\75%">
+  <table style="width:75%">
+          <h2>Transaction Number: &nbsp {{ pk }}</h2>
         <thead>
           <tr>
-            <th>Item Id:</th>
+            <th>Barcode:</th>
             <th>Quantity Sold:</th>
             <th>Price:</th>
-
+            <th>Tax:</th>
 
           </tr>
         </thead>
         <tbody>
+
           {% for outTransactionItem in outTransactionItems %}
           <tr>
-            <th>{{outTransactionItem.itemId}}</th>
+            <th>{{outTransactionItem.barcode}}</th>
             <th>{{outTransactionItem.quantitySold}}</th>
             <th>{{outTransactionItem.price}}</th>
+            <th>{{outTransactionItem.tax}}</th>
           </tr>
           {% endfor %}
         </tbody>
