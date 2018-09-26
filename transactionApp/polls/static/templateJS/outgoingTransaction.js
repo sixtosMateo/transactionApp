@@ -4,6 +4,9 @@
 // dont make ajax eveytime something gets scan do it once and store it locally
 // jQuery("[name=csrfmiddlewaretoken]").val(); this is acces the cookie
 // i need to update the total quantity of inventory when OutgoingTransaction is posted
+// need to reduce lines of code for ajax post: approach maybe a callback that
+    // accepts url
+
 
 //************************** CLASSES and GLOBAL Varibles:**************************
 
@@ -19,7 +22,7 @@ class OutgoingTransactionItem{
     this.name = data.name;
     this.quantitySold = 1;
     this.price = data.salePrice;
-    this.tax = (this.quantitySold * this.price) *.0975 ;
+    this.tax = (this.quantitySold * this.price) * .0975 ;
   }
 }
 
@@ -87,18 +90,6 @@ function createTransactionItem(data){
     tableName.find('tr#' +data.barcode).find('td#quantitySold').replaceWith(
       "<td id='quantitySold' value='"+ qtyValue  +"'>"+ qtyValue +"</td>")
   }
-
-}
-
-function subtotal(price){
-  var increment = parseFloat(localStorage.getItem('subtotal'));
-  increment += parseFloat(price);
-  localStorage.setItem('subtotal', increment);
-  localStorage.setItem('tax', increment * .0925);
-  localStorage.setItem('total', increment + (increment * .0925));
-  $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
-  $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
-  $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
 
 }
 
@@ -175,6 +166,18 @@ function postObject(outTransactionItems){
             },
             dataType: 'application/json'
         });
+  }
+
+  function subtotal(price){
+    var increment = parseFloat(localStorage.getItem('subtotal'));
+    increment += parseFloat(price);
+    localStorage.setItem('subtotal', increment);
+    localStorage.setItem('tax', increment * .0925);
+    localStorage.setItem('total', increment + (increment * .0925));
+    $('#sub').html("Subtotal: <input type='text' id='subtotal' name='subtotal' value=" +Math.ceil(localStorage.getItem('subtotal')*100) / 100 + " readonly><br>");
+    $('#taxTotal').html("Tax: <input type='text' id='tax' name='tax' value=" +Math.ceil(localStorage.getItem('tax')*100) / 100 + " readonly><br>");
+    $('#tot').html("Total: <input type='text' id='total' name='total' value=" +Math.ceil(localStorage.getItem('total')*100) / 100+ " readonly><br>");
+
   }
 
 

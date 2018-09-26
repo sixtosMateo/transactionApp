@@ -6,6 +6,7 @@
 // unless the value of barcode is unique the value of barcode is set to 6 right now
 
 
+
 //************************** OBJECT SAVE AS CLASSES:**************************
 var inTransactionItems = [];
 
@@ -63,7 +64,7 @@ class IncomingTransactionItem{
     this.barcode = data.barcode;
     this.name = data.name;
     this.quantityBought = 1;
-    this.tax = .0925;
+    this.tax = (this.quantityBought * data.purchasedPrice) * .0925;
     this.purchasedPrice = data.purchasedPrice;
   }
 
@@ -73,8 +74,6 @@ class IncomingTransactionItem{
 
 
 localStorage.setItem('subtotal', 0);
-
-
 
 
 function verifiedItemExist(callback){
@@ -102,10 +101,7 @@ function verifiedItemExist(callback){
          },
        });
 }
-// function itemCallback(data){
-//
-//   subtotal(data.purchasedPrice);
-// }
+
 
 function callbackFound(found, data){
   var tableName = $("#itemsTable");
@@ -119,7 +115,7 @@ function callbackFound(found, data){
     if($("#"+data.barcode).length == 0){
 
       subtotal(data.purchasedPrice);
-      
+
       var newTransactionItem =  new IncomingTransactionItem(data);
       inTransactionItems.push(newTransactionItem);
 
@@ -167,6 +163,10 @@ function postObject(inTransactionItems){
               xhr.setRequestHeader("X-CSRFToken",
               jQuery("[name=csrfmiddlewaretoken]").val());
           }
+      },
+      complete: function(xhr){
+        console.log("ajax post completed");
+
       }
   });
   // sets up the data into json format
@@ -180,14 +180,7 @@ function postObject(inTransactionItems){
       'total': total,
       'transactionItems': JSON.stringify(inTransactionItems)
       },
-      dataType: 'application/json',
-      success:function(data){
-
-      },
-      error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-      },
+      dataType: 'application/json'
   });
 }
 
