@@ -181,6 +181,12 @@ class outgoingTransactionList(APIView):
 
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        outgoingTransactions = OutgoingTransaction.objects.all()
+        serializers = OutgoingTransactionSerializer(outgoingTransactions, many=True)
+        return Response(serializers.data)
+
+
 class outgoingTransactionItemList(APIView):
 
     def post(self, request):
