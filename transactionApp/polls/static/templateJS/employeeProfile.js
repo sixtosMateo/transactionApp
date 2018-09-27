@@ -38,6 +38,8 @@ function calllbackTransaction(callback , url){
 
 function displayTransaction(transaction){
   var tableName = $("#itemsTable");
+
+
   tableName.append("<tr id=" + transaction.transactionId + ">" +
                     "<td id='transactionId' value='"+transaction.transactionId+"'>"+transaction.transactionId+"</td>"+
                     "<td id='tax' value='"+transaction.tax+"'>"+transaction.tax+"</td>"+
@@ -51,12 +53,14 @@ function displayTransaction(transaction){
 
 
 $( "#outgoing-transaction" ).click(function() {
-    window.alert("out");
+    $("#itemsTable").html("");
     calllbackTransaction(displayTransaction, '/polls/api/outgoingTransactions/');
 
 });
 
+
 $( "#incoming-transaction" ).click(function() {
-  window.alert("in");
+    $("#itemsTable").html("");
+    calllbackTransaction(displayTransaction, '/polls/api/incomingTransactions/');
 
 });

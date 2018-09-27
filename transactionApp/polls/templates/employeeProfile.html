@@ -10,6 +10,7 @@
   overflow:auto;
 }
 
+
 #itemsTable{
    width: 75%;
    cellspacing:1;
@@ -34,21 +35,23 @@
         <p>Employee Start Date: {{ selectUser.date_joined }}</p></br>
 
         {% if selectUser.is_staff %}
-          <a role="button" id="outgoing-transaction">  outgoing</a>
-          <input id="incoming-transaction" type="button" value="Incoming"/>
+          <a role="button" id="outgoing-transaction">  Outgoing</a>
+          <a role="button" id="incoming-transaction">  Incoming</a>
 
         {% else %}
-          <a role="button" id="outgoing-transaction">outgoing</a>
+          <a role="button" id="outgoing-transaction"> Outgoing</a>
         {% endif %}
 
         <div id="tableStyle">
+          <tr id="labels">
+            <td>TransactionId: &emsp; </td>
+            <td>Tax: &emsp; </td>
+            <td>Subtotal: &emsp; </td>
+            <td>Total: &emsp; </td>
+          </tr>
+
           <table id="itemsTable">
-            <tr id ="labels">
-              <th>TransactionId:</th>
-              <th>Tax:</th>
-              <th>Subtotal:</th>
-              <th>Total:</th>
-            </tr>
+
           </table>
         </div>
 

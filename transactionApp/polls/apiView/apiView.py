@@ -160,6 +160,11 @@ class incomingTransactionList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        incomingTransactions = IncomingTransaction.objects.all()
+        serializers = IncomingTransactionSerializer(incomingTransactions, many=True)
+        return Response(serializers.data)
+
 class incomingTransactionItemList(APIView):
     def post(self, request):
         serializers = IncomingTransactionItemSerializer(data=request.data)
@@ -178,7 +183,6 @@ class outgoingTransactionList(APIView):
             #put in a variable by setting it as an argument from save(arg)
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
-
         return Response(serializers.erros, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
