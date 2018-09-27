@@ -9,6 +9,13 @@
   height: 350px;
   overflow:auto;
 }
+
+#itemsTable{
+   width: 75%;
+   cellspacing:1;
+   cellpadding:1;
+   border:1;
+}
 </style>
 
 {% endblock %}
@@ -16,6 +23,10 @@
 
 {% block body %}
       <div class="container">
+        <fieldset class="form-group">
+          <label for="employeeId">Employee Id:</label>
+          <input type="text" name="employeeId" value={{selectUser.id}} readonly id="employeeId"><br>
+        </fieldset>
 
         <p>Employee First Name: {{ selectUser.first_name }}</p>
         <p>Employee Last Name: {{ selectUser.last_name }}</p>
@@ -23,11 +34,23 @@
         <p>Employee Start Date: {{ selectUser.date_joined }}</p></br>
 
         {% if selectUser.is_staff %}
-          <input id="outgoing-transaction" type="button" value="Outgoing"/>
+          <a role="button" id="outgoing-transaction">  outgoing</a>
           <input id="incoming-transaction" type="button" value="Incoming"/>
+
         {% else %}
-          <input id="outgoing-transaction" type="button" value="Outgoing"/>
+          <a role="button" id="outgoing-transaction">outgoing</a>
         {% endif %}
+
+        <div id="tableStyle">
+          <table id="itemsTable">
+            <tr id ="labels">
+              <th>TransactionId:</th>
+              <th>Tax:</th>
+              <th>Subtotal:</th>
+              <th>Total:</th>
+            </tr>
+          </table>
+        </div>
 
 
 
@@ -40,7 +63,7 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       {% block javascript %}
 
-        <script src="{% static 'templateJS/employeeProfile.js' %}"></script>
+      <script src="{% static 'templateJS/employeeProfile.js' %}"></script>
 
       {% endblock %}
 {% endblock %}
