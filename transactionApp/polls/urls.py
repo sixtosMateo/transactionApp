@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^damageItem/$', views.damageItem, name='damageItem'),
     url(r'^outgoingTransaction/$', views.outgoingTransaction, name='outgoingTransaction'),
     url(r'^viewOutgoingTransactionItems/(?P<pk>\d+)$', views.viewOutgoingTransactionItems, name='viewOutgoingTransactionItems'),
+    url(r'^viewIncomingTransactionItems/(?P<pk>\d+)$', views.viewIncomingTransactionItems, name='viewIncomingTransactionItems'),
     url(r'^incomingTransaction/$', views.incomingTransaction, name='incomingTransaction'),
     url(r'^api/plotly/items/$', apiView.ItemPlotly.as_view(), name='itemsPlot'),
     url(r'^api/plotly/outgoingTransactionQty/$', apiView.OutgoingTransactionQty.as_view(), name='OutgoingTransactionQty'),

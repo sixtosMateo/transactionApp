@@ -32,7 +32,7 @@ import time
 
 
 from .models import (
-    Item, Vendor, IncomingTransaction,
+    Item, Vendor, IncomingTransaction, IncomingTransactionItem,
     Store, Employee, OutgoingTransaction, DamageItem, OutgoingTransactionItem)
 from .serializers import (
     ItemSerializer, IncomingTransactionSerializer,
@@ -136,7 +136,18 @@ def viewOutgoingTransactionItems(request, pk,
     outTransactionItems = OutgoingTransactionItem.objects.all().filter(
                                                             transactionId=pk)
     return render(
-            request, template_name, {'outTransactionItems':outTransactionItems, 'pk': pk})
+            request, template_name, {'outTransactionItems':outTransactionItems,
+            'pk': pk, 'user':request.user})
+
+def viewIncomingTransactionItems(request, pk,
+                            template_name="viewIncomingTransactionItems.html"):
+    inTransactionItems = IncomingTransactionItem.objects.all().filter(
+                                                            transactionId=pk)
+    return render(
+            request, template_name, {'inTransactionItems':inTransactionItems,
+            'pk': pk, 'user':request.user})
+
+
 
 @login_required
 def employees(request, template_name="employees.html"):

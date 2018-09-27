@@ -10,6 +10,7 @@
   {% if user.is_staff %}
   <a href="{% url 'viewOutgoingTransactionItems' pk %}"> <input id="outgoing-transaction" type="button" value="Outgoing"/></a>
   <a href="{% url 'viewIncomingTransactionItems' pk %}"> <input id="incoming-transaction" type="button" value="Incoming"/></a>
+
   {% endif %}
 
   <table style="width:75%">
@@ -27,12 +28,12 @@
         </thead>
         <tbody>
 
-          {% for outTransactionItem in outTransactionItems %}
+          {% for inTransactionItem in inTransactionItems %}
           <tr>
-            <th>{{outTransactionItem.barcode}}</th>
-            <th>{{outTransactionItem.quantitySold}}</th>
-            <th>{{outTransactionItem.price}}</th>
-            <th>{{outTransactionItem.tax}}</th>
+            <th>{{inTransactionItem.barcode}}</th>
+            <th>{{inTransactionItem.quantityBought}}</th>
+            <th>{{inTransactionItem.purchasedPrice}}</th>
+            <th>{{inTransactionItem.tax}}</th>
           </tr>
           {% endfor %}
         </tbody>
