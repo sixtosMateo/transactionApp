@@ -18,39 +18,29 @@
       <div class="container">
 
         <p>Employee First Name: {{ selectUser.first_name }}</p>
-        <p>Employee Last Name: {{ selectUser.last_name }}</p></br>
+        <p>Employee Last Name: {{ selectUser.last_name }}</p>
+        <p>Employee Email: {{ selectUser.email}}</p>
+        <p>Employee Start Date: {{ selectUser.date_joined }}</p></br>
 
-        <button id="year" type="">Year</button>
-        <button id="month">Month</button>
-        <button id="week">Week</button>
-        <button id="day">day</button></br></br>
+        {% if selectUser.is_staff %}
+          <input id="outgoing-transaction" type="button" value="Outgoing"/>
+          <input id="incoming-transaction" type="button" value="Incoming"/>
+        {% else %}
+          <a href=""> <input id="outgoing-transaction" type="button" value="Outgoing"/></a>
+        {% endif %}
 
 
-        <div id="tableStyle">
-        <table style="width:75%">
-              <thead>
-                <tr>
-                  <th>Date:</th>
-                  <th>Trasaction ID:</th>
-                  <th>Store ID:</th>
-                  <th>Total Sold:</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                {% for outTransaction in outTransactions %}
-                <tr>
-                  <th>{{outTransaction.createdAt}}</th>
-                  <th>{{outTransaction.transactionId}}</th>
-                  <th>{{outTransaction.storeId}}</th>
-                  <th>{{outTransaction.total}}</th>
-                  <td><a role ="button" class="btn btn-success btn-sm glyphicon" href="{% url 'viewOutgoingTransactionItems' outTransaction.transactionId %}"> View </a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
 
 
       </div>
+
+      {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      {% block javascript %}
+
+        <script src="{% static 'templateJS/employeeProfile.js' %}"></script>
+
+      {% endblock %}
 {% endblock %}

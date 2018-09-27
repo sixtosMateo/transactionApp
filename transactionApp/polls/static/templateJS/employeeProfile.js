@@ -18,3 +18,13 @@ $("#employees-table").on("click", ".js-delete-employee", loadForm);
 
 
 });
+
+
+$( "#outgoing-transaction" ).click(function() {
+    
+});
+
+$( "#incoming-transaction" ).click(function() {
+  window.alert("in");
+
+});
