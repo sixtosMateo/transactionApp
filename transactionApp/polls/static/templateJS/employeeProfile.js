@@ -39,14 +39,12 @@ function calllbackTransaction(callback , url){
 function displayTransaction(transaction){
   var tableName = $('#itemsTable').children('tbody');
 
-
-
-
   tableName.append("<tr id=" + transaction.transactionId + ">" +
                     "<td id='transactionId' value='"+transaction.transactionId+"'>"+transaction.transactionId+"</td>"+
                     "<td id='tax' value='"+transaction.tax+"'>"+transaction.tax+"</td>"+
                     "<td id='subtotal' value='"+transaction.subtotal+"'>"+transaction.subtotal+"</td>"+
                     "<td id='total' value='"+transaction.total+"'>"+transaction.total+"</td>"+
+                    "<td><a role ='button' class='btn btn-succes' href='../viewOutgoingTransactionItems/"+transaction.transactionId +"'> Transaction Items</a></td>"+
                     "</tr>");
 
 
@@ -55,14 +53,14 @@ function displayTransaction(transaction){
 
 
 $( "#outgoing-transaction" ).click(function() {
-    $('#itemsTable').children('tbody').empty();
+    $('tbody').empty();
     calllbackTransaction(displayTransaction, '/polls/api/outgoingTransactions/');
 
 });
 
 
 $( "#incoming-transaction" ).click(function() {
-    $('#itemsTable').children('tbody').empty();
+    $('tbody').empty();
     calllbackTransaction(displayTransaction, '/polls/api/incomingTransactions/');
 
 });

@@ -127,7 +127,10 @@ def employeeProfile(request, pk, template = "employeeProfile.html"):
     selectUser = get_object_or_404(User, pk=pk)
     outTransactions = OutgoingTransaction.objects.all().filter(
                                                     employeeId=selectUser.id)
-    # args = {'user': request.user}
+
+    if request.method == 'POST':
+        print("post")
+    
     return render(request, template, {'selectUser': selectUser,
                     'outTransactions':outTransactions})
 @login_required

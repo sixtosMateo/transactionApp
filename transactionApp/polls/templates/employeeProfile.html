@@ -35,8 +35,8 @@
         <p>Employee Start Date: {{ selectUser.date_joined }}</p></br>
 
         {% if selectUser.is_staff %}
-          <a role="button" id="outgoing-transaction">  Outgoing</a>
-          <a role="button" id="incoming-transaction">  Incoming</a>
+          <a role="button" class="btn btn-success btn-sm glyphicon" id="outgoing-transaction">  Outgoing</a>
+          <a role="button" class="btn btn-success btn-sm glyphicon" id="incoming-transaction">  Incoming</a>
 
         {% else %}
           <a role="button" id="outgoing-transaction"> Outgoing</a>
@@ -50,11 +50,10 @@
                   <td>Tax:</td>
                   <td>Subtotal: </td>
                   <td>Total:</td>
+                  <td>Items:</td>
                 </tr>
             </thead>
-            <tbody>
-              
-            </tbody>
+            <tbody></tbody>
 
           </table>
         </div>

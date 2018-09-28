@@ -28,8 +28,9 @@
                 <dt>Last Name: {{user.last_name }}</th>
                 <dt>Email: {{user.email }} </th></br>
                 <td>
+                
                   <!-- this button must pass the user object that get click on -->
-                  <a role ="button" href="{% url 'employeeProfile' user.id %}">View</a>
+                  <a role ="button" class="btn btn-success btn-sm glyphicon" href="{% url 'employeeProfile' user.id %}">View</a>
                   <a role ="button" href="{% url 'editProfile' user.id %}">Edit</a>
                   <button type="button" class="js-delete-employee" data-url ="{% url 'deleteProfile' user.id %}"> Delete </button>
                 </td>

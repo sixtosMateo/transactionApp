@@ -2,15 +2,17 @@
 
 {% block head %}
 <title>Employee Profile</title>
+<script>
+function goBack() {
+    window.history.back()
+}
+</script>
 {% endblock %}
 
 
 {% block body %}
 <div class="container">
-  {% if user.is_staff %}
-  <a href="{% url 'viewOutgoingTransactionItems' pk %}"> <input id="outgoing-transaction" type="button" value="Outgoing"/></a>
-  <a href="{% url 'viewIncomingTransactionItems' pk %}"> <input id="incoming-transaction" type="button" value="Incoming"/></a>
-  {% endif %}
+    <button onclick="goBack()">Go Back</button>
 
   <table style="width:75%">
           <h2>Transaction Number: &nbsp {{ pk }}</h2>
