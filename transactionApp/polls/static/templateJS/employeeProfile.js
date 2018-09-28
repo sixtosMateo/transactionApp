@@ -37,7 +37,9 @@ function calllbackTransaction(callback , url){
 }
 
 function displayTransaction(transaction){
-  var tableName = $("#itemsTable");
+  var tableName = $('#itemsTable').children('tbody');
+
+
 
 
   tableName.append("<tr id=" + transaction.transactionId + ">" +
@@ -53,14 +55,14 @@ function displayTransaction(transaction){
 
 
 $( "#outgoing-transaction" ).click(function() {
-    $("#itemsTable").html("");
+    $('#itemsTable').children('tbody').empty();
     calllbackTransaction(displayTransaction, '/polls/api/outgoingTransactions/');
 
 });
 
 
 $( "#incoming-transaction" ).click(function() {
-    $("#itemsTable").html("");
+    $('#itemsTable').children('tbody').empty();
     calllbackTransaction(displayTransaction, '/polls/api/incomingTransactions/');
 
 });
