@@ -31,5 +31,4 @@ class OutgoingTransactionSerializer(serializers.ModelSerializer):
     # transactionItems = OutgoingTransactionItemSerializer(many=True)
     class Meta:
         model = OutgoingTransaction
-        fields = ('transactionId', 'storeId', 'employeeId',
-                    'tax', 'subtotal','total')
+        fields = '__all__'

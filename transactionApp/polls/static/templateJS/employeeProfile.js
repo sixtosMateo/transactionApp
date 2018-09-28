@@ -44,6 +44,7 @@ function displayTransaction(transaction){
                     "<td id='tax' value='"+transaction.tax+"'>"+transaction.tax+"</td>"+
                     "<td id='subtotal' value='"+transaction.subtotal+"'>"+transaction.subtotal+"</td>"+
                     "<td id='total' value='"+transaction.total+"'>"+transaction.total+"</td>"+
+                    "<td id='total' value='"+transaction.createdAt+"'>"+transaction.createdAt+"</td>"+
                     "<td><a role ='button' class='btn btn-succes' href='../viewOutgoingTransactionItems/"+transaction.transactionId +"'> Transaction Items</a></td>"+
                     "</tr>");
 
