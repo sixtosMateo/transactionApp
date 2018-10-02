@@ -81,8 +81,8 @@ localStorage.setItem('subtotal', 0);
 
 function verifiedItemExist(callback){
   var $input = $("#idBarcode").val();
-  var $exist =false;
-  return $.ajax({
+  var $exist = false;
+  $.ajax({
          type: 'GET',
          url:'/polls/api/items/',
          success:function(items){
@@ -90,31 +90,28 @@ function verifiedItemExist(callback){
              if(item.barcode == $input){
                $exist=true;
                callback($exist, item);
-
              }
            });
-           if ($exist == false){
-
-            callback($exist, $input);
-           }
-
          },
          error: function(data){
-             console.log("error")
-             console.log(error_data)
+             console.log("error");
+             console.log(error_data);
          },
        });
+
+  if($exist == false){
+      callback($exist, $input);
+    }
 }
+
 
 function callbackFound(found, data){
   var tableName = $("#itemsTable");
+  $('#itemFormStyle').find('input').val('');
 
   if(found == false){
     $("#itemFormStyle").show();
-
-    $("#barcode").val(data);
-
-
+    $('#itemFormStyle').find('#barcode').val(data);
   }
   else{
     $("#itemFormStyle").hide();
@@ -245,15 +242,21 @@ $("#itemFormStyle").hide();
 $("#itemsTable").toggle();
 $("#formButtons").hide();
 
-$("#idBarcode").on("change",function(){
-  // $("#itemFormStyle").hide()
-  verifiedItemExist(callbackFound);
 
+$("#idBarcode").on("change",function(e){
+  verifiedItemExist(callbackFound);
+  $("#idBarcode").val("");
 });
 
 $( "#newItem" ).click(function() {
   var newItem = new Item();
   newItem.postNewItem();
+  $('#itemFormStyle').find('input').val('');
+  $("#itemFormStyle").hide();
+});
+
+$( "#cancelItem" ).click(function() {
+  $('#itemFormStyle').find('input').val('');
   $("#itemFormStyle").hide();
 });
 
