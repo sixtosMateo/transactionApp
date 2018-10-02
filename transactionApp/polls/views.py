@@ -130,7 +130,7 @@ def employeeProfile(request, pk, template = "employeeProfile.html"):
 
     if request.method == 'POST':
         print("post")
-    
+
     return render(request, template, {'selectUser': selectUser,
                     'outTransactions':outTransactions})
 @login_required

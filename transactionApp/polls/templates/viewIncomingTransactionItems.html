@@ -7,6 +7,7 @@
 
 {% block body %}
 <div class="container">
+  <button onclick="goBack()">Go Back</button>
   {% if user.is_staff %}
   <a href="{% url 'viewOutgoingTransactionItems' pk %}"> <input id="outgoing-transaction" type="button" value="Outgoing"/></a>
   <a href="{% url 'viewIncomingTransactionItems' pk %}"> <input id="incoming-transaction" type="button" value="Incoming"/></a>

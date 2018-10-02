@@ -9,7 +9,7 @@
 
 #tableStyle{
   width: 100%;
-  height: 150px;
+  height: 180px;
   overflow:auto;
 }
 #itemFormStyle{
@@ -26,7 +26,7 @@
 }
 
 td{
-  font-size: 1.5em;
+  font-size: 1.25em;
 }
 </style>
 {% endblock %}
@@ -60,6 +60,7 @@ td{
               <label for="employeeId">Employee:</label>
               <input type="text" name="employeeId" value={{user.id}} readonly id="employeeId"><br>
             </fieldset>
+
             <div id="tableStyle">
               <table id="itemsTable">
                 <tr id ="labels">
@@ -72,10 +73,11 @@ td{
             </div>
 
             <div id="calculation">
-              <h2 id="sub"></h2>
-              <h2 id="taxTotal"></h2>
-              <h2 id="tot"></h2>
+              <h3 id="sub"></h3>
+              <h3 id="taxTotal"></h3>
+              <h3 id="tot"></h3>
             </div>
+
             <div id ="formButtons">
               <a role ="button" class="btn btn-success btn-sm glyphicon" id="submit" >Submit</a>
               <a role ="button" class="btn btn-danger btn-sm" id="cancel">Cancel</a>

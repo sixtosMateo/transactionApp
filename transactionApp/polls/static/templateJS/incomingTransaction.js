@@ -94,7 +94,8 @@ function verifiedItemExist(callback){
              }
            });
            if ($exist == false){
-            callback($exist);
+
+            callback($exist, $input);
            }
 
          },
@@ -105,13 +106,18 @@ function verifiedItemExist(callback){
        });
 }
 
-
 function callbackFound(found, data){
   var tableName = $("#itemsTable");
+
   if(found == false){
     $("#itemFormStyle").show();
+
+    $("#barcode").val(data);
+
+
   }
   else{
+    $("#itemFormStyle").hide();
     $('#itemsTable').show()
     $("#formButtons").show();
 
@@ -221,7 +227,6 @@ function postObject(inTransactionItems){
   });
 }
 
-
 function subtotal(price){
 
     var increment = parseFloat(localStorage.getItem('subtotal'));
@@ -237,16 +242,13 @@ function subtotal(price){
 //************************** EVENT LISTENER:**************************
 
 $("#itemFormStyle").hide();
-$("#itemsTable").hide();
+$("#itemsTable").toggle();
 $("#formButtons").hide();
 
-$("#idBarcode").change(function(){
-
-  $("#itemFormStyle").hide();
-  // verifiedItemExist(itemCallback);
+$("#idBarcode").on("change",function(){
+  // $("#itemFormStyle").hide()
   verifiedItemExist(callbackFound);
-  $("#barcode").val($("#idBarcode").val());
-  $("#idBarcode").val("");
+
 });
 
 $( "#newItem" ).click(function() {
@@ -257,6 +259,7 @@ $( "#newItem" ).click(function() {
 
 $( "#submit" ).click(function() {
   postObject(inTransactionItems);
+
 
 });
 
