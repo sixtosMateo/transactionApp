@@ -6,11 +6,7 @@
 
 
 {% block body %}
-<div class="container">
-  <fieldset class="form-group">
-    <label for="idBarcode">Barcode:</label>
-    <input  class="form-control" id="idBarcode" name="idBarcode" type="text"  value="">
-  </fieldset>
+<div class="container">  
 
   <form data-parsley-validate method="post">
     {% csrf_token %}

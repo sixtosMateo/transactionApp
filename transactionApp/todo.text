@@ -1,0 +1,50 @@
+Questions:
+  what should happen if a employee decides to quit?
+        - The transactions and its items should not be deleted.
+
+IncomingTransaction:
+  - reduce ajax request and code for each seach
+  - when item does exist not call the newItem form
+  - update inStockQty from item table after submit an Outgoing Transaction
+  - set validation for new item form
+  - upload a picture for item to db
+  - should be able to update or delete item from transaction before submitting
+
+OutgoingTransaction
+  - reduce ajax request and code for each seach  
+  - set an "item not found" message
+  - update inStockQty from item table after submit an Outgoing Transaction
+  - should be able to update or delete item from transaction before submitting
+
+AllEmployee
+  - employeeProfile/id
+      * scan input text box to search a transaction
+      * Delete or edit transaction either outgoing or incomingTransaction
+        - display a list of history for each prices if changed if return item
+        - how much money needs to return to customer
+
+  - viewIncomingTransactionItems or viewOutgoingTransactionItems
+      * scan input text box to search a transaction item
+      * update the qty of items if return or trade
+      * should update the transaction that the items belong to
+
+Inventory
+  - there should be a form to edit an item
+  - Item
+      * there should be a link that lets you edit an item
+      * delete location id from item table
+  - countCycle
+      * display the concurrent qty in stock
+
+AlertInventory
+  - need to create a link where notification are displayed when item count does not match
+
+Reports
+  - pdf or graphs selections
+  - outgoing or incoming transactions should be filtered by: Year, Month, Weekly or Daily
+  - damageCostReport should be filtered by yearly or monthly
+    * also filter by a list of vendor
+  - overall report
+    * profit, lost, incoming, outgoing
+  - notification with items that have 0 qty
+  - top ten items that have not been sold in a while by transactions items

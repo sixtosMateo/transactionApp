@@ -1,9 +1,7 @@
 // what happen when the purchasedPrice changes
 //when its in the thousandth it should round it not ceil
-//need to create a function that hide div
 
-// barcode needs to be change it wont let me submit new item
-// unless the value of barcode is unique the value of barcode is set to 6 right now
+
 
 
 
